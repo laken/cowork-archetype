@@ -1,0 +1,50 @@
+---
+title: "Digital Asset Firms Are the Highest-Value Targets on the Internet. Most Act Like They Aren't."
+date: "2026-03-01"
+description: "State-sponsored attackers stole over $2 billion from the digital asset space in 2025 alone. Most firms have individual security decisions, not a program. Here's what closing the gap actually takes."
+slug: "2026-03-why-digital-asset-funds-are-cybersecurity-targets"
+---
+
+He's the person in the room who has thought about this more than anyone. Former institutional finance, now running a digital asset fund — the kind of person who reads about security threats the way other people follow sports, who has hardware keys for custody access, who thought carefully about which devices touched which systems and why. He had done most of the things the security-aware people in his peer group do. Then an attacker called his mobile carrier, convinced a support representative to transfer his phone number to a new SIM card, and had full control of his number before anyone thought to notify him.
+
+That's a SIM swap: a social engineering attack on the carrier, not the account holder. Once the attacker controls the number, any account that uses a text message for two-factor authentication is open — because the codes go to them now, not to you. None of the personal security work he'd done was relevant, because the attack didn't touch any of it. Verizon's verification protocols failed, and his phone number was the weak point, and that's not something individual vigilance closes.
+
+Two years of building security programs for digital asset funds has made that gap the thing I'm most focused on: the space between what an individual can do and what a firm actually needs. The funds that came through the 2025 spike in attacks largely unscathed weren't using better tools than the ones that got hit. They had someone maintaining the whole picture — reviewing access, keeping the program current, noticing when something drifted. The others were doing things. Good things, sensibly chosen. The gap was ownership, not awareness.
+
+## What good personal OPSEC actually covers
+
+Running a VPN, using hardware keys, enabling MFA, being skeptical of unexpected requests — these are all genuinely useful. They raise the cost of certain attacks and close some real vulnerabilities. If everyone on your team did all of them consistently, you'd be better off than most.
+
+What they have in common is that they depend on an individual making the right call, consistently, under conditions that are sometimes designed specifically to prevent that. A VPN doesn't protect a device that's already been compromised. Hardware keys don't help if someone social-engineers their way past account recovery. MFA doesn't stop an attacker who's already inside a Telegram account reading your messages and learning how you communicate. Individual vigilance is a layer. It's one layer, and the attacks hitting crypto funds right now are built to operate in the gaps between layers.
+
+## How those gaps get exploited
+
+A compromised Telegram account — taken through a SIM swap, a session hijack, or a social engineering play on account recovery — gives an attacker access to months of organizational context. They learn who approves transfers, how people write to each other, what a plausible request looks like. From there, the escalation to a fake Zoom call is a short step. The face on screen is reconstructed from publicly available photos; the voice is cloned from podcast appearances or recorded calls. The conversation is unhurried. When the "colleague" asks the target to run a command in the terminal to fix a technical issue, there's no reason not to.
+
+The command is the delivery mechanism. It installs malware that establishes persistent access to the device — exchange sessions, API keys, wallet software, saved credentials. Endpoint detection and response software running on the device before the attack would have killed the process within seconds of the terminal command executing, because the behavioral signature of that kind of installation is recognizable. Network-level filtering routing DNS through a security gateway would have blocked the command-and-control domain the malware tried to phone home to. Without either layer, the malware had eight hours to operate before anyone noticed something was wrong.
+
+## Where the structural gaps live
+
+The concept security practitioners use for this is defense in depth: independent layers of protection, each of which catches what the previous one missed, such that an attacker has to get past all of them rather than just find the one moment you weren't paying attention. The practical question for any firm is which layers are actually in place — and most digital asset funds, when they look honestly, find the answer is fewer than they assumed.
+
+There are five questions that map the gaps.
+
+**Can you tell when something malicious lands on a device?** When a device gets compromised — through a malicious download, a terminal command run during a convincing Zoom call, an infected link that caught someone at a tired moment — the window between initial infection and the malware establishing persistent access is short. Endpoint detection and response software monitors device behavior in real time and kills malicious processes before they spread. Without it, the first sign of a compromise is usually whatever the malware does after it's had time to settle in. Most BYOD fund environments have no endpoint visibility at all.
+
+**Does your network filter known threats before they reach you?** Every internet connection starts with a DNS lookup — your device asking where to send traffic. Routing that through a security gateway blocks known malicious and impersonation domains before a connection is ever made, stopping a significant share of social engineering payloads before they reach the user. A personal VPN does not reliably do this. Most consumer VPNs handle DNS inconsistently, and the behavior varies by operating system and network in ways that are invisible to the user. The protection that feels like it's there often isn't, on any given connection.
+
+**Do you know who holds credentials to what — and is that list current?** In a fund that has been running for a few years, access tends to accumulate faster than it gets cleaned up. Someone leaves and their API keys to three exchanges stay active because no one went through the process of revoking them. A contractor wraps up a project and the admin access they needed for it stays on. Shared passwords exist for accounts that multiple people use and nobody specifically owns. Getting a current, accurate picture of the full credential surface — every exchange, custodian, cloud account, and internal system — and then closing the gaps is unglamorous work, but it removes the low-effort entry points that get exploited first.
+
+**When someone leaves, does their access actually end?** Offboarding in a lean fund usually focuses on the obvious: email, equipment, maybe Slack. Access to trading infrastructure, custody platforms, and exchange API integrations is harder to audit and easier to miss. A former employee with live credentials is a quiet vulnerability that can sit unnoticed for a long time.
+
+**How does your team verify identity in the channels where impersonation is active?** Telegram is the primary communication channel for much of the crypto industry and its primary attack surface. When an account gets compromised, the attacker gains access to months of organizational context — who approves what, how people write to each other, what a plausible request looks like — and uses that context to manufacture convincing interactions. Combined with deepfake video technology that can reconstruct a face and voice from publicly available material, the impersonation attacks running through these channels right now are harder to catch in the moment than most people expect. The question is whether your firm has an explicit protocol for verifying identity before any sensitive action, or whether each person is making that call individually, in each moment, under conditions designed to make the call wrong.
+
+## Why the gaps stay open
+
+None of these layers are exotic, and none of them are particularly expensive relative to what they protect. The reason most funds don't have them in place is that implementing and maintaining them requires someone to own the whole picture, and in a lean fund, that's nobody's job.
+
+Security decisions get made in response to moments of concern. Something happens in the industry, or someone reads about a new attack vector, and a decision gets made: turn on MFA, get a password manager, update the wallet policy. Each decision was reasonable. But there's no one reviewing whether those decisions still hold six months later, no one noticing what's missing from the overall posture, no one whose job it is to evolve the program as the threat does.
+
+For most firms at this stage, closing that gap doesn't require a full-time hire. It requires ten to twenty hours a month from someone senior enough to see the whole picture and accountable enough to keep it current — someone who reviews access on a regular cadence, responds when something flags, and updates the program as the threat environment changes. That's what turns a collection of security decisions into an actual posture.
+
+The person who knew about SIM swapping and still got SIM-swapped wasn't doing the wrong things. He just didn't have the structural layers that individual knowledge can't replace.
