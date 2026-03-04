@@ -50,4 +50,27 @@
 
 ---
 
-*Last updated: March 2026, after the SIM swap article drafting session.*
+## Evaluating Vendor Claims (Lessons Learned — Security Research)
+
+Andy caught a significant failure mode in security vendor research: treating marketing copy as technical documentation and giving vendors the benefit of the doubt when claims are ambiguous.
+
+**The specific pattern to avoid:**
+
+- A vendor says their tool "executes actions via the agent" — do not treat this as evidence of architectural constraint. CrowdStrike RTR also executes via the agent. The transport mechanism says nothing about the access surface.
+- A vendor lists specific actions their SOC can take — do not treat a list of examples as an exhaustive enumeration unless the documentation explicitly says so. "Along with other steps our SOC can take" means the list is illustrative, not complete.
+- A vendor's marketing emphasizes a privacy-friendly framing — do not infer that the underlying capability is absent. SentinelOne frames remote shell as "automated remediation"; it is still a full shell.
+
+**The standard to apply:**
+
+When evaluating a claim about what a vendor *cannot* do (especially privacy or access-limitation claims), ask: does the documentation explicitly state this limitation, or does it merely describe what the vendor typically does? These are different. Absence of a capability from marketing copy is not evidence the capability doesn't exist.
+
+Claims about vendor access constraints are only defensible when:
+1. The vendor's technical documentation explicitly states the limitation, not just describes common use cases.
+2. A contractual commitment exists, or
+3. A credible independent technical audit confirms the architecture.
+
+**When in doubt, say so explicitly** and flag what question would resolve the uncertainty — don't paper over it with confident-sounding synthesis.
+
+---
+
+*Last updated: March 2026, after EDR vendor evaluation session and Huntress privacy claim correction.*
