@@ -1,0 +1,12 @@
+# Lock files (LibreOffice, Word, etc.)
+.~lock.*
+*.lock
+
+# Temp / backup files
+*.tmp
+*.temp
+*.bak
+*~
+*.swp
+*.swo
+.DS_Store
