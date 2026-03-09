@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWOT Analysis — AI Enablement Advisory | Archetype Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f1f5f9, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  /* Strengths — Green */
+  .strengths {
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03));
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+  .strengths::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .strengths .card-icon { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+  .strengths .card-label { color: #4ade80; }
+
+  /* Weaknesses — Amber */
+  .weaknesses {
+    background: linear-gradient(145deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.03));
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  .weaknesses::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .weaknesses .card-icon { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+  .weaknesses .card-label { color: #fbbf24; }
+
+  /* Opportunities — Blue */
+  .opportunities {
+    background: linear-gradient(145deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  .opportunities::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .opportunities .card-icon { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .opportunities .card-label { color: #60a5fa; }
+
+  /* Threats — Red/Rose */
+  .threats {
+    background: linear-gradient(145deg, rgba(244, 63, 94, 0.08), rgba(244, 63, 94, 0.03));
+    border: 1px solid rgba(244, 63, 94, 0.2);
+  }
+  .threats::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
+  .threats .card-icon { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+  .threats .card-label { color: #fb7185; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
+
+  .card-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card li {
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #cbd5e1;
+  }
+
+  .card li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .card li strong {
+    color: #f1f5f9;
+    font-weight: 600;
+  }
+
+  /* Bottom insight bar */
+  .insight-bar {
+    background: linear-gradient(145deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .insight-bar h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #a5b4fc;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+  }
+
+  .insight-bar p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .insight-bar p + p {
+    margin-top: 0.75rem;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    color: #475569;
+    font-size: 0.8rem;
+  }
+
+  footer a {
+    color: #818cf8;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.75rem; }
+    body { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">Strategic Analysis · March 2026</div>
+    <h1>AI Enablement Advisory</h1>
+    <p class="subtitle">SWOT Analysis — Archetype Consulting</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- STRENGTHS -->
+    <div class="card strengths">
+      <div class="card-header">
+        <div class="card-icon">↑</div>
+        <div>
+          <div class="card-label">Strengths</div>
+          <div class="card-title">What we bring</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Security expertise as moat.</strong> Can explain consumer vs. commercial data terms, connector data flows, prompt injection risks, and ring-fencing strategies with authority. Most AI coaches hand-wave here.</li>
+        <li><strong>20+ years enterprise IT credibility.</strong> EDR vendor evaluations, security assessments, executive-level work. The resume backs up the advisory positioning.</li>
+        <li><strong>Embedded at Hyla/Amphibian.</strong> Internal champions (Hoppin evangelizing, Ty asking for help, Mark interested). Live testbed for individual and team-level engagements.</li>
+        <li><strong>PM + engineering bilingual.</strong> Scrum Master certified, can translate technical risk into business language. Speaks founder, not just engineer.</li>
+        <li><strong>Daily Cowork power user.</strong> Has hit the walls, built the workarounds (CLAUDE.md, Git backup, voice DNA), knows the product's real limitations firsthand.</li>
+      </ul>
+    </div>
+
+    <!-- WEAKNESSES -->
+    <div class="card weaknesses">
+      <div class="card-header">
+        <div class="card-icon">!</div>
+        <div>
+          <div class="card-label">Weaknesses</div>
+          <div class="card-title">What's exposed</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Solo operator, capacity ceiling.</strong> Every session, deliverable, and outreach message is Andy's time. No team, no delegation.</li>
+        <li><strong>Zero brand awareness.</strong> Nobody searching for "AI enablement advisor" will find Archetype Consulting today. The brand exists within an existing network only.</li>
+        <li><strong>Unvalidated offering.</strong> Zero paid sessions, zero testimonials, zero case studies. Pricing model is still theoretical.</li>
+        <li><strong>Content creation muscle is undeveloped.</strong> LinkedIn strategy is clear but unexecuted. Competing creators have 6-12 months head start and massive audiences.</li>
+        <li><strong>Platform expertise is narrow.</strong> Deep on Cowork, shallow on Copilot, Google Workspace agents, and other platforms the ICP might ask about.</li>
+      </ul>
+    </div>
+
+    <!-- OPPORTUNITIES -->
+    <div class="card opportunities">
+      <div class="card-header">
+        <div class="card-icon">★</div>
+        <div>
+          <div class="card-label">Opportunities</div>
+          <div class="card-title">What's opening up</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Hyla testbed → case study in 60 days.</strong> Guinea pig sessions can produce a firm-level engagement ($10-30K) if the merger creates urgency post-close.</li>
+        <li><strong>"Show Me the Carfax" angle.</strong> Security posture as investor due diligence deliverable. Fund managers raising capital care about this. Nobody else is using this framing.</li>
+        <li><strong>Windows launch doubled the market.</strong> Cowork hit Windows on Feb 10 with full feature parity. The macOS constraint is gone.</li>
+        <li><strong>Security-first lane is unoccupied.</strong> The content creator ecosystem (Hassid, Substack, YouTube) is focused on productivity. Nobody owns security-aware enablement for executives with sensitive data.</li>
+        <li><strong>Productizable team workflows.</strong> AI notetaker standardization, team briefing workflows, and shared document intelligence can become a repeatable engagement scope.</li>
+        <li><strong>Acquia alumni pipeline untapped.</strong> 81 Sales Navigator results, warm connections, many now VPs/founders at 5-50 person firms.</li>
+      </ul>
+    </div>
+
+    <!-- THREATS -->
+    <div class="card threats">
+      <div class="card-header">
+        <div class="card-icon">⚡</div>
+        <div>
+          <div class="card-label">Threats</div>
+          <div class="card-title">What could close the window</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Anthropic improves onboarding.</strong> The setup gap narrows, reducing demand for guided enablement. Likely timeline: 6-12 months. The security layer survives this.</li>
+        <li><strong>Credentialed firm enters the space.</strong> A Big 4 or boutique infosec firm packages "AI security assessment" for enterprises and it trickles down to SMBs.</li>
+        <li><strong>Platform risk.</strong> Cowork is a research preview. A major bug, privacy incident, or product pivot could undermine client confidence in the tool.</li>
+        <li><strong>Free content educates the ICP to DIY.</strong> Creators like Hassid (784K followers) teach executives to self-serve. Security differentiation is the defense.</li>
+        <li><strong>Runway pressure distorts positioning.</strong> Urgency to generate revenue could push toward $500 one-off sessions instead of the advisory/retainer model that builds long-term value.</li>
+        <li><strong>Google Workspace Studio agents at GA.</strong> Capable competitor already in front of every Google Workspace Business user. If the ICP defaults to native tools, demand shifts.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Strategic Insight -->
+  <div class="insight-bar">
+    <h3>Strategic Takeaway</h3>
+    <p>The security moat is the through-line. It protects against content creator competition (they can't credibly advise on data privacy), justifies advisory pricing (you're managing risk, not teaching an app), creates scope for larger engagements (security concerns extend beyond the individual to the firm), and survives platform onboarding improvements (Anthropic can make setup easier, but they can't evaluate a fund's information risk profile).</p>
+    <p>The window is open and the competitive landscape is favorable. The primary constraint is execution speed: ship guinea pig sessions, produce the case study, start LinkedIn content, and build the testimonial base before the market matures. Everything else is refinement.</p>
+  </div>
+
+  <footer>
+    <a href="https://archetypeconsulting.io">Archetype Consulting</a> · Internal Strategy Document · March 2026
+  </footer>
+</div>
+</body>
+</html>

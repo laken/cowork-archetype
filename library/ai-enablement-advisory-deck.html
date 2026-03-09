@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archetype — AI Enablement Advisory</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f7f5;
+    --surface-2: #eeede9;
+    --border: #d8d6d0;
+    --accent: #1a6b5a;
+    --accent-dim: rgba(26,107,90,.07);
+    --red: #c0352d;
+    --red-dim: rgba(192,53,45,.06);
+    --amber: #b47d10;
+    --amber-dim: rgba(180,125,16,.07);
+    --teal: #1e8a72;
+    --teal-dim: rgba(30,138,114,.07);
+    --blue: #3a6fd8;
+    --blue-dim: rgba(58,111,216,.08);
+    --text: #1a1a18;
+    --text-2: #4a4843;
+    --text-3: #7a7770;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 48px 32px 64px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; flex-wrap: wrap; gap: 16px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
+  .header h1 span { color: var(--accent); }
+  .header .meta { font-size: 13px; color: var(--text-3); text-align: right; }
+  .header .meta strong { color: var(--text-2); font-weight: 500; }
+
+  /* Sections */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    animation: fadeUp .6s ease-out both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+  .section:nth-of-type(1) { animation-delay: .05s; }
+  .section:nth-of-type(2) { animation-delay: .1s; }
+  .section:nth-of-type(3) { animation-delay: .15s; }
+  .section:nth-of-type(4) { animation-delay: .2s; }
+  .section:nth-of-type(5) { animation-delay: .25s; }
+  .section:nth-of-type(6) { animation-delay: .3s; }
+  .section:nth-of-type(7) { animation-delay: .35s; }
+
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .section-header .num {
+    width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .num.n-accent { background: var(--accent-dim); color: var(--accent); }
+  .num.n-amber { background: var(--amber-dim); color: var(--amber); }
+  .num.n-teal { background: var(--teal-dim); color: var(--teal); }
+  .num.n-blue { background: var(--blue-dim); color: var(--blue); }
+  .num.n-red { background: var(--red-dim); color: var(--red); }
+  .section-header h2 { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+
+  /* Note prose */
+  .note { font-size: 13.5px; color: var(--text-2); line-height: 1.7; }
+  .note strong { color: var(--text); font-weight: 600; }
+
+  /* Hero card */
+  .hero {
+    background: linear-gradient(135deg, rgba(26,107,90,.06), rgba(58,111,216,.04));
+    border: 1px solid rgba(26,107,90,.18);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 24px;
+    animation: fadeUp .5s ease-out both;
+  }
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 800; margin-bottom: 14px; color: var(--accent);
+  }
+  .hero .positioning {
+    font-size: 15px; color: var(--text-2); line-height: 1.7; font-style: italic;
+    border-left: 3px solid var(--accent); padding-left: 16px; margin-top: 16px;
+  }
+
+  /* Dual column */
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* Triple column */
+  .triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  /* Cards */
+  .card {
+    background: var(--surface-2); border-radius: 10px; padding: 18px; border: 1px solid transparent;
+  }
+  .card.highlight { border-color: var(--accent); background: var(--accent-dim); }
+  .card .card-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .card .card-label.accent { color: var(--accent); }
+  .card .card-label.amber { color: var(--amber); }
+  .card .card-label.teal { color: var(--teal); }
+  .card .card-label.blue { color: var(--blue); }
+  .card .card-label.red { color: var(--red); }
+  .card .card-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .card .card-detail { font-size: 12.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* Tables */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .data-table th {
+    text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-3); padding: 0 8px 10px; border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,.05); vertical-align: top; color: var(--text-2);
+  }
+  .data-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+  .data-table tr.highlight-row td { background: var(--accent-dim); border-radius: 6px; }
+
+  /* Callout */
+  .callout {
+    background: var(--surface-2); border-left: 3px solid var(--amber); border-radius: 0 10px 10px 0;
+    padding: 14px 18px; font-size: 13px; color: var(--text-2); margin-top: 16px;
+  }
+  .callout strong { color: var(--amber); }
+  .callout.callout-accent { border-left-color: var(--accent); }
+  .callout.callout-accent strong { color: var(--accent); }
+  .callout.callout-red { border-left-color: var(--red); }
+  .callout.callout-red strong { color: var(--red); }
+
+  /* Flags */
+  .flags { display: flex; flex-direction: column; gap: 10px; }
+  .flag { display: flex; gap: 10px; font-size: 13px; color: var(--text-2); align-items: flex-start; }
+  .flag .icon {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; margin-top: 1px;
+  }
+  .flag .icon.green { background: var(--teal-dim); color: var(--teal); }
+  .flag .icon.warn { background: var(--amber-dim); color: var(--amber); }
+  .flag .icon.crit { background: var(--red-dim); color: var(--red); }
+
+  /* Tags */
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 4px; margin-right: 4px; letter-spacing: .5px; text-transform: uppercase;
+  }
+  .tag.accent { background: var(--accent-dim); color: var(--accent); }
+  .tag.amber { background: var(--amber-dim); color: var(--amber); }
+  .tag.red { background: var(--red-dim); color: var(--red); }
+  .tag.teal { background: var(--teal-dim); color: var(--teal); }
+  .tag.blue { background: var(--blue-dim); color: var(--blue); }
+
+  /* Tier cards */
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tier {
+    background: var(--surface-2); border-radius: 14px; padding: 24px 20px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .tier.featured { border-color: var(--accent); background: linear-gradient(180deg, rgba(26,107,90,.04) 0%, var(--surface-2) 40%); }
+  .tier .badge {
+    position: absolute; top: 0; right: 0;
+    background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 0 0 0 10px;
+  }
+  .tier .tier-name { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .tier .tier-price { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .tier .tier-period { font-size: 13px; color: var(--text-3); margin-bottom: 14px; }
+  .tier .tier-desc { font-size: 13px; color: var(--text-2); margin-bottom: 14px; line-height: 1.5; }
+
+  /* Checklist */
+  .checklist { list-style: none; }
+  .checklist li {
+    font-size: 13px; color: var(--text-2); padding: 5px 0; display: flex; gap: 8px; align-items: flex-start;
+  }
+  .checklist .ck { color: var(--teal); font-weight: 700; flex-shrink: 0; }
+  .checklist .op { color: var(--text-3); flex-shrink: 0; }
+
+  /* Session steps */
+  .steps { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .step {
+    background: var(--surface-2); border-radius: 10px; padding: 16px; text-align: center; position: relative;
+  }
+  .step .step-num {
+    width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+  .step .step-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .step .step-time { font-size: 11px; color: var(--text-3); margin-bottom: 6px; }
+  .step .step-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; text-align: left; }
+
+  /* Open questions */
+  .question-list { display: flex; flex-direction: column; gap: 8px; }
+  .question-item {
+    display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--text-2);
+    padding: 10px 14px; background: var(--surface-2); border-radius: 8px;
+  }
+  .question-item .q-box {
+    width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* Pipeline grid */
+  .pipeline-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .pipeline-card {
+    background: var(--surface-2); border-radius: 10px; padding: 16px; border-top: 3px solid transparent;
+  }
+  .pipeline-card.primary { border-top-color: var(--accent); }
+  .pipeline-card.secondary { border-top-color: var(--amber); }
+  .pipeline-card.tertiary { border-top-color: var(--text-3); }
+  .pipeline-card .p-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .pipeline-card.primary .p-label { color: var(--accent); }
+  .pipeline-card.secondary .p-label { color: var(--amber); }
+  .pipeline-card.tertiary .p-label { color: var(--text-3); }
+
+  /* Scenario cards */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .scenario {
+    background: var(--surface-2); border-radius: 10px; padding: 14px 16px; border-left: 3px solid var(--border);
+  }
+  .scenario .s-label { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* Bottom line */
+  .bottom-line {
+    background: linear-gradient(135deg, rgba(26,107,90,.06), rgba(58,111,216,.04));
+    border: 1px solid rgba(26,107,90,.15);
+    border-radius: 14px;
+    padding: 28px;
+    margin-top: 20px;
+  }
+  .bottom-line h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 800; margin-bottom: 12px; color: var(--accent);
+  }
+
+  /* Dark mode */
+  body.dark {
+    --bg: #0c0f14; --surface: #13161d; --surface-2: #1a1e28; --border: #242a36;
+    --accent: #38bfa0; --accent-dim: rgba(56,191,160,.10);
+    --red: #e0443a; --red-dim: rgba(224,68,58,.10);
+    --amber: #f0a830; --amber-dim: rgba(240,168,48,.10);
+    --teal: #38bfa0; --teal-dim: rgba(56,191,160,.10);
+    --blue: #5b8def; --blue-dim: rgba(91,141,239,.10);
+    --text: #e8e6e1; --text-2: #9a9791; --text-3: #646058;
+    background: #0c0f14; color: #e8e6e1;
+  }
+  body.dark .hero { background: linear-gradient(135deg, rgba(56,191,160,.06), rgba(91,141,239,.04)); border-color: rgba(56,191,160,.2); }
+  body.dark .bottom-line { background: linear-gradient(135deg, rgba(56,191,160,.06), rgba(91,141,239,.04)); border-color: rgba(56,191,160,.15); }
+  body.dark .tier.featured { background: linear-gradient(180deg, rgba(56,191,160,.06) 0%, var(--surface-2) 40%); border-color: var(--accent); }
+  body.dark .step .step-num { background: var(--accent); }
+
+  /* Toggle */
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 100;
+    width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-2); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    transition: background .2s, border-color .2s, color .2s; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .theme-toggle:hover { border-color: var(--text-3); color: var(--text); }
+  body.dark .theme-toggle { box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+
+  /* Section divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* Print */
+  @media print {
+    body, body.dark {
+      --bg: #fff; --surface: #f7f7f5; --surface-2: #eeede9; --border: #d8d6d0;
+      --accent: #1a6b5a; --accent-dim: rgba(26,107,90,.07);
+      --red: #c0352d; --red-dim: rgba(192,53,45,.06); --amber: #b47d10; --amber-dim: rgba(180,125,16,.07);
+      --teal: #1e8a72; --teal-dim: rgba(30,138,114,.07); --blue: #3a6fd8; --blue-dim: rgba(58,111,216,.08);
+      --text: #1a1a18; --text-2: #4a4843; --text-3: #7a7770;
+      background: #fff; color: #1a1a18;
+    }
+    .theme-toggle { display: none !important; }
+    .section, .tier, .card, .hero, .bottom-line, .step { break-inside: avoid; animation: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { margin: 0.5in; size: letter; }
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .page { padding: 24px 16px 40px; }
+    .dual, .tier-grid, .scenario-grid { grid-template-columns: 1fr; }
+    .triple, .pipeline-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1><span>Archetype</span> — AI Enablement Advisory</h1>
+      <div style="font-size:14px; color:var(--text-2); margin-top:6px;">Offering strategy, market validation, and go-to-market plan</div>
+    </div>
+    <div class="meta">
+      <strong>March 2026</strong><br>
+      Work in progress<br>
+      Internal use only
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- HERO: What This Is                     -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="hero">
+    <h2>What This Is</h2>
+    <div class="note">
+      Security-aware AI enablement for executives handling sensitive data. Andy evaluates the client's information risk profile, configures agentic AI tools (starting with Claude Cowork) with appropriate privacy and security controls, and builds working workflows on their actual data. They walk away with a system that's both productive and defensible, plus a written security brief they can hand to their board, investors, or compliance team.
+    </div>
+    <div class="positioning">
+      "I'm making sure your adoption of AI doesn't create a liability for your firm. And showing you how powerful it is in the process."
+    </div>
+    <div style="margin-top:18px;">
+      <div class="dual">
+        <div>
+          <div class="note"><strong>Format:</strong> 90-minute initial session (remote or in-person). Assessment + configuration + live demonstration. Follow-on engagement likely for most clients.</div>
+        </div>
+        <div>
+          <div class="note"><strong>Working name:</strong> TBD. Candidates: "AI Enablement Advisory," "Executive AI Security Assessment," "AI Workflow &amp; Risk Advisory." Must signal advisory, not tutoring.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 1. WHY NOW, WHY ME                     -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-accent">1</div>
+      <h2>Why now, why me</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      Agentic AI tools are crossing into the mainstream. Claude is the #1 app in the US, Cowork just launched on Windows, CNBC is writing about it for a general business audience. Every executive is hearing about this. The ones who handle sensitive data (fund managers, fintech founders, healthcare, legal) face a specific problem: they can see the productivity gains, but they can't evaluate the information risk.
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      Their options: (a) dive in and hope for the best, (b) wait for IT to figure it out (which won't happen at a 15-person fund), or (c) find someone who understands both the technology and the risk. Andy is option (c).
+    </div>
+
+    <div class="dual">
+      <div class="card highlight">
+        <div class="card-label accent">The differentiator</div>
+        <div class="card-detail">
+          <strong>20+ years in enterprise IT and security.</strong> Direct experience evaluating EDR vendors, data privacy architectures, and access control models. Deep knowledge of Anthropic's specific privacy architecture: consumer vs. commercial terms, connector permission models, data retention policies, prompt injection attack surfaces. Daily Cowork power user who has already mapped the real-world risks. PM/Scrum background that translates technical risk into business language executives understand.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label amber">The litmus test</div>
+        <div class="card-detail">
+          Would a fund manager mention this engagement to their co-GP or board without feeling like they need to justify it?<br><br>
+          <strong style="color:var(--teal);">"I brought in an AI security advisor to evaluate our tools and set up our workflows"</strong> passes.<br><br>
+          <strong style="color:var(--red);">"I hired someone to help me set up Claude"</strong> doesn't.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 2. TARGET AUDIENCE                      -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-teal">2</div>
+      <h2>Target audience</h2>
+    </div>
+    <div class="triple">
+      <div class="card highlight">
+        <div class="card-label accent">Strongest fit</div>
+        <div class="card-detail">
+          Founders, GPs, and C-suite at 5-50 person firms. Already using LLMs casually (ChatGPT, Gemini). Handling sensitive data (financial, client, deal flow). Willing to pay personally. Values time over money.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label amber">Secondary fit</div>
+        <div class="card-detail">
+          COOs and Chiefs of Staff who are de facto "figure out the AI thing" owners at their firms. Similar profile, different purchase authority dynamic.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label red">Weak fit</div>
+        <div class="card-detail">
+          VPs/Directors (purchasing friction). Anyone already deep in Claude. Tech-forward developers. AI enthusiasts who watch every tutorial. They don't need this.
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-accent" style="margin-top:16px;">
+      <strong>Expansion path:</strong> Individual sessions &#8594; "do this for my team" &#8594; org-level AI enablement engagement ($10-20K). The individual session is the front door, not the ceiling.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 3. MARKET RESEARCH                      -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-blue">3</div>
+      <h2>Market research: ICP validation (March 2026)</h2>
+    </div>
+    <div class="dual">
+      <div>
+        <div style="font-size:12px; color:var(--teal); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-bottom:10px;">Confirming evidence</div>
+        <div class="flags">
+          <div class="flag">
+            <div class="icon green">&#10003;</div>
+            <div><strong>The onboarding gap is real and documented.</strong> Cowork drops you into a sandbox with no structured walkthrough. 93% of executives cite human factors (setup friction, trust concerns) as the primary barrier to AI adoption (BCG, Microsoft Work Trend Index).</div>
+          </div>
+          <div class="flag">
+            <div class="icon green">&#10003;</div>
+            <div><strong>Willingness to pay exists.</strong> Comparable offerings price at $200-500/hour. Andy's $500/session is market-rate.</div>
+          </div>
+          <div class="flag">
+            <div class="icon green">&#10003;</div>
+            <div><strong>The "show, don't tell" gap.</strong> Nobody is doing personalized setup on someone's actual email, calendar, and workflow. The difference between watching a demo and watching your own meeting prep brief generate from your own calendar is the moment that tutorials can't replicate.</div>
+          </div>
+          <div class="flag">
+            <div class="icon green">&#10003;</div>
+            <div><strong>Security credibility is a genuine differentiator.</strong> Data privacy is the #1 concern among executives evaluating AI tools. Most consultants hand-wave on this.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px; color:var(--red); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-bottom:10px;">Disconfirming &amp; risks</div>
+        <div class="flags">
+          <div class="flag">
+            <div class="icon crit">!</div>
+            <div><strong>Free content competition is increasing rapidly.</strong> The YouTube/creator ecosystem around Cowork is growing. The window where "nobody explains this well" is narrowing. This argues for speed.</div>
+          </div>
+          <div class="flag">
+            <div class="icon warn">~</div>
+            <div><strong>Platform dependency.</strong> Cowork is a research preview product. See Platform Contingency section for mitigation.</div>
+          </div>
+          <div class="flag">
+            <div class="icon warn">~</div>
+            <div><strong>VP/Director expansion is problematic.</strong> Less likely to have purchasing authority, more likely to expect their company to provide AI training. Sweet spot remains founders, GPs, and C-suite.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 4. PLATFORM VALIDATION                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-blue">4</div>
+      <h2>Platform validation: Is Cowork the right bet?</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      <strong>Yes, for now.</strong> Cowork is the only agentic AI product that combines local file access, MCP connectors (email, calendar, task management), and a sandboxed security model in a consumer-accessible package.
+    </div>
+
+    <table class="data-table">
+      <tr>
+        <th>Platform</th>
+        <th>Architecture</th>
+        <th>ICP Fit</th>
+        <th>Risk Level</th>
+      </tr>
+      <tr class="highlight-row">
+        <td>Claude Cowork</td>
+        <td style="color:var(--text-2);">Local files + MCP connectors + sandboxed VM</td>
+        <td><span class="tag accent">Primary</span></td>
+        <td style="color:var(--text-2);">Research preview</td>
+      </tr>
+      <tr>
+        <td>OpenAI ChatGPT Desktop</td>
+        <td style="color:var(--text-2);">Conversational + screen sharing, no file/connector architecture</td>
+        <td><span class="tag red">Weak</span></td>
+        <td style="color:var(--text-2);">No local workflows</td>
+      </tr>
+      <tr>
+        <td>Microsoft Copilot</td>
+        <td style="color:var(--text-2);">Autonomous agents in M365 stack, enterprise IT deployment</td>
+        <td><span class="tag amber">12-18mo</span></td>
+        <td style="color:var(--text-2);">Not founder self-service yet</td>
+      </tr>
+      <tr>
+        <td>Google Workspace Studio</td>
+        <td style="color:var(--text-2);">Gemini agents in Gmail/Drive/Chat, no local file access</td>
+        <td><span class="tag amber">Monitor</span></td>
+        <td style="color:var(--text-2);">Closest competitor</td>
+      </tr>
+    </table>
+
+    <div class="note" style="margin-bottom:16px;">
+      <strong>Key developments:</strong> Windows support launched Feb 10, 2026 (platform constraint eliminated). CNBC and VentureBeat coverage positions Cowork for general business users. SaaS stocks dropped 15-33% after enterprise announcements. Adobe, Dentons cited as early adopters.
+    </div>
+
+    <div class="callout callout-accent">
+      <strong>Strategic framing:</strong> The offering is "executive AI enablement." Cowork is the current best vehicle, not the permanent identity. If the platform landscape shifts, the advisory skills and client relationships transfer.
+    </div>
+
+    <!-- Platform Contingency -->
+    <div style="margin-top:20px;">
+      <div style="font-size:12px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-bottom:12px;">Platform contingency: scenario planning</div>
+      <div class="scenario-grid">
+        <div class="scenario" style="border-left-color: var(--red);">
+          <div class="s-label">Privacy incident or outage</div>
+          <div class="note">Pause sessions, notify active clients with risk assessment, evaluate alternatives. Being first to flag the problem strengthens credibility.</div>
+        </div>
+        <div class="scenario" style="border-left-color: var(--amber);">
+          <div class="s-label">Competitor reaches parity</div>
+          <div class="note">Add as second supported platform. Advisory value (security evaluation, workflow design, governance) is platform-independent.</div>
+        </div>
+        <div class="scenario" style="border-left-color: var(--teal);">
+          <div class="s-label">Anthropic improves onboarding</div>
+          <div class="note">Security evaluation and written brief remain valuable. Shift emphasis to "make sure what you're doing is defensible."</div>
+        </div>
+        <div class="scenario" style="border-left-color: var(--blue);">
+          <div class="s-label">Breaking changes on exit from preview</div>
+          <div class="note">Stay current, update materials weekly. Understanding what changed and what it means for existing configurations is itself advisory value.</div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:12px;">
+        <strong>Practical guardrails:</strong> Monitor Google Workspace Studio, Copilot Tasks, and new entrants (30 min/week). Name and frame the offering platform-agnostically. Build transferable session structure. Security brief includes a platform selection rationale section.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 5. SESSION STRUCTURE                    -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-accent">5</div>
+      <h2>Session structure (draft v1)</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;"><strong>Pre-session (15 min async):</strong> Quick questionnaire covering daily tools, biggest time sinks, prior AI experience.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Setup &amp; Security</div>
+        <div class="step-time">20 min</div>
+        <div class="step-desc">Install/configure Cowork. Connect Gmail and Calendar. Walk through what each connector can see, what requires confirmation. Address privacy and ring-fencing directly.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">The Anchor Demo</div>
+        <div class="step-time">25 min</div>
+        <div class="step-desc">One high-impact workflow on their real data. Pull tomorrow's calendar, grab email context, generate a meeting prep brief. They watch it happen live on their actual schedule.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Two More Use Cases</div>
+        <div class="step-time">20 min</div>
+        <div class="step-desc">Tailored to questionnaire responses. Email triage, weekly summary, draft responses, research synthesis. Depends on the person.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Handoff</div>
+        <div class="step-time">15 min</div>
+        <div class="step-desc">Cheat sheet of prompts for their specific workflows. How to ask Cowork for help when stuck. Set expectations for the learning curve. Deliver security brief.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 6. OFFERING TIERS                       -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-accent">6</div>
+      <h2>Offering tiers: individual to firm</h2>
+    </div>
+    <div class="tier-grid">
+      <!-- Tier 1 -->
+      <div class="tier featured">
+        <div class="badge">Front door</div>
+        <div class="tier-name" style="color:var(--accent);">Tier 1: Individual Session</div>
+        <div class="tier-desc">Standalone engagement for any executive. Works whether or not their firm adopts.</div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1px; text-transform:uppercase; font-weight:600; margin-bottom:8px;">Core use cases</div>
+        <ul class="checklist">
+          <li><span class="ck">&#10003;</span> <strong>Meeting prep brief</strong> &#8212; the anchor demo. Calendar + email + meeting notes synthesized into a one-page brief.</li>
+          <li><span class="ck">&#10003;</span> <strong>Email triage &amp; drafts</strong> &#8212; what needs attention, what can wait, draft responses for the three that matter.</li>
+          <li><span class="ck">&#10003;</span> <strong>Scheduled daily briefing</strong> &#8212; morning digest generated automatically. Portfolio news, email summary, calendar prep.</li>
+          <li><span class="ck">&#10003;</span> <strong>Domain-specific research synthesis</strong> &#8212; sector monitoring, investor prep, competitor tracking.</li>
+        </ul>
+        <div style="margin-top:12px; font-size:12px; color:var(--text-3); letter-spacing:1px; text-transform:uppercase; font-weight:600; margin-bottom:6px;">Deliverable</div>
+        <div class="note">Written security/privacy brief: what was configured, data exposure profile, ring-fencing level, firm-level recommendations, open risks. The artifact that makes it advisory.</div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="tier">
+        <div class="tier-name" style="color:var(--amber);">Tier 2: Team/Firm Enablement</div>
+        <div class="tier-price" style="color:var(--amber);">$10-30K</div>
+        <div class="tier-period">scoped project, not per-session</div>
+        <div class="tier-desc">For firms with 3+ people adopting Cowork. Individual workflows connect into team information architecture.</div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1px; text-transform:uppercase; font-weight:600; margin-bottom:8px;">Team use cases</div>
+        <ul class="checklist">
+          <li><span class="ck">&#10003;</span> <strong>AI notetaker standardization</strong> &#8212; tool selection, shared knowledge base, team training.</li>
+          <li><span class="ck">&#10003;</span> <strong>Shared document intelligence</strong> &#8212; Drive connector, access control, information governance policies.</li>
+          <li><span class="ck">&#10003;</span> <strong>Team briefing workflows</strong> &#8212; each person's Cowork produces weekly briefings that feed the firm-wide meeting.</li>
+          <li><span class="ck">&#10003;</span> <strong>Cross-tool orchestration</strong> &#8212; Granola &#8594; Drive &#8594; Slack &#8594; task tracking. Systems design work.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">
+      <strong>Important caveat:</strong> Keep the individual offering clean and standalone. The team tier sells itself when a client says "can you do this for my team?" Don't lead with it. A solo founder at a 6-person fund needs their morning meeting prep to work, not a team briefing architecture pitch.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 7. ESCALATION MODEL                     -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-amber">7</div>
+      <h2>The escalation model</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      The individual session is a <strong>front door</strong>, not the whole house. When you configure someone's tools and hand them a security brief, you've demonstrated both technical depth and executive communication in a single interaction. That combination makes the escalation natural.
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      The security brief creates the opening. A document that says "here's what your current setup exposes, here's what we locked down, and here's what a firm-level assessment would cover" writes the next conversation.
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div class="card">
+        <div class="card-label accent">"Can you do this for my team?"</div>
+        <div class="card-detail">Firm-level AI enablement. Assess org tools, configure per role, establish governance policies, train the team. <strong>$10-20K scoped project.</strong></div>
+      </div>
+      <div class="card">
+        <div class="card-label blue">"Our app was built with AI, no one's reviewed it..."</div>
+        <div class="card-detail">Vibe coder stabilization. Code audit, architecture review, spec-driven development transition. (Elijah Parker archetype.)</div>
+      </div>
+      <div class="card">
+        <div class="card-label amber">"Our investors are asking about AI security..."</div>
+        <div class="card-detail">The "Show Me the Carfax" play. Security assessment as a due diligence deliverable. Reframes security from cost center to credentialing.</div>
+      </div>
+      <div class="card">
+        <div class="card-label teal">"We want to go AI-first as a company..."</div>
+        <div class="card-detail">Full AI operations engagement. Strategic roadmap, tool selection, workflow design, change management. <strong>$25-50K.</strong></div>
+      </div>
+    </div>
+
+    <div class="callout callout-accent" style="margin-top:16px;">
+      <strong>Why the security framing drives scope:</strong> A "productivity coaching" session ends when the tools are set up. A "security-aware AI enablement" session surfaces risks that extend beyond the individual: firm data policies, team access controls, vendor evaluation, compliance posture. Those risks don't resolve in 90 minutes. They require follow-on engagement.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 8. POSITIONING & PRICING                -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-red">8</div>
+      <h2>Positioning &amp; pricing: the status problem</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;">
+      <strong>The concern:</strong> A one-off "setup session" risks positioning Andy as a service provider. A 90-minute coaching session, poorly framed, implies "I'll save you time" which is a convenience play, not an authority play. The fix is framing, not format.
+    </div>
+
+    <div class="flags" style="margin-bottom:20px;">
+      <div class="flag">
+        <div class="icon green" style="font-size:13px; font-weight:700;">1</div>
+        <div><strong>Lead with security, not productivity.</strong> The opening conversation: "Let me evaluate what connecting your email and calendar to an AI agent actually exposes, and configure it so you're protected." Productivity demo happens after the security setup.</div>
+      </div>
+      <div class="flag">
+        <div class="icon green" style="font-size:13px; font-weight:700;">2</div>
+        <div><strong>Deliver a written artifact.</strong> Every session ends with a security/privacy brief. Professional deliverable, not a receipt. The document that generates the follow-on conversation.</div>
+      </div>
+      <div class="flag">
+        <div class="icon green" style="font-size:13px; font-weight:700;">3</div>
+        <div><strong>Price as a relationship, not a transaction.</strong> See pricing options below.</div>
+      </div>
+      <div class="flag">
+        <div class="icon green" style="font-size:13px; font-weight:700;">4</div>
+        <div><strong>Name it like an advisory service.</strong> Avoid "coaching," "setup," "training," "tutorial." The name should make a CEO feel like they're hiring a strategist.</div>
+      </div>
+    </div>
+
+    <div class="triple">
+      <div class="card highlight">
+        <div class="card-label accent">Retainer (strongest signal)</div>
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:800; color:var(--accent); margin-bottom:4px;">$2,000-2,500</div>
+        <div style="font-size:12px; color:var(--text-3); margin-bottom:8px;">per month, 3-month minimum</div>
+        <div class="card-detail">Initial hands-on session + ongoing advisory (2-3 check-ins/month, async support, security brief updates). Retained advisor, not hired hand.</div>
+      </div>
+      <div class="card">
+        <div class="card-label amber">Engagement (entry point)</div>
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:800; margin-bottom:4px;">$1,500-2,000</div>
+        <div style="font-size:12px; color:var(--text-3); margin-bottom:8px;">scoped assessment</div>
+        <div class="card-detail">"Personal AI Security &amp; Enablement Assessment." Session + brief + one follow-up. Feels like a project, not a service call.</div>
+      </div>
+      <div class="card">
+        <div class="card-label red">Session (fallback)</div>
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:800; margin-bottom:4px;">$750</div>
+        <div style="font-size:12px; color:var(--text-3); margin-bottom:8px;">per session</div>
+        <div class="card-detail">Professional-services range if market resists engagement pricing. Less ideal for positioning.</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px; text-align:center; color:var(--text-3); font-size:12px;">Guinea pig sessions remain free. The goal is learning and testimonials, not revenue.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 9. PIPELINE & LINKEDIN                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-teal">9</div>
+      <h2>Pipeline &amp; LinkedIn strategy</h2>
+    </div>
+    <div class="pipeline-grid">
+      <div class="pipeline-card primary">
+        <div class="p-label">Primary: LinkedIn</div>
+        <div class="note">
+          Andy's network from 20+ years in tech (Acquia alumni, former colleagues now VPs/founders). <strong>3-5 posts per week</strong> showing real Cowork workflows. Show, don't sell. Posts generate DMs, DMs generate sessions.
+        </div>
+      </div>
+      <div class="pipeline-card secondary">
+        <div class="p-label">Secondary: Warm referrals</div>
+        <div class="note">
+          Ty and Mark tell other fund managers. Hoppin mentions it to his network. Existing Amphibian/Hyla team members spread the word.
+        </div>
+      </div>
+      <div class="pipeline-card tertiary">
+        <div class="p-label">Tertiary: Telegram intros</div>
+        <div class="note">
+          Crypto fund managers via Andrew's intros. Lighter entry point before (or instead of) a full security engagement.
+        </div>
+      </div>
+    </div>
+
+    <div class="dual" style="margin-top:16px;">
+      <div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-bottom:8px;">Post types</div>
+        <ul class="checklist">
+          <li><span class="ck">&#8594;</span> "Here's what happened when I..." workflow demos with real (anonymized) results</li>
+          <li><span class="ck">&#8594;</span> Commentary on AI/Cowork news (ride the wave of Claude being #1 app)</li>
+          <li><span class="ck">&#8594;</span> Before/after: "This used to take 45 minutes. Now it takes 3."</li>
+          <li><span class="ck">&#8594;</span> "The three things executives always ask about when setting up AI tools"</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; margin-bottom:8px;">CTA strategy</div>
+        <div class="note">
+          Not "book a session." More like "DM me if you want to see this on your own workflow." Let the conversation start naturally. Website updates are not blocking. The offering sells through LinkedIn and direct conversations, not a landing page (yet).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 10. GUINEA PIGS                         -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-amber">10</div>
+      <h2>Guinea pigs (free sessions)</h2>
+    </div>
+    <table class="data-table">
+      <tr>
+        <th>Person</th>
+        <th>Context</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>Ty Shinn <span class="tag accent">GP, Hyla</span></td>
+        <td style="color:var(--text-2);">Explicitly asked for help setting up Cowork. Wants "safe setup guidance" and "ring-fenced approach."</td>
+        <td><span class="tag teal">Messaged</span></td>
+      </tr>
+      <tr>
+        <td>Mark Wagner <span class="tag accent">GP, Hyla</span></td>
+        <td style="color:var(--text-2);">Interested in AI agent marketplace, hasn't committed yet.</td>
+        <td><span class="tag amber">After Ty</span></td>
+      </tr>
+      <tr>
+        <td>Andrew Hoppin <span class="tag accent">CIO, Hyla</span></td>
+        <td style="color:var(--text-2);">Already a Cowork convert, 10x productivity claim. Session is about sharpening the offering.</td>
+        <td><span class="tag blue">Schedule call</span></td>
+      </tr>
+    </table>
+    <div class="note">
+      <strong>Goal:</strong> Validate the session structure, identify the "oh wow" moments, learn what people actually need vs. assumptions, generate testimonials. <strong>Hyla is the perfect testbed</strong> for team-level workflows: if 3-5 people adopt, you have a live environment to prototype every team use case and a case study to sell firm-level engagements elsewhere.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- 11. OPEN QUESTIONS                      -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n-red">11</div>
+      <h2>Open questions</h2>
+    </div>
+    <div class="question-list">
+      <div class="question-item"><div class="q-box"></div><div><strong>Pricing model decision:</strong> Retainer vs. engagement vs. per-session? Retainer is strongest positioning but harder initial sell. Mini-engagement ($1,500-2,000) might be the right entry point.</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Offering name:</strong> Decide before LinkedIn content starts. Candidates: "AI Enablement Advisory," "Executive AI Security Assessment," "AI Workflow &amp; Risk Advisory." Run past Hoppin.</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Security brief template:</strong> Build before first guinea pig session. Ring-fencing level, connector permissions, data exposure profile, firm-level recs, open risks.</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Branding:</strong> Under Archetype Consulting or separate identity? Leaning Archetype. Security credibility of the parent brand is the point.</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Tools beyond Cowork:</strong> When to introduce n8n, other agentic tools? Probably not v1. Offering name should be platform-agnostic for expansion.</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Recording/screenshots:</strong> Can sessions be recorded (with permission) for testimonial clips or LinkedIn content?</div></div>
+      <div class="question-item"><div class="q-box"></div><div><strong>Cal.com booking:</strong> Set up a specific booking type? (Currently live at cal.com/andylaken/ai-assessment)</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- BOTTOM LINE: NEXT STEPS                 -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="bottom-line">
+    <h2>Immediate next steps</h2>
+    <div class="note">
+      <div style="display:grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items:baseline;">
+        <span style="color:var(--accent); font-weight:700;">1.</span> <span>Message Ty to schedule first guinea pig session <span class="tag teal">Done</span></span>
+        <span style="color:var(--accent); font-weight:700;">2.</span> <span>Call Hoppin to learn his top 3 daily Cowork workflows and get input on the offering</span>
+        <span style="color:var(--accent); font-weight:700;">3.</span> <span>Build security brief template (the key deliverable)</span>
+        <span style="color:var(--accent); font-weight:700;">4.</span> <span>Do 2-3 free sessions, refine the structure</span>
+        <span style="color:var(--accent); font-weight:700;">5.</span> <span>Write first LinkedIn post showing a real Cowork workflow</span>
+        <span style="color:var(--accent); font-weight:700;">6.</span> <span>Start charging after guinea pig sessions are done and structure is validated</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:24px; font-size:11px; color:var(--text-3);">
+    Archetype Consulting &middot; archetypeconsulting.io &middot; Last updated March 6, 2026
+  </div>
+
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">&#9790;</button>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  // Light mode is default
+  toggle.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    const isDark = body.classList.contains('dark');
+    toggle.textContent = isDark ? '\u2600' : '\u263E';
+  });
+</script>
+
+</body>
+</html>
