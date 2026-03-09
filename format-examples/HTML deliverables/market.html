@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedThread — TAM / SAM / SOM Analysis v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #13161d;
+    --surface-2: #1a1e28;
+    --border: #242a36;
+    --red: #e0443a;
+    --red-dim: rgba(224,68,58,.12);
+    --amber: #f0a830;
+    --amber-dim: rgba(240,168,48,.10);
+    --teal: #38bfa0;
+    --teal-dim: rgba(56,191,160,.10);
+    --text: #e8e6e1;
+    --text-2: #9a9791;
+    --text-3: #646058;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 64px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: var(--red); }
+  .header .meta {
+    font-size: 13px;
+    color: var(--text-3);
+    text-align: right;
+  }
+  .header .meta strong { color: var(--text-2); font-weight: 500; }
+
+  /* Methodology callout */
+  .method-note {
+    background: var(--surface);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-2);
+    animation: fadeUp .5s ease-out both;
+  }
+  .method-note strong { color: var(--amber); }
+
+  /* Funnel */
+  .funnel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .funnel-card {
+    border-radius: 14px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp .6s ease-out both;
+  }
+  .funnel-card:nth-child(1) { animation-delay: .1s; }
+  .funnel-card:nth-child(2) { animation-delay: .25s; }
+  .funnel-card:nth-child(3) { animation-delay: .4s; }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .funnel-card.tam  { background: var(--red-dim); border: 1px solid rgba(224,68,58,.25); }
+  .funnel-card.sam  { background: var(--amber-dim); border: 1px solid rgba(240,168,48,.20); }
+  .funnel-card.som  { background: var(--teal-dim); border: 1px solid rgba(56,191,160,.20); }
+
+  .funnel-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .funnel-card.tam .label { color: var(--red); }
+  .funnel-card.sam .label { color: var(--amber); }
+  .funnel-card.som .label { color: var(--teal); }
+
+  .funnel-card .title {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 14px;
+  }
+  .funnel-card .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .funnel-card.tam .value { color: var(--red); }
+  .funnel-card.sam .value { color: var(--amber); }
+  .funnel-card.som .value { color: var(--teal); }
+
+  .funnel-card .sub {
+    font-size: 13px;
+    color: var(--text-3);
+  }
+
+  /* Sections */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    animation: fadeUp .6s ease-out both;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-header .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .section-header .dot.red   { background: var(--red); }
+  .section-header .dot.amber { background: var(--amber); }
+  .section-header .dot.teal  { background: var(--teal); }
+  .section-header .dot.gray  { background: var(--text-3); }
+
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -.2px;
+  }
+
+  /* Math tables */
+  .math-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .math-table th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .math-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    vertical-align: top;
+  }
+  .math-table td:first-child {
+    color: var(--text-2);
+    padding-right: 16px;
+    width: 55%;
+  }
+  .math-table td:nth-child(2) {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .math-table td:nth-child(3) {
+    color: var(--text-3);
+    font-size: 12px;
+    padding-left: 14px;
+    width: 30%;
+  }
+  .math-table tr.result td {
+    border-top: 2px solid var(--border);
+    border-bottom: none;
+    padding-top: 14px;
+    font-weight: 700;
+  }
+  .math-table tr.result td:first-child { color: var(--text); }
+
+  /* Sensitivity */
+  .sensitivity {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+  .scenario {
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .scenario .scenario-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .scenario .scenario-label.bear { color: var(--red); }
+  .scenario .scenario-label.bull { color: var(--teal); }
+  .scenario .scenario-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .scenario .scenario-val.bear { color: var(--red); }
+  .scenario .scenario-val.bull { color: var(--teal); }
+  .scenario .scenario-detail {
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  /* Dual column */
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .tag.red   { background: var(--red-dim); color: var(--red); }
+  .tag.amber { background: var(--amber-dim); color: var(--amber); }
+  .tag.teal  { background: var(--teal-dim); color: var(--teal); }
+
+  /* Prose */
+  .note {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+  .note strong { color: var(--text); font-weight: 600; }
+
+  /* Weakness flags */
+  .flags {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .flag {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    align-items: flex-start;
+  }
+  .flag .icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .flag .icon.warn { background: rgba(240,168,48,.15); color: var(--amber); }
+  .flag .icon.crit { background: rgba(224,68,58,.15); color: var(--red); }
+
+  /* Comparables */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .comp {
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .comp .name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .comp .detail {
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.5;
+  }
+
+  /* Bottom line */
+  .bottom-line {
+    background: linear-gradient(135deg, rgba(224,68,58,.08), rgba(56,191,160,.06));
+    border: 1px solid rgba(224,68,58,.15);
+    border-radius: 14px;
+    padding: 28px;
+    margin-top: 20px;
+  }
+  .bottom-line h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  /* Struck-through */
+  .struck {
+    text-decoration: line-through;
+    color: var(--text-3);
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page { padding: 24px 16px 40px; }
+    .funnel { grid-template-columns: 1fr; }
+    .dual { grid-template-columns: 1fr; }
+    .sensitivity { grid-template-columns: 1fr; }
+    .comp-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 28px; }
+    .funnel-card .value { font-size: 36px; }
+  }
+
+  /* ── Light Mode (class-based for toggle) ── */
+  body.light {
+    --bg: #ffffff;
+    --surface: #f7f7f5;
+    --surface-2: #eeede9;
+    --border: #d8d6d0;
+    --red: #c0352d;
+    --red-dim: rgba(192,53,45,.08);
+    --amber: #b47d10;
+    --amber-dim: rgba(180,125,16,.07);
+    --teal: #1e8a72;
+    --teal-dim: rgba(30,138,114,.07);
+    --text: #1a1a18;
+    --text-2: #4a4843;
+    --text-3: #7a7770;
+  }
+  body.light { background: #fff; color: #1a1a18; }
+  body.light .struck { color: #999; }
+  body.light .funnel-card.tam { border-color: rgba(192,53,45,.3); }
+  body.light .funnel-card.sam { border-color: rgba(180,125,16,.25); }
+  body.light .funnel-card.som { border-color: rgba(30,138,114,.25); }
+  body.light .method-note { border-left-color: var(--amber); }
+  body.light .bottom-line { background: linear-gradient(135deg, rgba(192,53,45,.05), rgba(30,138,114,.04)); border-color: rgba(192,53,45,.12); }
+  body.light .flag .icon.warn { background: rgba(180,125,16,.12); }
+  body.light .flag .icon.crit { background: rgba(192,53,45,.12); }
+  body.light .math-table td { border-bottom-color: rgba(0,0,0,.06); }
+  body.light .math-table tr.result td { border-top-color: var(--border); }
+  body.light .section { border-color: #d8d6d0; }
+
+  /* ── Toggle button ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background .2s, border-color .2s, color .2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .theme-toggle:hover {
+    border-color: var(--text-3);
+    color: var(--text);
+  }
+  body.light .theme-toggle {
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+
+  /* ── Print ── */
+  @media print {
+    body, body.light {
+      --bg: #ffffff;
+      --surface: #f7f7f5;
+      --surface-2: #eeede9;
+      --border: #d8d6d0;
+      --red: #c0352d;
+      --red-dim: rgba(192,53,45,.08);
+      --amber: #b47d10;
+      --amber-dim: rgba(180,125,16,.07);
+      --teal: #1e8a72;
+      --teal-dim: rgba(30,138,114,.07);
+      --text: #1a1a18;
+      --text-2: #4a4843;
+      --text-3: #7a7770;
+      background: #fff;
+      color: #1a1a18;
+    }
+    .page { padding: 24px 16px; max-width: 100%; }
+    .theme-toggle { display: none !important; }
+    .section, .funnel-card, .method-note, .bottom-line, .comp, .scenario {
+      break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .funnel-card, .section, .bottom-line {
+      animation: none !important;
+    }
+    .struck { color: #999; }
+    .flag .icon.warn { background: rgba(180,125,16,.12) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .flag .icon.crit { background: rgba(192,53,45,.12) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page {
+      margin: 0.6in;
+      size: letter;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1><span>RedThread</span> — Market Sizing</h1>
+      <div style="font-size:14px; color:var(--text-2); margin-top:6px;">TAM / SAM / SOM for Coaching Practice Management Software</div>
+    </div>
+    <div class="meta">
+      <strong>v2 — Q1 2026</strong><br>
+      Bottom-up only<br>
+      Target: $30–60/mo SaaS
+    </div>
+  </div>
+
+  <!-- Methodology note -->
+  <div class="method-note">
+    <strong>Methodology note:</strong> No published market report tracks "practice management CRM for independent coaches" as a category. Existing coaching software reports (VMR, MarketsAndMarkets) cover coaching <em>delivery</em> platforms — BetterUp, Kajabi, Teachable — a fundamentally different market selling to different buyers at different price points. All figures below are derived bottom-up from ICF practitioner data.
+  </div>
+
+  <!-- Funnel Cards -->
+  <div class="funnel">
+    <div class="funnel-card tam">
+      <div class="label">TAM</div>
+      <div class="title">Total Addressable Market</div>
+      <div class="value">$320M</div>
+      <div class="sub">All coaches + adjacent practitioners × realistic software spend</div>
+    </div>
+    <div class="funnel-card sam">
+      <div class="label">SAM</div>
+      <div class="title">Serviceable Addressable Market</div>
+      <div class="value">$19M</div>
+      <div class="sub">English-speaking solo/small-practice coaches, $30–60/mo</div>
+    </div>
+    <div class="funnel-card som">
+      <div class="label">SOM</div>
+      <div class="title">Serviceable Obtainable Market</div>
+      <div class="value">$1.2M</div>
+      <div class="sub">Year 3 target — ~2,200 paying coaches</div>
+    </div>
+  </div>
+
+  <!-- TAM Detail -->
+  <div class="section">
+    <div class="section-header">
+      <div class="dot red"></div>
+      <h2>TAM — Bottom-up build (only valid approach)</h2>
+    </div>
+    <table class="math-table">
+      <tr>
+        <th style="width:55%">Component</th>
+        <th style="text-align:right;">Value</th>
+        <th>Source / Rationale</th>
+      </tr>
+      <tr><td>Active coach practitioners globally</td><td>168K</td><td>ICF/PwC 2025: 123K credentialed, ~45K uncredentialed</td></tr>
+      <tr><td>Adjacent practitioners (therapists in private practice, somatic workers, IFS, energy workers, astrologers)</td><td>+80K</td><td>Conservative — US alone has 120K+ private-practice therapists. Overlapping needs, not all addressable.</td></tr>
+      <tr><td>Total potential practitioners</td><td>248K</td><td></td></tr>
+      <tr><td>Would benefit from dedicated practice mgmt software</td><td>×65%</td><td>Excludes part-time, hobby-level, corp-employed</td></tr>
+      <tr><td>Realistic avg annual spend</td><td>$400</td><td>~$33/mo. Reflects market clustering at $20–57/mo</td></tr>
+      <tr class="result"><td>TAM</td><td style="color:var(--red);">$322M</td><td></td></tr>
+    </table>
+
+    <!-- Sensitivity -->
+    <div class="sensitivity">
+      <div class="scenario">
+        <div class="scenario-label bear">Bear case</div>
+        <div class="scenario-val bear">$175M</div>
+        <div class="scenario-detail">168K coaches only (no adjacent), 35% adoption, $300/yr avg spend</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-label bull">Bull case</div>
+        <div class="scenario-val bull">$500M</div>
+        <div class="scenario-detail">300K+ practitioners (ICF undercount + large adjacent), 55% adoption, $480/yr avg</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Why no top-down:</strong> The commonly cited <span class="struck">$1.94B coaching software market (VMR)</span> tracks delivery platforms (BetterUp, Kajabi, Udemy, SAP Litmos). Different product, different buyer, different price point. Deriving RedThread's TAM from that number would be like sizing the restaurant POS market from food delivery app revenue.
+    </div>
+  </div>
+
+  <!-- SAM Detail -->
+  <div class="section">
+    <div class="section-header">
+      <div class="dot amber"></div>
+      <h2>SAM — RedThread's addressable slice</h2>
+    </div>
+    <table class="math-table">
+      <tr>
+        <th style="width:55%">Filter</th>
+        <th style="text-align:right;">Value</th>
+        <th>Rationale</th>
+      </tr>
+      <tr><td>Total potential practitioners</td><td>248K</td><td></td></tr>
+      <tr><td>English-speaking markets (US, UK, CAN, AUS, NZ)</td><td>×42%</td><td>ICF: NA 33% + UK/AUS ~9%</td></tr>
+      <tr><td>Solo or small-practice (≤5 coaches)</td><td>×85%</td><td>Vast majority are solopreneurs</td></tr>
+      <tr><td>Would pay for dedicated software</td><td>×40%</td><td>Unvalidated — survey will pressure-test</td></tr>
+      <tr><td>= Addressable coaches</td><td style="color:var(--amber); font-weight:700;">35,400</td><td></td></tr>
+      <tr><td>× Avg annual revenue ($45/mo, churn-adjusted)</td><td>×$540</td><td></td></tr>
+      <tr class="result"><td>SAM (core CRM)</td><td style="color:var(--amber);">$19.1M</td><td></td></tr>
+    </table>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Expansion optionality (not included in SAM):</strong> An AI session analysis add-on at $20/mo with 25% attach rate adds ~$5M. Serving the full adjacent practitioner base could push toward $40–50M. These are future-state opportunities contingent on product-market fit in the core.
+    </div>
+  </div>
+
+  <!-- SOM Detail -->
+  <div class="section">
+    <div class="section-header">
+      <div class="dot teal"></div>
+      <h2>SOM — Realistic capture, Year 1 → Year 3</h2>
+    </div>
+    <div class="dual">
+      <div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; font-weight:600;">Year 1</div>
+        <table class="math-table">
+          <tr><td>Aletheia network warm leads</td><td>30–50</td><td></td></tr>
+          <tr><td>Reddit / LinkedIn organic</td><td>50–100</td><td></td></tr>
+          <tr><td>Realistic conversion (20%)</td><td>×20%</td><td></td></tr>
+          <tr><td>Paying coaches</td><td style="color:var(--teal);">~30</td><td></td></tr>
+          <tr class="result"><td>ARR Year 1</td><td style="color:var(--teal);">$16K</td><td>$45/mo avg</td></tr>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:12px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; font-weight:600;">Year 3 (target)</div>
+        <table class="math-table">
+          <tr><td>Community-led growth + referrals</td><td>1,200</td><td></td></tr>
+          <tr><td>Content marketing / SEO</td><td>600</td><td></td></tr>
+          <tr><td>Partnerships (coaching schools)</td><td>400</td><td></td></tr>
+          <tr><td>Paying coaches</td><td style="color:var(--teal);">~2,200</td><td></td></tr>
+          <tr class="result"><td>ARR Year 3</td><td style="color:var(--teal);">$1.19M</td><td>6.2% of SAM</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px;">
+      <strong>Key dependency:</strong> Year 3 assumes >85% annual retention and functioning referral loops. If monthly churn exceeds 5%, realistic Year 3 lands at 500–800 coaches (~$350K ARR). Your Aletheia survey will reveal whether the "package tracking" pain point is acute enough to drive word-of-mouth.
+    </div>
+  </div>
+
+  <!-- Weaknesses -->
+  <div class="section">
+    <div class="section-header">
+      <div class="dot gray"></div>
+      <h2>Where these estimates are weakest</h2>
+    </div>
+    <div class="flags">
+      <div class="flag">
+        <div class="icon crit">!</div>
+        <div><strong>Software adoption rate (40%) is the biggest unknown.</strong> ICF doesn't publish tool-usage data. Many coaches use Calendly + Venmo + Google Sheets and resist consolidation. Your survey is the single most important data point to validate or kill this assumption.</div>
+      </div>
+      <div class="flag">
+        <div class="icon crit">!</div>
+        <div><strong>Adjacent practitioner market is essentially unquantified.</strong> The 80K figure is a placeholder. Could be 30K or 200K. Until you test messaging with IFS practitioners or somatic workers, treat expansion TAM as speculative.</div>
+      </div>
+      <div class="flag">
+        <div class="icon warn">~</div>
+        <div><strong>Price sensitivity may compress revenue.</strong> Paperbell at $57/mo is the high end. CoachAccountable starts at $20. Practice.do at $5. If the market clusters at $25–35/mo, SAM drops ~30% to $13M.</div>
+      </div>
+      <div class="flag">
+        <div class="icon warn">~</div>
+        <div><strong>ICF data likely undercounts coaches.</strong> Many practitioners never join ICF. True global count could be 200K–300K+, but the incremental coaches skew part-time and price-sensitive — expanding headcount without proportionally expanding revenue.</div>
+      </div>
+      <div class="flag">
+        <div class="icon warn">~</div>
+        <div><strong>SOM Year 3 assumes PMF achieved.</strong> 2,200 paying coaches requires product-market fit, strong retention, and organic referral loops — none of which exist yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparables -->
+  <div class="section">
+    <div class="section-header">
+      <div class="dot gray"></div>
+      <h2>Competitive comparables</h2>
+    </div>
+    <div class="comp-grid">
+      <div class="comp">
+        <div class="name">Paperbell</div>
+        <div class="detail">$57/mo flat. $47M+ processed through platform. Est. 2K–5K active coaches. Simple, scheduling-first. <span class="tag amber">Direct</span></div>
+      </div>
+      <div class="comp">
+        <div class="name">CoachAccountable</div>
+        <div class="detail">$20–$400/mo by client count. 5.0/5 Capterra. Deep engagement tracking, dated UI. <span class="tag amber">Direct</span></div>
+      </div>
+      <div class="comp">
+        <div class="name">Simply.Coach</div>
+        <div class="detail">From $9/mo. VC-backed. Enterprise + solo. Poor UI reviews on Reddit. <span class="tag amber">Direct</span></div>
+      </div>
+      <div class="comp">
+        <div class="name">Practice.do</div>
+        <div class="detail">From $5/mo. CRM + messaging + voice memos. Lightweight, newer entrant. <span class="tag amber">Partial</span></div>
+      </div>
+      <div class="comp">
+        <div class="name">HoneyBook</div>
+        <div class="detail">$9.99–$49/mo. Generic service-biz CRM. Strong invoicing. Coaches adopt it but it's not built for them. <span class="tag red">Indirect</span></div>
+      </div>
+      <div class="comp">
+        <div class="name">SimplePractice</div>
+        <div class="detail">Therapy-focused. $50M+ ARR. Proves vertical SaaS for solo practitioners scales. Insurance billing creates deep lock-in. <span class="tag teal">Analog</span></div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px;">
+      <strong>The SimplePractice signal:</strong> A vertical SaaS for therapists reached $50M+ ARR solving practice management for solo practitioners — the identical structural play. Key difference: therapists have insurance billing complexity that creates lock-in. RedThread needs an equivalent retention hook. Package tracking + mixed billing model support is the candidate.
+    </div>
+  </div>
+
+  <!-- Bottom Line -->
+  <div class="bottom-line">
+    <h2>The honest read</h2>
+    <div class="note">
+      <strong>Your market is real, niche, and ownable.</strong> A $19M core SAM supports a strong bootstrapped business. Reaching $1M ARR would represent ~6% market share — ambitious but achievable with the right product. This market does not support a venture-scale outcome without expanding into adjacent verticals or layering premium AI features.
+      <br><br>
+      <strong>The opportunity:</strong> A fragmented market where incumbents have weak moats. Paperbell wins on simplicity but lacks billing model sophistication. CoachAccountable has depth but poor UX. Nobody owns "package tracking + mixed billing models" as a positioning. That wedge is unclaimed.
+      <br><br>
+      <strong>The risk:</strong> Coaches are price-sensitive and tool-averse. The 40% adoption assumption is the load-bearing wall of this entire analysis. Your Aletheia survey will either validate it or force a significant downward revision.
+      <br><br>
+      <strong>Recommended framing:</strong> A $19M niche you can dominate, with expansion optionality into $40–50M through adjacent practitioners and AI upsell. Lead with the niche ownership story, not the TAM.
+    </div>
+  </div>
+
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">☀</button>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  
+  // Check for saved preference
+  if (localStorage.getItem('redthread-theme') === 'light') {
+    body.classList.add('light');
+    toggle.textContent = '☾';
+  }
+
+  toggle.addEventListener('click', () => {
+    body.classList.toggle('light');
+    const isLight = body.classList.contains('light');
+    toggle.textContent = isLight ? '☾' : '☀';
+    localStorage.setItem('redthread-theme', isLight ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>

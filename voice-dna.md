@@ -18,7 +18,7 @@
 - Short paragraphs (1-2 sentences default, 3 max).
 - Numbers as digits.
 - Contractions always.
-- NO em dashes ever. Use commas, periods, colons, semicolons, or parentheses.
+- En dashes ( – ), never em dashes ( — ). Use in moderation; commas, colons, semicolons, and parentheses are usually better.
 - Bold sparingly, 1-2 key moments per section.
 - Code blocks for specific prompts, commands, or tool outputs.
 

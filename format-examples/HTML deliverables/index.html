@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedThread — Strategy Docs</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #13161d;
+    --border: #242a36;
+    --red: #e0443a;
+    --text: #e8e6e1;
+    --text-2: #9a9791;
+    --text-3: #646058;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 480px; width: 100%; padding: 32px; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 800; margin-bottom: 8px;
+  }
+  h1 span { color: var(--red); }
+  .subtitle { font-size: 14px; color: var(--text-3); margin-bottom: 40px; }
+  a.card {
+    display: block; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; margin-bottom: 12px;
+    text-decoration: none; color: var(--text);
+    transition: border-color .2s, transform .15s;
+  }
+  a.card:hover { border-color: var(--red); transform: translateY(-2px); }
+  .card-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: var(--text-2); }
+  .card-arrow { float: right; color: var(--text-3); font-size: 18px; margin-top: -20px; }
+  .footer { font-size: 11px; color: var(--text-3); margin-top: 32px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1><span>RedThread</span> Strategy</h1>
+  <div class="subtitle">Internal strategy documents — Q1 2026</div>
+
+  <a class="card" href="/market">
+    <div class="card-title">Market Sizing (TAM / SAM / SOM)</div>
+    <div class="card-desc">Bottom-up analysis of the coaching practice management market. $320M TAM, $19M core SAM.</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a class="card" href="/pricing">
+    <div class="card-title">Pricing Strategy</div>
+    <div class="card-desc">Model selection, competitive landscape, 3-tier pricing table, and feature gates.</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <div class="footer">These documents are confidential. Please don't share outside intended recipients.</div>
+</div>
+</body>
+</html>

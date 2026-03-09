@@ -23,6 +23,8 @@
 
 **He context-switches between sessions.** Business strategy, blog writing, site work, and outreach all live in different sessions. When he returns to blog work, orient from the draft files rather than assuming session continuity.
 
+**He is an expert at productivity and project management tools.** Scrum Master certified, extensive experience with Kanban, Jira, Notion, and similar systems. Do not explain basic concepts or hand-hold on tooling. Treat him as a peer.
+
 ---
 
 ## How to Write With Andy (Lessons Learned)
@@ -73,4 +75,50 @@ Claims about vendor access constraints are only defensible when:
 
 ---
 
-*Last updated: March 2026, after EDR vendor evaluation session and Huntress privacy claim correction.*
+*Last updated: March 8, 2026, after Ty session prep and guinea pig pipeline planning.*
+
+---
+
+## Strategic Direction — March 2026 (Important)
+
+**Andy is more enthusiastic about the "vibe coder stabilization" offering than the FSP security offering.** This is a significant signal and should be treated as a primary strategic thread, not a sidebar.
+
+**What this offering is:** Non-technical founders are building real products with AI tools (Claude, Cursor, etc.) and hitting walls — no formal specs, no architecture, accumulating technical debt, security gaps, not ready to scale. Andy can read the codebase, diagnose the architecture, write the specs, and run the remediation process. That combination is rare and exactly what these founders need.
+
+**Why Andy is well-positioned:** Technical depth + PM/Scrum background + ability to communicate with non-technical founders. Most helpers are either engineers who can't communicate or PMs who can't read code.
+
+**The Elijah Parker example:** Elijah is building a multi-tenant financial management platform for bitcoin miners using Claude, no formal specs, about to show it to anchor advisors. Classic vibe coding wall. Potential near-term engagement: code audit + architecture review + spec-driven development transition.
+
+**Open question to resolve:** Can this be productized as cleanly as the FSP? What does the engagement look like — deliverables, timeline, price? This needs to be scoped before it becomes a second offering.
+
+**"Show Me the Carfax" framing (from Elijah call):** Security as a due diligence deliverable for investor presentations — not just "you might get hacked" but "your investors are going to ask about this, here's how to get ahead of it." Reframes the FSP sale from prevention to proactive credentialing. Worth developing as a positioning angle.
+
+---
+
+## AI Enablement Advisory — Current State (March 8, 2026)
+
+**First guinea pig session:** Ty Shinn (GP, Hyla Funds), booked for Tuesday March 10. Pre-session Tally survey ready to build and send. Session prep doc with security cheat sheet, outreach plan, and checklist saved to `library/ty-session-prep.md`.
+
+**Key library files for this offering:**
+- `library/ai-executive-coaching-wip.md` — Master offering doc (canonical)
+- `library/ai-enablement-advisory-deck.html` — HTML presentation derivative of WIP
+- `library/cowork-security-privacy-research.md` — Security/privacy research tracker
+- `library/ty-session-prep.md` — Ty session prep (survey, security cheat sheet, checklist, outreach plan)
+- `library/cowork-setup-guide-ty.pdf` — Pre-session tips PDF (already sent to Ty)
+- `library/swot-ai-enablement.html` — SWOT analysis
+
+**Next guinea pig targets:** Hoppin (offering sharpening call), Michael Kraus, Beth Linker. Mark Wagner after Ty's session confirms the structure works.
+
+---
+
+## Acquia Alumni Outreach — Sales Navigator List
+
+Saved search in Sales Navigator: "Acquia Alumni — March 2026" (81 results, past colleague + 1st degree + 1–200 headcount filters). Six priority contacts added to Notion as Outreach tasks. Resume scrolling after John Kennedy to complete the list triage.
+
+Priority order as of session close:
+1. Michael Kraus — former VP, direct report 2.5 yrs (High)
+2. Beth Linker — CPO Finite State, security peer (High)
+3. John Kennedy — CEO Actual AI, Acquia Slack + Amin connection (High)
+4. Chris Brookins — VP Eng Appcues, remembers Andy (Medium)
+5. Bryan House — CEO Elastic Path, VC-connected (Medium)
+6. Jeffrey McGuire — open invitation to reconnect, European (Medium)

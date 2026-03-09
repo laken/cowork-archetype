@@ -1,7 +1,7 @@
 # Amphibian Unite — Member List & ICP Prioritization
 
 *Source: Telegram screenshots, captured ~March 1, 2026. 194 members total.*
-*Last updated: March 1, 2026*
+*Last updated: March 4, 2026 — prospect research added for Tier 1*
 
 ---
 
@@ -221,9 +221,52 @@ Active members but no visible affiliation to assess fit. Worth a look if Andrew 
 
 ---
 
+## Prospect Research — Tier 1 ICP Assessment
+
+*Researched March 4, 2026. Sources: public LinkedIn, firm websites, Crunchbase, industry press.*
+
+---
+
+### 🟢 Strong Fits — Lead with These
+
+**Two Prime — Nicholas Ozyp & Alexander S. Blume (Denver)**
+Bitcoin-focused institutional fund manager, $250M+ AUM, ~10–15 people. SEC-registered investment adviser, just added CFTC CTA registration in February 2026 — actively scaling regulatory surface. Flagship fund returned 488% net in its first year (vs. 282% for raw BTC). Blume has held Bitcoin since $9 in 2012; he's not a newcomer. The recent Digital Wealth Partners partnership accelerated their institutional AUM. Bitcoin treasury, custody, and key management operations are exactly where the security risk concentrates and where the FSP delivers. The rapid growth suggests security hasn't caught up with operations. **Top outreach target. Ask Andrew if he knows either of them personally.**
+
+**Monarq — William Purdy**
+Multi-strategy crypto fund running delta-neutral and directional derivatives books. FalconX made a strategic investment, which signals institutional credibility and growth phase. Purdy's background is business development, not technical — the classic profile where security is someone else's problem until it isn't. Estimated 15–25 people. Derivatives trading infrastructure and key management are natural security gaps during scale. **Strong prospect. Purdy is the business-side entry point, which suits a cold intro.**
+
+**M1 Capital — David Van Goudoever (Amsterdam)**
+Algorithmic fund founded 2021, running arbitrage and market-neutral strategies via two funds (AlFund and X1Fund). Small team (~5–8 estimated). The quant infrastructure angle is interesting — algorithmic operations create unique access surface (exchange API keys, automated trading scripts, co-location access) that most security programs don't address specifically. Newer firm means security is whatever the founders did in the first year. **Worth a warm intro. European base is a slight friction but not a dealbreaker.**
+
+---
+
+### 🟡 Possible but Lower Priority
+
+**Edge Capital — Vadim Khramov / Boback Khodadoost (Boca Raton)**
+DeFi-focused hedge fund that raised $66.8M in 2022 and manages $500M+. Vadim has a PhD in Economics from UCLA, former BofA Merrill Lynch. The DeFi focus creates real asymmetric security risks — protocol interactions, smart contract exposure, key management for on-chain positions — that traditional security firms don't handle well. But at $500M+ AUM and an estimated 25–35 person team, they likely have more internal technical capacity than the ideal FSP client. **Best framed as a DeFi-specific security conversation rather than a foundational hardening pitch. Worth Andrew making a softer introduction.**
+
+---
+
+### 🔴 Not Fits — Too Large / Too Sophisticated / Wrong Situation
+
+| Name | Firm | Why Not |
+|---|---|---|
+| Darius Sit | QCP Capital | $1.5B+ AUM, 30–40 people, self-funded Singapore trading powerhouse. In-house sophistication. |
+| Xin Song | GSR Markets | $2B+ deployed, 100+ staff, FCA and MAS licensed. Enterprise-scale. |
+| Michael Lie | Flow Traders | Publicly-traded market maker, 200+ employees. Enterprise IT. |
+| Henri Arslanian | Nine Blocks Capital / ACX | Co-founder of 250-person crypto compliance firm. Knows more about this than we do. |
+| Joe McCann | Asymmetric | Closed liquid fund after 78% loss in July 2025. In transition, not buying. |
+| Ed Tolson | Kbit | HFT operation, $100M+ AUM, in-house engineering team that places tens of millions of orders/day. |
+| Stephen Martus | Altana Wealth | $400M+, London/Monaco, launched Europe's first crypto fund in 2014. Established. |
+| Evgeny | Re7 Capital | $1B+ AUM, grew from 10 to 30 people, London-based. Sophisticated infrastructure. |
+| Brittany Kaiser | AlphaTON Capital | Mission/advocacy-driven, not traditional fund operations. |
+
+---
+
 ## Notes for Andrew
 
-- Focus personal pings on **Tier 1** — these are the people with visible fund/capital affiliations who are most likely to have the exact problem Andy solves.
-- For the group post, Tier 1 and 2 combined is the audience most likely to respond.
-- Several Tier 3 members may be very relevant once you know who they are — Andrew's judgment on individual names will be sharper than anything we can infer from display names alone.
+- **Top 3 for personal pings:** Two Prime (Ozyp/Blume), Monarq (Purdy), M1 Capital (Van Goudoever). These are the ones where a "hey, thought of you when I saw this" message from Andrew carries real weight.
+- **Edge Capital** is worth a softer mention if Andrew has a relationship with Vadim — frame it as crypto-native security, not generic hardening.
+- For the **group post**, Tier 1 and 2 combined is the audience most likely to respond. The not-fits list isn't wasted — several of those firms may refer Andy laterally to smaller funds in their orbit.
+- Several **Tier 3** members may be highly relevant once you know who they are — Andrew's judgment on individual names will be sharper than anything inferable from display names alone.
 

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedThread — Pricing Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #13161d;
+    --surface-2: #1a1e28;
+    --border: #242a36;
+    --red: #e0443a;
+    --red-dim: rgba(224,68,58,.12);
+    --amber: #f0a830;
+    --amber-dim: rgba(240,168,48,.10);
+    --teal: #38bfa0;
+    --teal-dim: rgba(56,191,160,.10);
+    --blue: #5b8def;
+    --blue-dim: rgba(91,141,239,.10);
+    --text: #e8e6e1;
+    --text-2: #9a9791;
+    --text-3: #646058;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 48px 32px 64px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; flex-wrap: wrap; gap: 16px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 800; letter-spacing: -0.5px; }
+  .header h1 span { color: var(--red); }
+  .header .meta { font-size: 13px; color: var(--text-3); text-align: right; }
+  .header .meta strong { color: var(--text-2); font-weight: 500; }
+
+  /* Sections */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    animation: fadeUp .6s ease-out both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+  .section:nth-of-type(1) { animation-delay: .05s; }
+  .section:nth-of-type(2) { animation-delay: .1s; }
+  .section:nth-of-type(3) { animation-delay: .15s; }
+  .section:nth-of-type(4) { animation-delay: .2s; }
+  .section:nth-of-type(5) { animation-delay: .25s; }
+  .section:nth-of-type(6) { animation-delay: .3s; }
+
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .section-header .num {
+    width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .num.n1 { background: var(--red-dim); color: var(--red); }
+  .num.n2 { background: var(--amber-dim); color: var(--amber); }
+  .num.n3 { background: var(--teal-dim); color: var(--teal); }
+  .num.n4 { background: var(--blue-dim); color: var(--blue); }
+  .section-header h2 { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+
+  /* Note prose */
+  .note { font-size: 13.5px; color: var(--text-2); line-height: 1.7; }
+  .note strong { color: var(--text); font-weight: 600; }
+
+  /* Comp landscape table */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .comp-table th {
+    text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-3); padding: 0 8px 10px; border-bottom: 1px solid var(--border);
+  }
+  .comp-table td {
+    padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; color: var(--text-2);
+  }
+  .comp-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+  .comp-table tr.highlight td { background: var(--red-dim); border-radius: 6px; }
+
+  /* Model cards */
+  .model-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .model-card {
+    background: var(--surface-2); border-radius: 10px; padding: 16px; border: 1px solid transparent;
+  }
+  .model-card.pick { border-color: var(--teal); background: var(--teal-dim); }
+  .model-card .model-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .model-card .model-detail { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+  .model-card .verdict { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
+  .verdict.yes { color: var(--teal); }
+  .verdict.no { color: var(--red); }
+  .verdict.maybe { color: var(--amber); }
+
+  /* Price ladder */
+  .ladder { display: flex; align-items: flex-end; gap: 4px; margin: 20px 0; height: 120px; }
+  .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .bar {
+    width: 100%; border-radius: 6px 6px 0 0; min-height: 8px; transition: height .4s ease;
+  }
+  .bar-label { font-size: 10px; color: var(--text-3); margin-top: 6px; text-align: center; line-height: 1.3; }
+  .bar-price { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+
+  /* Pricing tiers */
+  .tiers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .tier {
+    background: var(--surface-2); border-radius: 14px; padding: 24px 20px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .tier.featured {
+    border-color: var(--red);
+    background: linear-gradient(180deg, rgba(224,68,58,.06) 0%, var(--surface-2) 40%);
+  }
+  .tier .badge {
+    position: absolute; top: 0; right: 0;
+    background: var(--red); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 0 0 0 10px;
+  }
+  .tier .tier-name {
+    font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .tier .tier-name.t1 { color: var(--text-2); }
+  .tier .tier-name.t2 { color: var(--red); }
+  .tier .tier-name.t3 { color: var(--amber); }
+  .tier .tier-price {
+    font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 2px;
+  }
+  .tier .tier-period { font-size: 13px; color: var(--text-3); margin-bottom: 16px; }
+  .tier .tier-desc { font-size: 13px; color: var(--text-2); margin-bottom: 16px; line-height: 1.5; }
+  .tier .features { list-style: none; }
+  .tier .features li {
+    font-size: 13px; color: var(--text-2); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.04);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .tier .features li:last-child { border-bottom: none; }
+  .tier .features .check { color: var(--teal); font-weight: 700; flex-shrink: 0; }
+  .tier .features .lock { color: var(--text-3); font-weight: 700; flex-shrink: 0; }
+  .tier .gate-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3);
+    margin-top: 14px; margin-bottom: 8px;
+  }
+
+  /* Mistake callout */
+  .mistake-box {
+    background: linear-gradient(135deg, rgba(224,68,58,.08), rgba(224,68,58,.03));
+    border: 1px solid rgba(224,68,58,.2);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .mistake-box h3 {
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; margin-bottom: 12px; color: var(--red);
+  }
+
+  /* Dual */
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* Callout */
+  .callout {
+    background: var(--surface-2); border-left: 3px solid var(--amber); border-radius: 0 10px 10px 0;
+    padding: 14px 18px; font-size: 13px; color: var(--text-2); margin-top: 16px;
+  }
+  .callout strong { color: var(--amber); }
+
+  /* Light mode */
+  body.light {
+    --bg: #ffffff; --surface: #f7f7f5; --surface-2: #eeede9; --border: #d8d6d0;
+    --red: #c0352d; --red-dim: rgba(192,53,45,.08);
+    --amber: #b47d10; --amber-dim: rgba(180,125,16,.07);
+    --teal: #1e8a72; --teal-dim: rgba(30,138,114,.07);
+    --blue: #3a6fd8; --blue-dim: rgba(58,111,216,.08);
+    --text: #1a1a18; --text-2: #4a4843; --text-3: #7a7770;
+    background: #fff; color: #1a1a18;
+  }
+  body.light .tier.featured { background: linear-gradient(180deg, rgba(192,53,45,.04) 0%, var(--surface-2) 40%); }
+  body.light .mistake-box { background: linear-gradient(135deg, rgba(192,53,45,.05), rgba(192,53,45,.02)); border-color: rgba(192,53,45,.15); }
+  body.light .comp-table tr.highlight td { background: rgba(192,53,45,.06); }
+  body.light .model-card.pick { background: rgba(30,138,114,.06); border-color: var(--teal); }
+  body.light .tier { border-color: #d8d6d0; }
+  body.light .tier.featured { border-color: var(--red); }
+  body.light .theme-toggle { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+
+  /* Toggle button */
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 100;
+    width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-2); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    transition: background .2s, border-color .2s, color .2s; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .theme-toggle:hover { border-color: var(--text-3); color: var(--text); }
+
+  /* Print */
+  @media print {
+    body, body.light {
+      --bg: #fff; --surface: #f7f7f5; --surface-2: #eeede9; --border: #d8d6d0;
+      --red: #c0352d; --red-dim: rgba(192,53,45,.08); --amber: #b47d10; --amber-dim: rgba(180,125,16,.07);
+      --teal: #1e8a72; --teal-dim: rgba(30,138,114,.07); --blue: #3a6fd8; --blue-dim: rgba(58,111,216,.08);
+      --text: #1a1a18; --text-2: #4a4843; --text-3: #7a7770;
+      background: #fff; color: #1a1a18;
+    }
+    .theme-toggle { display: none !important; }
+    .section, .tier, .model-card, .mistake-box { break-inside: avoid; animation: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { margin: 0.6in; size: letter; }
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .page { padding: 24px 16px 40px; }
+    .model-grid { grid-template-columns: 1fr 1fr; }
+    .tiers { grid-template-columns: 1fr; }
+    .dual { grid-template-columns: 1fr; }
+    .header h1 { font-size: 28px; }
+    .tier .tier-price { font-size: 32px; }
+    .comp-table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1><span>RedThread</span> — Pricing Strategy</h1>
+      <div style="font-size:14px; color:var(--text-2); margin-top:6px;">Model selection, price point analysis, tier design & common mistakes</div>
+    </div>
+    <div class="meta">
+      <strong>Q1 2026</strong><br>
+      Prepared for bootstrapped launch
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 1. COMPETITIVE LANDSCAPE                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n1">1</div>
+      <h2>Competitive pricing landscape</h2>
+    </div>
+    <table class="comp-table">
+      <tr>
+        <th>Product</th>
+        <th>Model</th>
+        <th>Entry price</th>
+        <th>Typical coach spend</th>
+        <th>Key gate</th>
+      </tr>
+      <tr>
+        <td>Practice.do</td>
+        <td>Flat tiers</td>
+        <td>$5/mo</td>
+        <td>$29–49/mo</td>
+        <td>Client count</td>
+      </tr>
+      <tr>
+        <td>Simply.Coach</td>
+        <td>Flat tiers</td>
+        <td>$9/mo</td>
+        <td>$29–49/mo</td>
+        <td>Features + clients</td>
+      </tr>
+      <tr>
+        <td>CoachAccountable</td>
+        <td>Per-client tiers</td>
+        <td>$20/mo</td>
+        <td>$40–100/mo</td>
+        <td>Active client count</td>
+      </tr>
+      <tr>
+        <td>HoneyBook</td>
+        <td>Flat tiers</td>
+        <td>$10/mo</td>
+        <td>$33–49/mo</td>
+        <td>Automation features</td>
+      </tr>
+      <tr>
+        <td>Paperbell</td>
+        <td>Single flat rate</td>
+        <td>$57/mo</td>
+        <td>$57/mo</td>
+        <td>None — all features included</td>
+      </tr>
+      <tr class="highlight">
+        <td>RedThread</td>
+        <td>Recommended →</td>
+        <td>$0 (free tier)</td>
+        <td>$29–49/mo</td>
+        <td>Billing models + AI</td>
+      </tr>
+    </table>
+    <div class="note">
+      <strong>The market clusters at $29–49/mo for solo coaches.</strong> Paperbell at $57 is the ceiling — they earn it through brand trust and 14K+ customers. CoachAccountable scales above $100 only for coaches with 25+ active clients. Your initial $30–60/mo target range is correct directionally but the sweet spot skews toward the lower end for customer acquisition. You earn the right to charge $49+ after proving retention.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 2. PRICING MODEL SELECTION                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n1">2</div>
+      <h2>Which pricing model fits your market?</h2>
+    </div>
+    <div class="model-grid">
+      <div class="model-card">
+        <div class="model-name">Per-seat</div>
+        <div class="model-detail">Charge per coach user. Standard in B2B SaaS. Makes sense when the buyer is a team or org.</div>
+        <div class="verdict no">REJECT</div>
+        <div class="model-detail" style="margin-top:6px;">Your buyer is a solo coach. Per-seat = flat rate with extra steps. No upside, just confusion.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-name">Usage-based</div>
+        <div class="model-detail">Charge per client or per session logged. Revenue scales with the coach's business.</div>
+        <div class="verdict maybe">RISKY</div>
+        <div class="model-detail" style="margin-top:6px;">CoachAccountable does this ($4/active client). Coaches hate unpredictable bills. Creates perverse incentive to avoid logging data.</div>
+      </div>
+      <div class="model-card pick">
+        <div class="model-name">Flat-rate tiers</div>
+        <div class="model-detail">2–3 fixed monthly prices differentiated by features. Predictable for buyer and seller.</div>
+        <div class="verdict yes">RECOMMENDED</div>
+        <div class="model-detail" style="margin-top:6px;">Coaches want simplicity. Paperbell's single-price model proves flat pricing works. Tiers let you capture value from power users without penalizing small practices.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-name">Freemium</div>
+        <div class="model-detail">Free tier with limited features, paid upgrade. Standard growth play for bootstrapped SaaS.</div>
+        <div class="verdict yes">ADD THIS</div>
+        <div class="model-detail" style="margin-top:6px;">A free tier is your distribution engine. Coaches are tool-averse — you need zero-friction trial. Gate it by client count (3 clients free), not time.</div>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Verdict: Freemium + flat-rate tiers.</strong> Free tier for acquisition (replaces the 14-day trial that coaches abandon). Two paid tiers differentiated by billing model sophistication and AI features. This gives you a natural upgrade path: free → core when they hit 4+ clients → pro when they want AI session analysis or advanced package tracking.
+    </div>
+    <div class="callout">
+      <strong>Why not per-client like CoachAccountable?</strong> CoachAccountable's own Capterra reviews cite pricing complaints. One coach wrote their costs became uncomfortable as they scaled. Coaches manage 12 clients on average (ICF data). Per-client pricing creates anxiety at exactly the moment a coach is growing — the wrong emotion to associate with your product.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 3. OPTIMAL PRICE POINT                         -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n2">3</div>
+      <h2>Optimal price point — Van Westendorp proxy analysis</h2>
+    </div>
+    <div class="note" style="margin-bottom: 20px;">
+      You don't have survey data yet, so I'm running a proxy Van Westendorp using competitive price anchoring and coach economics. The four VW questions map to observable market signals:
+    </div>
+    <div class="dual">
+      <div>
+        <table class="comp-table" style="margin-bottom:0;">
+          <tr><th colspan="2" style="border-bottom:1px solid var(--border);">Van Westendorp Question</th></tr>
+          <tr><td style="color:var(--text);">Too cheap (quality doubt)</td><td style="font-weight:700;">< $15/mo</td></tr>
+          <tr><td style="color:var(--text);">Cheap (good deal)</td><td style="font-weight:700;">$19–25/mo</td></tr>
+          <tr><td style="color:var(--text);">Expensive (hesitation)</td><td style="font-weight:700;">$45–55/mo</td></tr>
+          <tr><td style="color:var(--text);">Too expensive (walk away)</td><td style="font-weight:700;">$65+/mo</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="note">
+          <strong>Evidence for these thresholds:</strong><br><br>
+          <strong>Too cheap (< $15):</strong> Practice.do at $5 and Simply.Coach at $9 are perceived as lightweight / starter tools. At that price, coaches question whether it's a serious product.<br><br>
+          <strong>Cheap ($19–25):</strong> CoachAccountable entry at $20/mo is seen as great value. Reddit threads consistently call this range "fair" for coaching tools.<br><br>
+          <strong>Expensive ($45–55):</strong> Paperbell at $57 draws comments about needing to justify the cost. Coaches at this range need to feel they're replacing 3+ other tools.<br><br>
+          <strong>Too expensive ($65+):</strong> No solo-coach practice management tool charges above $60 flat. The market has a hard ceiling here for individual practitioners.
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual price bar chart -->
+    <div style="margin-top:24px; margin-bottom:8px; font-size:11px; color:var(--text-3); letter-spacing:1.5px; text-transform:uppercase; font-weight:600;">Competitive price positioning</div>
+    <div class="ladder">
+      <div class="bar-group">
+        <div class="bar-price">$5</div>
+        <div class="bar" style="height:12px; background: var(--text-3);"></div>
+        <div class="bar-label">Practice<br>.do</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price">$9</div>
+        <div class="bar" style="height:20px; background: var(--text-3);"></div>
+        <div class="bar-label">Simply<br>.Coach</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price">$10</div>
+        <div class="bar" style="height:22px; background: var(--text-3);"></div>
+        <div class="bar-label">Honey<br>Book</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price">$20</div>
+        <div class="bar" style="height:38px; background: var(--amber);"></div>
+        <div class="bar-label">Coach<br>Account.</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price" style="color:var(--red); font-size:14px;">$29</div>
+        <div class="bar" style="height:56px; background: var(--red); box-shadow: 0 0 16px rgba(224,68,58,.3);"></div>
+        <div class="bar-label" style="color:var(--text); font-weight:700;">RedThread<br>Core</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price" style="color:var(--red); font-size:14px;">$49</div>
+        <div class="bar" style="height:82px; background: var(--red); box-shadow: 0 0 16px rgba(224,68,58,.3);"></div>
+        <div class="bar-label" style="color:var(--text); font-weight:700;">RedThread<br>Pro</div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-price">$57</div>
+        <div class="bar" style="height:95px; background: var(--amber);"></div>
+        <div class="bar-label">Paper<br>bell</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Optimal intersection: $29/mo (core) and $49/mo (pro).</strong> $29 sits above the "too cheap" zone while undercutting Paperbell by 49%. It prices into the "good deal" band where purchase friction is lowest. $49 captures power users who want AI features and advanced billing tools, anchored just below Paperbell's $57. The $20 gap between tiers is wide enough to feel meaningful, narrow enough that upgrade doesn't feel like a leap.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 4. #1 PRICING MISTAKE                          -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section" style="padding:0;">
+    <div style="padding:28px;">
+      <div class="section-header">
+        <div class="num n3">4</div>
+        <h2>The #1 pricing mistake you're probably making</h2>
+      </div>
+    </div>
+    <div class="mistake-box" style="margin:0 16px 16px; border-radius:10px;">
+      <h3>Charging for what you built instead of what you solve</h3>
+      <div class="note">
+        Your positioning doc describes features: "Smart Package Dashboard," "Renewal Workflow," "Flexible Engagement Models." These are inputs. Coaches don't buy features — they buy the answer to <strong>"which clients owe me money versus which clients I owe sessions to."</strong>
+        <br><br>
+        That single question, answered reliably, is worth $29/mo to any coach running 5+ clients on mixed billing models. It prevents revenue leakage (missed renewals), eliminates the anxiety of manual tracking, and saves 2–3 hours per week of spreadsheet wrangling.
+        <br><br>
+        <strong>The fix:</strong> Price and position around outcomes, not capabilities. Your tiers should be named for the problem they solve, not the features they contain. "Starter" → "Solo." "Pro" → "Practice." "Enterprise" → drop it entirely (you don't serve enterprises).
+        <br><br>
+        <strong>The math that justifies $29/mo:</strong> If RedThread prevents even one client from silently churning because you caught a package nearing completion, that's $600–$3,600 in recovered revenue. Your entire annual subscription pays for itself on a single saved renewal. Lead with that ROI story, not feature lists.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 5. THREE-TIER PRICING TABLE                    -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n4">5</div>
+      <h2>Recommended pricing tiers with feature gates</h2>
+    </div>
+
+    <div class="tiers">
+      <!-- FREE -->
+      <div class="tier">
+        <div class="tier-name t1">Free</div>
+        <div class="tier-price" style="color:var(--text);">$0</div>
+        <div class="tier-period">forever / no card required</div>
+        <div class="tier-desc">Get started managing your first clients. See why coaches switch from spreadsheets.</div>
+        <ul class="features">
+          <li><span class="check">✓</span> Up to 3 active clients</li>
+          <li><span class="check">✓</span> Session-package billing model</li>
+          <li><span class="check">✓</span> Session logging & tracking</li>
+          <li><span class="check">✓</span> Package progress dashboard</li>
+          <li><span class="check">✓</span> Basic payment tracking (manual)</li>
+          <li><span class="check">✓</span> Client notes</li>
+        </ul>
+        <div class="gate-label">Not included</div>
+        <ul class="features">
+          <li><span class="lock">–</span> Pay-as-you-go & retainer billing</li>
+          <li><span class="lock">–</span> Renewal alerts & workflows</li>
+          <li><span class="lock">–</span> AI session analysis</li>
+          <li><span class="lock">–</span> Data export</li>
+        </ul>
+      </div>
+
+      <!-- CORE -->
+      <div class="tier featured">
+        <div class="badge">Most popular</div>
+        <div class="tier-name t2">Core</div>
+        <div class="tier-price" style="color:var(--red);">$29</div>
+        <div class="tier-period">per month · billed monthly<br>$24/mo billed annually</div>
+        <div class="tier-desc">Full practice management for coaches with mixed billing models. The sweet spot.</div>
+        <ul class="features">
+          <li><span class="check">✓</span> <strong>Unlimited clients</strong></li>
+          <li><span class="check">✓</span> <strong>All 3 billing models</strong> (session-package, retainer, PAYG)</li>
+          <li><span class="check">✓</span> <strong>Renewal urgency alerts</strong> at 75% / 90% / 100% completion</li>
+          <li><span class="check">✓</span> Payment tracking (all methods)</li>
+          <li><span class="check">✓</span> Prospect pipeline & temperature tracking</li>
+          <li><span class="check">✓</span> Dashboard analytics</li>
+          <li><span class="check">✓</span> Data export (CSV)</li>
+        </ul>
+        <div class="gate-label">Not included</div>
+        <ul class="features">
+          <li><span class="lock">–</span> AI session notes & analysis</li>
+          <li><span class="lock">–</span> Cross-session pattern recognition</li>
+          <li><span class="lock">–</span> Calendar sync</li>
+          <li><span class="lock">–</span> API access</li>
+        </ul>
+      </div>
+
+      <!-- PRO -->
+      <div class="tier">
+        <div class="tier-name t3">Pro</div>
+        <div class="tier-price" style="color:var(--amber);">$49</div>
+        <div class="tier-period">per month · billed monthly<br>$39/mo billed annually</div>
+        <div class="tier-desc">AI-enhanced coaching insights. For coaches who want to see patterns across sessions and clients.</div>
+        <ul class="features">
+          <li><span class="check">✓</span> Everything in Core</li>
+          <li><span class="check">✓</span> <strong>AI session note integration</strong> (Granola, Otter, etc.)</li>
+          <li><span class="check">✓</span> <strong>Cross-session pattern recognition</strong></li>
+          <li><span class="check">✓</span> <strong>AI-suggested threads of inquiry</strong></li>
+          <li><span class="check">✓</span> Calendar sync (Google, Outlook)</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> API access</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Why these gates maximize upgrade rate:</strong>
+    </div>
+    <div class="dual" style="margin-top:12px;">
+      <div class="note">
+        <strong>Free → Core trigger:</strong> The 3-client cap. Average coaches carry 12 clients (ICF data). A new coach hits the cap within 1–3 months of starting. The free tier proves value; the cap creates natural pressure. No artificial time limit means coaches don't churn before experiencing the "aha" moment. The billing model gate matters too — when their 4th client wants a retainer instead of a session package, they need Core.
+      </div>
+      <div class="note">
+        <strong>Core → Pro trigger:</strong> AI features are aspirational, not essential. Coaches upgrade when they have enough session history (~6 months) to make pattern recognition valuable. This means Pro revenue compounds over time as your cohort matures. Calendar sync is deliberately held at Pro because it's a convenience feature with high perceived value that coaches request frequently — it creates upgrade pull without blocking core functionality.
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:20px;">
+      <strong>Annual discount strategy:</strong> Offer 17% off for annual billing ($24/mo Core, $39/mo Pro). This is standard SaaS and locks in revenue. Frame it as "2 months free" — coaches respond better to that framing than percentage discounts. Do not offer annual on Free tier (defeats the purpose).
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 6. REVENUE MODEL                               -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num n4">6</div>
+      <h2>Revenue projection by tier mix</h2>
+    </div>
+    <div class="note" style="margin-bottom:16px;">Assuming Year 3 target of 2,200 paying coaches (from TAM analysis):</div>
+    <table class="comp-table">
+      <tr>
+        <th>Tier</th>
+        <th>% of paid users</th>
+        <th>Users</th>
+        <th>Avg monthly</th>
+        <th>Annual revenue</th>
+      </tr>
+      <tr>
+        <td>Free</td>
+        <td style="color:var(--text-3);">(not counted)</td>
+        <td style="color:var(--text-3);">~6,000</td>
+        <td>$0</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td style="color:var(--red);">Core</td>
+        <td>70%</td>
+        <td>1,540</td>
+        <td>$27</td>
+        <td style="font-weight:700;">$499K</td>
+      </tr>
+      <tr>
+        <td style="color:var(--amber);">Pro</td>
+        <td>30%</td>
+        <td>660</td>
+        <td>$44</td>
+        <td style="font-weight:700;">$348K</td>
+      </tr>
+      <tr style="border-top:2px solid var(--border);">
+        <td style="font-weight:700; color:var(--text);">Total</td>
+        <td></td>
+        <td style="font-weight:700;">2,200 paid</td>
+        <td style="font-weight:700;">$32 blended</td>
+        <td style="font-weight:700; color:var(--teal);">$847K ARR</td>
+      </tr>
+    </table>
+    <div class="note">
+      <strong>Blended ARPU of $32/mo</strong> reflects a 70/30 Core-to-Pro split with ~30% of users on annual plans (lower effective rate). Conservative relative to the $45/mo assumed in the TAM analysis — deliberately so. Achieving the $1.2M ARR from the TAM slide requires either more users (2,800+) or a richer Pro tier that shifts the mix. Both are plausible by Year 3 if AI features deliver real value.
+    </div>
+  </div>
+
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">☀</button>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  if (localStorage.getItem('redthread-theme') === 'light') {
+    body.classList.add('light');
+    toggle.textContent = '☾';
+  }
+  toggle.addEventListener('click', () => {
+    body.classList.toggle('light');
+    const isLight = body.classList.contains('light');
+    toggle.textContent = isLight ? '☾' : '☀';
+    localStorage.setItem('redthread-theme', isLight ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>

@@ -38,11 +38,15 @@ The core problem I solve: nobody owns the whole picture. Developers handle featu
 
 ## Ideal Client Profile
 
-**Title:** Founder, CEO, COO, or Head of Operations  
-**Company stage:** Series A–C, or $2M–$30M revenue  
-**Profile:** Non-technical founders or ops-heavy leaders who know they need senior technical help but aren't ready to hire a full-time CTO. Also want to pressure test a case when there is a technical co-founder, but they're so focused on product that they don't have the bandwidth to handle operational security across SaaS, AI workflows for business processes, etc. 
-**Sweet spot industries:** Digital assets/crypto, fintech, healthtech, SEC-regulated firms, any company with real customer data moving significant capital  
-**Situation:** Infrastructure assembled for speed over 1–5 years, team 5–50 people (industry-dependent e.g., some crypto firms with high AOM may only have four or five people and really deficient security and systems), no IT department, facing security anxiety, compliance deadlines, and/or investor AI pressure
+**Primary ICP:** Founders and GPs first, C-suite second. The person who controls their own spend and makes the call without org-wide approval. "Executives" as a term skews corporate and doesn't resonate with this audience – use "founders and leaders" in copy.
+
+**Title:** Founder, CEO, GP/Partner, COO, or Chief of Staff (as de facto "figure out the AI thing" owner)
+**Company stage:** Series A–C, or $2M–$30M revenue – but note that some of the best-fit clients (e.g., a 5-person crypto fund managing $115M+) don't map onto standard SaaS stage definitions. "Growth-stage" works as shorthand on LinkedIn but isn't precise for all ICPs.
+**Profile:** Non-technical founders or ops-heavy leaders who know they need senior technical help but aren't ready to hire a full-time CTO. Also: technical cofounders so focused on product they can't handle operational security, AI workflows, or SaaS integration. For the AI enablement offering specifically: already using LLMs casually (ChatGPT, Gemini), haven't made the leap to agentic workflows, handling sensitive data (financial, client, deal flow), on macOS (Windows support now live but macOS remains primary), values time over money.
+**Sweet spot industries:** Digital assets/crypto, fintech, healthtech, SEC-regulated firms, any company with real customer data moving significant capital
+**Situation:** Infrastructure assembled for speed over 1–5 years, team 5–50 people (industry-dependent – some crypto firms with high AUM may only have 4–5 people and seriously deficient security and systems), no IT department, facing security anxiety, compliance deadlines, and/or investor AI pressure
+**Weak fit:** VPs/Directors (purchasing friction, need org-wide approval), anyone already deep in Claude (they don't need the AI enablement offering), Windows-only shops (diminishing concern as platform expands)
+**Expansion path:** Individual AI enablement session → "do this for my team" → firm-level engagement ($10–30K)
 
 ---
 
@@ -120,7 +124,7 @@ From the QA critique (Andrew Hoppin via Claude, Feb 28 2026):
 **Strategic backlog (P3):**
 - Add Umami analytics integration to the site. 
 - No pricing signals or engagement model description on site
-- No blog/thought leadership content yet
+- DONE - First blog post published (March 2026: "Why Your Growth-Stage Company Is a Cybersecurity Target")
 - Elizabeth Raley testimonial is thin — two sentences
 - AI positioning feels secondary to security; needs equivalent depth if it's a co-equal pillar
 
@@ -139,7 +143,7 @@ This is suggested, Andy still needs to review.
 | July | I Built a Security Program That Got Tested by a Real Attack | Case study / story |
 | August | The "No IT Department" Problem: A Playbook for Companies Under 50 People | ICP-specific |
 
-March draft is complete: "Why Your Growth-Stage Company Is a Cybersecurity Target (And What to Do About It)" — ready to publish on archetypeconsulting.io.
+March article published: "Why Your Growth-Stage Company Is a Cybersecurity Target (And What to Do About It)" — live on archetypeconsulting.io.
 
 LinkedIn strategy: post 1–2x per week. Alternating thought leadership, security/AI news commentary, and "lesson learned" stories from engagements. Each blog post generates 2–3 derivative LinkedIn posts.
 
