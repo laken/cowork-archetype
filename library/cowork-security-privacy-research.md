@@ -252,12 +252,44 @@ This becomes a tangible differentiator — no other AI coach is handing clients 
 
 ---
 
-## People to Talk To
+## Google Workspace OAuth Controls — Admin Levers
 
-- [ ] **Andrew Hoppin** — How is he thinking about data privacy with his daily Cowork use? What questions did he ask himself? What's his comfort level with email flowing through Anthropic?
-- [ ] **Anthropic support/docs** — Are there detailed data flow diagrams for MCP connectors?
-- [ ] **Granola team** — What's their privacy policy regarding third-party LLM access to transcript data?
+*Full detail in `ai-connectivity-governance-framework.md`. Summary here for session reference.*
+
+Three layers in Google Admin console (Security > API Controls):
+
+1. **Blanket policy** — restrict all third-party apps from accessing Gmail/Drive/Docs/Chat without enumerating specific apps.
+2. **App-specific blocking** — block individual OAuth2 apps by name or client ID; preemptive blocking possible.
+3. **Allowlist model** — restrict to approved apps only; can apply per organizational unit.
+
+Changing access to Restricted revokes tokens immediately for non-trusted apps.
+
+Anthropic's Gmail MCP connector (launched Feb 24, 2026) may not yet be in Google's verified app registry — potentially blockable via blanket "unverified third-party apps" policy.
+
+**Relevance:** This is a concrete, demonstrable control surface in every coaching session with a Google Workspace admin. Shows security depth immediately.
 
 ---
 
-*Last updated: March 6, 2026*
+## Live Governance Gap: Hyla/Hoppin
+
+*Full case study in `ai-connectivity-governance-framework.md`.*
+
+Andrew connected work Gmail to Cowork MCP without org authorization. Andy administers the Workspace. Nudge Security deployed but underutilized. Cloudflare CASB (planned) would close the gap at infrastructure layer.
+
+**Action items:**
+- [ ] Run Nudge audit on Hyla before next conversation with Andrew
+- [ ] Review current Google Workspace OAuth policy (default unrestricted?)
+- [ ] Evaluate Cloudflare CASB scope for current Zero Trust deployment
+
+---
+
+## People to Talk To
+
+- [ ] **Andrew Hoppin** — How is he thinking about data privacy with his daily Cowork use? What questions did he ask himself? What's his comfort level with email flowing through Anthropic? **Note:** conversation now has a governance dimension — his Gmail MCP connection wasn't formally authorized. Handle with care.
+- [ ] **Anthropic support/docs** — Are there detailed data flow diagrams for MCP connectors?
+- [ ] **Granola team** — What's their privacy policy regarding third-party LLM access to transcript data?
+- [ ] **Nudge Security** — Preferential pricing conversation (Andy has prior relationship). $750 flat fee is poor for <150 users.
+
+---
+
+*Last updated: March 8, 2026*

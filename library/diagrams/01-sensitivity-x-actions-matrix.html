@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Security Matrix — Data Sensitivity × Agent Actions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    padding: 40px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  h1 {
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; color: #1a1a2e;
+  }
+  .subtitle {
+    font-size: 0.95rem; color: #5a5a7a; margin-bottom: 30px; line-height: 1.5;
+  }
+
+  .matrix-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    background: white;
+  }
+
+  table {
+    width: 100%; border-collapse: collapse; min-width: 900px;
+  }
+
+  /* Column header row */
+  thead th {
+    padding: 14px 16px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1a1a2e;
+    background: #e8eaf0;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+    vertical-align: bottom;
+  }
+  thead th:first-child {
+    text-align: left;
+    width: 200px;
+    background: #d0d3dc;
+  }
+  thead th .action-desc {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #6a6a8a;
+    margin-top: 3px;
+  }
+
+  /* Row headers */
+  tbody th {
+    padding: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: left;
+    background: #f0f1f5;
+    border-right: 2px solid #ccc;
+    vertical-align: top;
+  }
+  tbody th .sensitivity-examples {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #6a6a8a;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* Cells */
+  td {
+    padding: 12px 14px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid #e5e7eb;
+    min-width: 110px;
+  }
+
+  /* Risk levels */
+  .autonomous { background: #d4edda; color: #155724; }
+  .notify     { background: #d1ecf1; color: #0c5460; }
+  .approve    { background: #fff3cd; color: #856404; }
+  .review     { background: #fde2c8; color: #7a4100; }
+  .blocked    { background: #f8d7da; color: #721c24; }
+
+  /* Cell content */
+  td .auth-level {
+    font-weight: 700;
+    font-size: 0.78rem;
+    display: block;
+  }
+  td .auth-detail {
+    font-size: 0.68rem;
+    font-weight: 400;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #5a5a7a;
+    margin-right: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #4a4a6a;
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* Axis labels */
+  .axis-label-x {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #5a5a7a;
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+  }
+  .axis-label-y {
+    position: absolute;
+    left: -60px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(-50%);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #5a5a7a;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .matrix-outer {
+    position: relative;
+    padding-left: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 28px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    font-size: 0.78rem;
+    color: #5a5a7a;
+    line-height: 1.6;
+  }
+  .footer strong { color: #1a1a2e; }
+
+  /* DPA overlay markers */
+  td .dpa-note {
+    font-size: 0.65rem;
+    font-style: italic;
+    color: inherit;
+    opacity: 0.75;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { padding: 16px; }
+    h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>AI Agent Security Matrix</h1>
+  <p class="subtitle">
+    What authorization is required when an AI agent performs a given action on data at a given sensitivity level?<br>
+    Each cell maps a data type to an agent capability, producing the governance control that should apply.
+  </p>
+
+  <div class="matrix-outer">
+    <div class="matrix-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              Read<br>(Query)
+              <span class="action-desc">Agent retrieves &amp; surfaces data</span>
+            </th>
+            <th>
+              Summarize<br>(Synthesize)
+              <span class="action-desc">Agent processes &amp; condenses</span>
+            </th>
+            <th>
+              Draft<br>(Generate)
+              <span class="action-desc">Agent creates new content</span>
+            </th>
+            <th>
+              Send / Publish<br>(Act)
+              <span class="action-desc">Agent transmits externally</span>
+            </th>
+            <th>
+              Modify / Delete<br>(Mutate)
+              <span class="action-desc">Agent changes existing data</span>
+            </th>
+            <th>
+              Cross-System<br>(Orchestrate)
+              <span class="action-desc">Agent moves data between tools</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- Row 1: Personal Productivity -->
+          <tr>
+            <th>
+              Personal Productivity
+              <span class="sensitivity-examples">Personal calendar, personal notes, task lists, personal bookmarks</span>
+            </th>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Individual discretion</span>
+            </td>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Morning briefings, meeting prep</span>
+            </td>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Draft notes, task creation</span>
+            </td>
+            <td class="notify">
+              <span class="auth-level">Confirm</span>
+              <span class="auth-detail">User reviews before send</span>
+            </td>
+            <td class="notify">
+              <span class="auth-level">Confirm</span>
+              <span class="auth-detail">Approval before deletion</span>
+            </td>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Calendar → notes → tasks</span>
+            </td>
+          </tr>
+
+          <!-- Row 2: Internal Business Comms -->
+          <tr>
+            <th>
+              Internal Business Communications
+              <span class="sensitivity-examples">Work email, Slack, team messaging, internal memos</span>
+            </th>
+            <td class="notify">
+              <span class="auth-level">IT Awareness</span>
+              <span class="auth-detail">Org accounts trigger visibility</span>
+            </td>
+            <td class="notify">
+              <span class="auth-level">IT Awareness</span>
+              <span class="auth-detail">Email triage, thread summaries</span>
+            </td>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Draft replies for review</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">Approve</span>
+              <span class="auth-detail">User confirms every send</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">Approve</span>
+              <span class="auth-detail">Archive/delete needs approval</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">IT Approval</span>
+              <span class="auth-detail">Email → CRM requires policy</span>
+              <span class="dpa-note">DPA status matters</span>
+            </td>
+          </tr>
+
+          <!-- Row 3: Sensitive Business Data -->
+          <tr>
+            <th>
+              Sensitive Business Data
+              <span class="sensitivity-examples">Deal flow, investor relations, fund docs, board materials, client info</span>
+            </th>
+            <td class="approve">
+              <span class="auth-level">IT Approval</span>
+              <span class="auth-detail">Data flows through AI provider</span>
+              <span class="dpa-note">Requires DPA review</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">IT Approval</span>
+              <span class="auth-detail">Summaries retain sensitivity</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">IT Approval</span>
+              <span class="auth-detail">Generated content may reference sensitive inputs</span>
+            </td>
+            <td class="review">
+              <span class="auth-level">Formal Review</span>
+              <span class="auth-detail">Legal sign-off on external sends</span>
+            </td>
+            <td class="review">
+              <span class="auth-level">Formal Review</span>
+              <span class="auth-detail">Audit trail required</span>
+            </td>
+            <td class="blocked">
+              <span class="auth-level">Blocked</span>
+              <span class="auth-detail">No cross-system movement without governance</span>
+            </td>
+          </tr>
+
+          <!-- Row 4: Regulated Data -->
+          <tr>
+            <th>
+              Regulated Data
+              <span class="sensitivity-examples">LP agreements, SEC filings, HIPAA records, contractual obligations</span>
+            </th>
+            <td class="review">
+              <span class="auth-level">Legal + Compliance</span>
+              <span class="auth-detail">Even read access needs authorization</span>
+            </td>
+            <td class="review">
+              <span class="auth-level">Legal + Compliance</span>
+              <span class="auth-detail">Summaries are derivative works</span>
+            </td>
+            <td class="blocked">
+              <span class="auth-level">Blocked</span>
+              <span class="auth-detail">AI-generated regulated content requires human authorship</span>
+            </td>
+            <td class="blocked">
+              <span class="auth-level">Blocked</span>
+              <span class="auth-detail">No automated external transmission</span>
+            </td>
+            <td class="blocked">
+              <span class="auth-level">Blocked</span>
+              <span class="auth-detail">Immutable records</span>
+            </td>
+            <td class="blocked">
+              <span class="auth-level">Blocked</span>
+              <span class="auth-detail">Regulatory boundary</span>
+            </td>
+          </tr>
+
+          <!-- Row 5: Calendar Metadata (special case) -->
+          <tr>
+            <th>
+              Calendar Metadata
+              <span class="sensitivity-examples">Attendee lists, meeting cadences, who meets with whom — potential MNPI</span>
+            </th>
+            <td class="approve">
+              <span class="auth-level">Context-Dependent</span>
+              <span class="auth-detail">Attendee names may be MNPI for funds</span>
+            </td>
+            <td class="notify">
+              <span class="auth-level">Confirm</span>
+              <span class="auth-detail">Meeting prep is the value — attendee patterns are the risk</span>
+            </td>
+            <td class="autonomous">
+              <span class="auth-level">Autonomous</span>
+              <span class="auth-detail">Scheduling, prep docs</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">Approve</span>
+              <span class="auth-detail">Invites with attendee info</span>
+            </td>
+            <td class="notify">
+              <span class="auth-level">Confirm</span>
+              <span class="auth-detail">Cancel/reschedule approval</span>
+            </td>
+            <td class="approve">
+              <span class="auth-level">IT Approval</span>
+              <span class="auth-detail">Calendar → CRM attendee sync</span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <p class="axis-label-x">AGENT ACTION → increasing autonomy and external exposure →</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span class="legend-label">Authorization Level:</span>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#d4edda;"></div>
+      Autonomous
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#d1ecf1;"></div>
+      Confirm / IT Awareness
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#fff3cd;"></div>
+      IT Approval Required
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#fde2c8;"></div>
+      Formal Review / Legal
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#f8d7da;"></div>
+      Blocked Pending Review
+    </div>
+  </div>
+
+  <!-- Explanatory footer -->
+  <div class="footer">
+    <strong>How to read this matrix:</strong> Each row represents a data sensitivity tier. Each column represents what the AI agent does with that data.
+    The cell color shows the minimum authorization required before that action should be permitted.
+    Green cells are safe for individual discretion. Red cells require governance infrastructure before the agent touches the data at all.
+    <br><br>
+    <strong>The diagonal pattern matters:</strong> Risk increases along two axes simultaneously — more sensitive data <em>and</em> more consequential actions.
+    The upper-left is where productivity gains live with minimal risk. The lower-right is where firms get in trouble.
+    Most executives start in the upper-left and drift toward the lower-right without noticing the transition.
+    <br><br>
+    <strong>DPA status shifts cells:</strong> A Data Processing Agreement with the AI provider can move "IT Approval" cells to "IT Awareness" and "Formal Review" cells to "IT Approval."
+    Without a DPA, cells shift one level <em>more</em> restrictive. Enterprise/commercial plans with contractual commitments shift one level <em>less</em>.
+    <br><br>
+    <em>Archetype Consulting — AI Enablement Advisory | archetypeconsulting.io</em>
+  </div>
+
+</div>
+</body>
+</html>

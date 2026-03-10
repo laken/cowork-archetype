@@ -2,4 +2,4 @@
 
 | Date | Headline |
 |------|----------|
-| 2026-03-08 | Broadly unreliable; 8+ open GitHub bugs, native host conflict unresolved, no fixes shipped today |
+| 2026-03-09 | Broadly reported connection failures persist; no targeted fix in recent updates; Feb auto-update regression still open |

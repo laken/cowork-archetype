@@ -100,9 +100,11 @@ Claims about vendor access constraints are only defensible when:
 **First guinea pig session:** Ty Shinn (GP, Hyla Funds), booked for Tuesday March 10. Pre-session Tally survey ready to build and send. Session prep doc with security cheat sheet, outreach plan, and checklist saved to `library/ty-session-prep.md`.
 
 **Key library files for this offering:**
-- `library/ai-executive-coaching-wip.md` — Master offering doc (canonical)
-- `library/ai-enablement-advisory-deck.html` — HTML presentation derivative of WIP
-- `library/cowork-security-privacy-research.md` — Security/privacy research tracker
+- `library/ai-executive-coaching-wip.md` — Master offering doc (canonical, 5-tier architecture)
+- `library/ai-connectivity-governance-framework.md` — Standalone governance framework IP (6 decision categories, decision matrix, engagement structure)
+- `library/cowork-platform-reference.md` — Cowork trajectory, backup strategies, mobile gap, Vercept/Vy intel, diagram tools, podcasts
+- `library/cowork-security-privacy-research.md` — Security/privacy research tracker (includes OAuth controls, Hyla governance gap)
+- `library/ai-enablement-advisory-deck.html` — HTML presentation derivative of WIP (needs regeneration for 5-tier architecture)
 - `library/ty-session-prep.md` — Ty session prep (survey, security cheat sheet, checklist, outreach plan)
 - `library/cowork-setup-guide-ty.pdf` — Pre-session tips PDF (already sent to Ty)
 - `library/swot-ai-enablement.html` — SWOT analysis

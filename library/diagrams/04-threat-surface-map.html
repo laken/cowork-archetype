@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent Threat Surface Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    padding: 40px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 0.95rem; color: #5a5a7a; margin-bottom: 30px; line-height: 1.5; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 180px repeat(6, 1fr);
+    gap: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  .header-cell {
+    padding: 14px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    background: #e8eaf0;
+    border-bottom: 2px solid #bbb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .header-cell:first-child {
+    background: #d0d3dc;
+    text-align: left;
+    align-items: flex-start;
+  }
+  .header-icon { font-size: 1.3rem; }
+  .header-sub { font-size: 0.65rem; font-weight: 400; color: #6a6a8a; }
+
+  .row-header {
+    padding: 14px 16px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    background: #f5f5f8;
+    border-right: 2px solid #ccc;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .row-header .cat-desc {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #6a6a8a;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .cell {
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    min-height: 90px;
+  }
+
+  .risk-high { background: #ffebee; }
+  .risk-med  { background: #fff8e1; }
+  .risk-low  { background: #e8f5e9; }
+  .risk-none { background: #f5f5f5; }
+
+  .risk-indicator {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+  }
+  .ri-high { background: #e53935; }
+  .ri-med  { background: #fb8c00; }
+  .ri-low  { background: #43a047; }
+  .ri-none { background: #bdbdbd; }
+
+  .cell-text {
+    font-size: 0.68rem;
+    color: #5a5a7a;
+    line-height: 1.3;
+  }
+  .cell-text strong { color: #1a1a2e; }
+
+  .section-divider {
+    grid-column: 1 / -1;
+    padding: 6px 16px;
+    background: #1a1a2e;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer {
+    margin-top: 28px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    font-size: 0.78rem;
+    color: #5a5a7a;
+    line-height: 1.6;
+  }
+  .footer strong { color: #1a1a2e; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+  .legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+
+  .mitigations {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .mit-card {
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .mit-card h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mit-card p {
+    font-size: 0.75rem;
+    color: #5a5a7a;
+    line-height: 1.5;
+  }
+  .mit-card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+  }
+  .mit-card li {
+    font-size: 0.73rem;
+    color: #5a5a7a;
+    padding: 3px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .mit-card li:last-child { border: none; }
+  .mit-1 { border-top: 3px solid #e53935; }
+  .mit-2 { border-top: 3px solid #fb8c00; }
+  .mit-3 { border-top: 3px solid #9c27b0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>AI Agent Threat Surface Map</h1>
+  <p class="subtitle">
+    Three categories of risk × six connector types. Where is the exposure concentrated, and what mitigates each cell?
+  </p>
+
+  <div class="grid">
+    <!-- Header row -->
+    <div class="header-cell">Threat Category</div>
+    <div class="header-cell">
+      <span class="header-icon">📧</span>
+      Gmail
+      <span class="header-sub">R/W/Send</span>
+    </div>
+    <div class="header-cell">
+      <span class="header-icon">📅</span>
+      Calendar
+      <span class="header-sub">R/W/Create</span>
+    </div>
+    <div class="header-cell">
+      <span class="header-icon">💬</span>
+      Slack
+      <span class="header-sub">R/W/Post</span>
+    </div>
+    <div class="header-cell">
+      <span class="header-icon">📝</span>
+      Notion / Docs
+      <span class="header-sub">R/W/Edit</span>
+    </div>
+    <div class="header-cell">
+      <span class="header-icon">🎙</span>
+      Granola
+      <span class="header-sub">Read Only</span>
+    </div>
+    <div class="header-cell">
+      <span class="header-icon">📊</span>
+      CRM
+      <span class="header-sub">R/W</span>
+    </div>
+
+    <!-- Section 1: Data Privacy & Retention -->
+    <div class="section-divider">Category 1 — Data Privacy & Retention (Where does my data go?)</div>
+
+    <div class="row-header">
+      Data Transit
+      <span class="cat-desc">Content passes through Anthropic servers for LLM processing</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Full email content</strong> in transit. Most sensitive connector.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Attendee names</strong> may be MNPI for funds</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Channel content</strong> including private channels</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Page content</strong> including shared workspaces</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Full transcripts</strong> — verbatim meeting content</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Client/LP data</strong>, deal values, contact info</span>
+    </div>
+
+    <div class="row-header">
+      Retention Risk
+      <span class="cat-desc">How long data persists in AI provider infrastructure</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">30 days (training off) or 5 years (training on)</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">Same policy, lower volume</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Message volume can be high</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">On-demand retrieval, moderate volume</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Transcripts are large documents</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Structured data, potentially large</span>
+    </div>
+
+    <div class="row-header">
+      Training Risk
+      <span class="cat-desc">Could data be used for model training?</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Critical.</strong> Team plan = Consumer Terms. Opt-out toggle essential.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Same terms apply</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Same terms apply</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Same terms apply</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text">Meeting content is highly confidential</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text">Client data in training = unacceptable</span>
+    </div>
+
+    <!-- Section 2: System Access -->
+    <div class="section-divider">Category 2 — Local System Access (What can the AI touch?)</div>
+
+    <div class="row-header">
+      Write Actions
+      <span class="cat-desc">Agent can modify or create data</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Send emails</strong> on user's behalf. Highest consequence action.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Create/modify events.</strong> Invites go to real people.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Post messages</strong> in channels. Visible to team.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text"><strong>Edit pages</strong> in shared workspaces.</span>
+    </div>
+    <div class="cell risk-none">
+      <div class="risk-indicator ri-none">—</div>
+      <span class="cell-text">Read-only connector</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Modify records.</strong> Client data integrity.</span>
+    </div>
+
+    <div class="row-header">
+      Scope Creep
+      <span class="cat-desc">Access broader than user expects</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">All email, not just recent. Can search archives.</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">All calendars visible</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">All accessible channels, including private</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">All workspaces, not just intended pages</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">All meetings, not just selected</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Full CRM access, all contacts/deals</span>
+    </div>
+
+    <!-- Section 3: Prompt Injection -->
+    <div class="section-divider">Category 3 — Prompt Injection (Can someone attack me through my connectors?)</div>
+
+    <div class="row-header">
+      Injection Vector
+      <span class="cat-desc">Malicious instructions embedded in content</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Highest risk.</strong> Anyone can send you email with hidden instructions.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Invite descriptions can contain instructions</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Messages in channels, shared canvases</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Shared pages, comments, hidden text blocks</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">Transcript content from known meetings</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">Web form data, external integrations</span>
+    </div>
+
+    <div class="row-header">
+      Exploitation Impact
+      <span class="cat-desc">What happens if injection succeeds</span>
+    </div>
+    <div class="cell risk-high">
+      <div class="risk-indicator ri-high">H</div>
+      <span class="cell-text"><strong>Data exfiltration</strong> via drafted emails. Agent sends sensitive info out.</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Unauthorized meeting creation, attendee exposure</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Unauthorized channel posts, info leakage</span>
+    </div>
+    <div class="cell risk-low">
+      <div class="risk-indicator ri-low">L</div>
+      <span class="cell-text">Document modification, lower external impact</span>
+    </div>
+    <div class="cell risk-none">
+      <div class="risk-indicator ri-none">—</div>
+      <span class="cell-text">Read-only limits exploit chain</span>
+    </div>
+    <div class="cell risk-med">
+      <div class="risk-indicator ri-med">M</div>
+      <span class="cell-text">Record modification, data integrity</span>
+    </div>
+
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#e53935;"></div> High Risk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fb8c00;"></div> Medium Risk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#43a047;"></div> Low Risk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#bdbdbd;"></div> N/A</div>
+  </div>
+
+  <div class="mitigations">
+    <div class="mit-card mit-1">
+      <h3><span style="color:#e53935;">●</span> Data Privacy Mitigations</h3>
+      <ul>
+        <li>Training opt-out verified in Privacy Settings</li>
+        <li>DPA review before connecting org data</li>
+        <li>Enterprise/commercial terms for sensitive firms</li>
+        <li>Incognito mode for one-off sensitive queries</li>
+        <li>Consumer vs. Commercial terms awareness (Team ≠ Enterprise)</li>
+      </ul>
+    </div>
+    <div class="mit-card mit-2">
+      <h3><span style="color:#fb8c00;">●</span> System Access Mitigations</h3>
+      <ul>
+        <li>Require approval for all write actions (send, post, create)</li>
+        <li>Designated folder only for file access</li>
+        <li>Per-connector permission review at setup</li>
+        <li>Google Workspace OAuth controls (admin-level)</li>
+        <li>Nudge/Push for ongoing discovery</li>
+      </ul>
+    </div>
+    <div class="mit-card mit-3">
+      <h3><span style="color:#9c27b0;">●</span> Prompt Injection Mitigations</h3>
+      <ul>
+        <li>Never disable write approval prompts</li>
+        <li>Be skeptical of unsolicited agent actions</li>
+        <li>Anthropic's safety training treats connector data as untrusted</li>
+        <li>Review approval prompts carefully before confirming</li>
+        <li>Category-level risk — not Claude-specific</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>The pattern:</strong> Email is the highest-risk connector across all three categories — highest sensitivity data, most consequential write action (send), and most exposed injection vector (anyone can email you).
+    This is counterintuitive for executives, who think of email as routine. The diagram makes the concentration of risk visible.
+    <br><br>
+    <strong>Session use:</strong> Walk through this column by column for each connector the client plans to enable.
+    The visual heat map immediately shows where the risk concentrates and why certain connectors deserve more governance attention.
+    <br><br>
+    <em>Archetype Consulting — AI Enablement Advisory | archetypeconsulting.io</em>
+  </div>
+
+</div>
+</body>
+</html>

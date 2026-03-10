@@ -223,11 +223,11 @@ The security brief itself creates the opening. When you hand someone a document 
 
 ---
 
-## Offering Tiers — Individual to Firm
+## Offering Tiers — Full Service Architecture
 
-The offering has two distinct tiers. The individual session stands alone and sells to any executive regardless of firm context. The team/firm tier is the upsell — and it's where the real revenue lives. Both are needed: the individual session generates pipeline and trust; the firm engagement generates revenue and case studies.
+The offering has five tiers. Tier 1 stands alone and sells to any executive regardless of firm context. The higher tiers are natural escalation paths, each unlocked by the trust and visibility earned in the tier below. Critical sequencing rule: Tier 3 must precede Tier 4. Connecting organizational data to AI workflows without a governance baseline is the exact problem the practice exists to solve.
 
-### Tier 1: Individual AI Enablement Session
+### Tier 1: Individual AI Enablement Session ($500-750)
 
 Standalone engagement for any executive. Works whether or not their firm adopts. This is the front door.
 
@@ -243,25 +243,49 @@ Standalone engagement for any executive. Works whether or not their firm adopts.
 
 **Deliverable:** Written security/privacy brief (see template — to be built). Documents what was configured, data exposure profile, ring-fencing level, firm-level recommendations, and open risks. This is the artifact that makes it an advisory engagement, not a tutoring session.
 
-### Tier 2: Team/Firm AI Enablement
+### Tier 2: Personal Data Governance (TBD pricing)
 
-Scoped engagement for firms with 3+ people adopting Cowork. This is where individual workflows connect into team information architecture. Priced as a project ($10–30K depending on scope), not per-session.
+Natural follow-on from Tier 1: "now that you're using these tools, let's make sure your connections are appropriate and your work product is protected."
+
+- Backup strategy configuration (sync layer + Backblaze versioned backup)
+- OAuth audit of personal accounts (what else have you connected?)
+- Connector policy for individual setup (what should require approval, what's autonomous)
+- Could be a follow-on session or small retainer
+
+### Tier 3: Firm-Wide AI Governance ($3-8K)
+
+Shadow IT discovery, data sensitivity classification, OAuth inventory across the org, AI connectivity policy and framework. See `ai-connectivity-governance-framework.md` for the full framework.
+
+- Discovery: Nudge Security audit (retroactive) + Google Workspace OAuth inventory
+- Classification: data source inventory with sensitivity ratings
+- Policy: authorization matrix calibrated to org risk tolerance
+- Implementation: Google Workspace API controls, monitoring setup (Push Security at $5/user/month or Cloudflare CASB for orgs on Zero Trust)
+
+### Tier 4: Team Data Integration ($10-30K)
+
+Connecting shared organizational data systems into AI workflows. CRM, shared drives, project management tools, groupware. This is where individual workflows connect into team information architecture.
 
 **The insight:** Individual Cowork sessions are powerful, but the real transformation happens when multiple people's AI workflows connect — when one person's output becomes another person's input, and the firm's collective knowledge becomes queryable. Designing that information flow is systems architecture work, priced accordingly.
 
 **Team-level use cases:**
 
-*AI notetaker standardization* — most teams have a balkanized mess: one person on Otter, one on Granola, one taking notes by hand. Meeting intelligence lives in different formats, different tools, inaccessible to anyone who wasn't in the room. Standardizing on one tool (likely Granola, given Cowork integration) and establishing a shared knowledge base that everyone's Cowork can query is a concrete, high-value deliverable. Scoped as: tool selection, configuration, team training, workflow integration. This is a wedge into the broader engagement.
+*AI notetaker standardization* — most teams have a balkanized mess: one person on Otter, one on Granola, one taking notes by hand. Meeting intelligence lives in different formats, different tools, inaccessible to anyone who wasn't in the room. Standardizing on one tool (likely Granola, given Cowork integration) and establishing a shared knowledge base that everyone's Cowork can query is a concrete, high-value deliverable.
 
-*Shared document intelligence via Drive connector* — individual Drive connection lets you query your own docs. The team play is shared folders — deal memos, investment committee notes, portfolio company reports — becoming queryable by anyone on the team through their Cowork session. The security conversation here is real and valuable: who should have access to what, how do you ring-fence partner-only materials from junior analysts, what are the information governance policies. This is exactly the kind of problem a YouTube tutorial can't solve. It requires someone who thinks about access control, organizational hierarchy, and data classification — CTO-level thinking.
+*Shared document intelligence via Drive connector* — individual Drive connection lets you query your own docs. The team play is shared folders becoming queryable by anyone on the team through their Cowork session. The security conversation here is real and valuable: who should have access to what, how do you ring-fence partner-only materials from junior analysts, what are the information governance policies. CTO-level thinking.
 
-*Team briefing workflows via scheduled tasks* — each team member produces a weekly briefing on their area of responsibility, generated by Cowork from their email, meeting notes, and Drive docs using scheduled tasks. Those briefings get shared (Slack channel, shared Drive folder, Notion) and become inputs for the firm-wide weekly meeting. Each person's AI does individual work that feeds a team workflow. You're designing an information architecture, not setting up an app.
+*Team briefing workflows via scheduled tasks* — each team member produces a weekly briefing on their area of responsibility, generated by Cowork. Those briefings get shared and become inputs for the firm-wide weekly meeting. You're designing an information architecture, not setting up an app.
 
-*Cross-tool orchestration* — connecting the individual workflows: Granola notes → Drive → Slack summaries → task tracking. Within Cowork's current capabilities, designing how information flows between people's individual AI sessions is genuine systems design. Eventually this extends to n8n or similar automation tools, but the architectural thinking starts here.
+*Cross-tool orchestration* — connecting the individual workflows: Granola notes → Drive → Slack summaries → task tracking. Genuine systems design work that eventually extends to n8n or similar automation tools.
 
-**Why Hyla is the perfect testbed:** Hoppin is already evangelizing Cowork internally. Ty and Mark are ready for individual sessions. If you get 3-5 people at the firm actively using Cowork, you have a live environment to prototype every team-level workflow above — and a case study to sell firm-level engagements elsewhere. The merger adds urgency: post-merger, the combined firm will need standardized tools, shared knowledge bases, and information governance. You can be the person who builds that.
+### Tier 5: Ongoing Monitoring Advisory (TBD retainer)
 
-**Important caveat:** Keep the individual offering clean and standalone. The team-level use cases should inform how you *think* about the escalation, but they shouldn't leak into the pitch for individual sessions. A solo founder at a 6-person fund doesn't need to hear about team briefing workflows — they need their morning meeting prep brief to work. The team tier sells itself naturally when a client says "can you do this for my team?" Don't lead with it.
+Thin retainer sitting above all four tiers. Someone has to watch what Nudge/Push/Cloudflare Gateway surfaces and make decisions about it. Quarterly review, triggered reviews when major new agentic tools launch (happening monthly right now), policy updates, platform evolution guidance.
+
+---
+
+**Why Hyla is the perfect testbed:** Hoppin is already evangelizing Cowork internally. Ty and Mark are ready for individual sessions. If you get 3-5 people at the firm actively using Cowork, you have a live environment to prototype every tier above — and a case study to sell engagements elsewhere. The merger adds urgency: post-merger, the combined firm will need standardized tools, shared knowledge bases, and information governance. You can be the person who builds that.
+
+**Important caveat:** Keep the individual offering clean and standalone. The higher tiers should inform how you *think* about the escalation, but they shouldn't leak into the pitch for individual sessions. A solo founder at a 6-person fund doesn't need to hear about team briefing workflows — they need their morning meeting prep brief to work. The team tier sells itself naturally when a client says "can you do this for my team?" Don't lead with it.
 
 ---
 
