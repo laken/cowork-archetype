@@ -42,10 +42,19 @@
 - He's read Ruben's article — he already knows this concept exists. Doing it live, from his own context, makes it concrete.
 - This is also a trust moment: he sees exactly what Claude knows about him, because he wrote it.
 
+**The sandbox — what's actually running (60 sec):**
+- Cowork runs a real Linux VM (Ubuntu 22.04) on Ty's Mac using Apple's Virtualization.framework — the same native hypervisor UTM uses. It's hardware-level isolation with its own kernel, not a browser tab or a Docker container. Near-native CPU performance on Apple Silicon.
+- The VM is isolated from his filesystem by default. It can only see folders he explicitly grants access to via VirtioFS mount (the "Select a folder" prompt). That mount is per-session, not permanent. The VM's network is locked to a strict allowlist — it can reach Anthropic's API, PyPI, npm, and essentially nothing else. No access to his LAN, no arbitrary web requests.
+- Within the mounted folder, file deletes require a separate permission prompt (the mount starts as read-write but not read-write-delete).
+- The VM resets between sessions. Anything Claude creates inside the VM that isn't saved to the mounted folder disappears. This is why the folder grant matters — it's the only persistent bridge.
+- This is the architectural answer to his "contamination or destruction of important files" concern. Four layers of isolation: VM boundary, bubblewrap namespace isolation, syscall filtering, and network allowlisting. Claude can't reach beyond the folder he grants.
+- One sentence framing: "It's like giving someone a desk in a clean room with one filing cabinet you chose. When they leave, the room gets wiped."
+
 **Security & privacy (5 min):**
 - He's on Max — confirm privacy settings, training opt-out toggle
 - Consumer vs. Commercial terms: Max is under Consumer Terms (same as Pro). The opt-out toggle is the critical action item. This is a credibility moment — most people don't know this.
 - **Tool permissions (show this):** Each connector has per-tool Allow / Ask / Block settings. He can allow Asana reads while blocking writes, permit email search while blocking send. This is the concrete version of "ring-fencing" — not hardware isolation, but granular control over what Claude can and can't do with each connected service. Navigate to Customize > Connectors > Tool permissions to show him.
+- **How connectors route (if he asks):** MCP connector calls go from Claude inside the VM → virtual socket to the desktop app on his Mac → MCP server → external API. Connector traffic never runs inside the VM and never touches his local network directly.
 - Ring-fencing: his Mac Mini "oasis" idea conflates Cowork with OpenClaw. Cowork is already sandboxed (VM + per-connector permissions). The ring-fencing is about which connectors you enable and what the tool permission levels are, not which hardware you're on.
 - MCP connectors fetch on demand, not cached by the connector. Content that enters the conversation IS retained (30 days if training is off). Email content passes through Anthropic's servers for LLM processing.
 - Gaps to acknowledge: calendar data specifics still underdocumented, Granola transcript flow is an open question, prompt injection is real but defenses are evolving

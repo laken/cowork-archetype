@@ -81,13 +81,19 @@ The #1 concern from smart executives (Ty's "ring-fenced approach" question is ty
 
 ### 4. Granola / AI Notetaker Integration
 
-**Status:** NEEDS RESEARCH
+**Status:** PARTIALLY RESEARCHED (March 9, 2026)
 
-**Questions:**
-- [ ] What data does the Granola MCP connector access? Full transcripts? Summaries only?
-- [ ] If meeting transcripts flow through Claude, that's potentially the most sensitive data of all — verbatim conversations with clients, legal counsel, etc.
+**What we now know:**
+- The Granola MCP connector provides summaries, meeting metadata, and attendee lists on the free tier. Verbatim transcripts require a paid Granola tier — the API returns a clear error on free accounts.
+- The `query_granola_meetings` tool performs semantic search across meeting notes and returns inline citations linking to specific meetings.
+- `list_meetings` returns titles and metadata; `get_meetings` returns full notes/summaries; `get_meeting_transcript` returns verbatim transcripts (paid only).
+- Granola's identity model is tightly coupled to the auth provider (Google Workspace vs. personal Gmail). No email change capability. Account migration requires sign-out, re-sign-up, and a separate note transfer flow. Billing is locked to the sign-in email.
+
+**Remaining questions:**
+- [ ] If meeting transcripts flow through Claude, that's potentially the most sensitive data of all — verbatim conversations with clients, legal counsel, etc. What's Anthropic's retention policy for transcript content that enters a conversation?
 - [ ] Does Granola's own privacy policy allow this data to be sent to a third-party LLM?
 - [ ] What's Granola's data handling — where are transcripts stored, who can access them?
+- [ ] For Google Workspace accounts: does the Workspace admin have visibility into or control over the Granola OAuth grant?
 
 ---
 
@@ -148,12 +154,12 @@ This is the practical question every coaching client will ask: "How do I get the
 - Good for: firms with compliance requirements or handling regulated data
 - Tradeoff: cost, admin overhead
 
-**Ty's Mac Mini "oasis" idea** — He's likely conflating Cowork with OpenClaw, which is understandable since both came up on the same call. The distinction matters:
+**Ty's Mac Mini "oasis" idea** — He's conflating Cowork with OpenClaw, which is understandable since both came up on the same call. The distinction matters and is now well-documented:
 
 - **OpenClaw** gives Claude full system access — file system, terminal, browser, everything on that machine. A dedicated Mac Mini is a legitimate security practice here because you're sandboxing what the AI can physically touch. Murat's "100x productivity" setup likely runs this way.
-- **Cowork** runs in a sandboxed VM on your machine and connects to external services through specific MCP connectors you individually authorize. The risk surface is the data flowing through those connectors to Anthropic's servers, not local file system access. A separate Mac Mini doesn't change that data flow.
+- **Cowork** already runs inside a hardware-virtualized VM with four layers of isolation (see Category 2 above). The VM has no LAN access and can only see explicitly granted folders. A separate Mac Mini adds nothing to Cowork's isolation — it's already more isolated than a separate physical machine would be for most use cases. The real risk surface is the data flowing through MCP connectors to Anthropic's servers, and a separate Mac Mini doesn't change that data flow.
 
-This is a useful teaching moment in sessions: "You're thinking about this the right way, but these are different architectures with different risk profiles." Demonstrates expertise immediately and builds trust. The real ring-fencing for Cowork is about which connectors you enable and what your privacy settings are, not which hardware you're on.
+This is a useful teaching moment in sessions: "You're thinking about this the right way, but Cowork already has stronger isolation than a separate Mac Mini would give you. Let me show you the actual architecture." Then walk through the four layers. Demonstrates expertise immediately and reframes the conversation from hardware to data flow.
 
 ---
 
@@ -169,20 +175,43 @@ Covered above in sections 1–6. Summary of the concern: data retrieved via MCP 
 
 ### Category 2: Local System Access (What Can the AI Touch?)
 
+**Cowork VM architecture — now confirmed via reverse engineering ([aaddrick](https://aaddrick.com/blog/reverse-engineering-claude-desktops-cowork-mode-a-deep-dive-into-vm-isolation-and-linux-possibilities), [pvieito](https://pvieito.com/2026/01/inside-claude-cowork)):**
+
+Cowork runs a real Ubuntu 22.04 ARM64 VM via Apple's Virtualization.framework (the same native hypervisor used by UTM and Tart). This is hardware-level isolation with its own Linux kernel — not a container, not a browser sandbox. The VM image is ~500 MB compressed (2 GB decompressed), boots in ~30 seconds, and gets near-native CPU performance on Apple Silicon.
+
+**Four layers of isolation inside the VM:**
+
+1. **VM boundary** (Apple Virtualization.framework / VZVirtualMachine) — hardware-level hypervisor separation from the host OS
+2. **Bubblewrap** — Linux namespace-based process isolation inside the VM (same technology Flatpak uses)
+3. **Seccomp filters** — syscall allowlisting, pre-compiled for ARM64. Only permitted syscalls execute.
+4. **Network proxy** (ports 3128/1080) — strict domain allowlist: `api.anthropic.com`, `pypi.org`, `registry.npmjs.org`, and a few others. Everything else gets 403 Forbidden. Direct DNS lookups fail entirely. No access to the user's LAN.
+
+**File access architecture:**
+
+- User folders are mounted into the VM via VirtioFS at `/sessions/{session-name}/mnt/{folder-name}`. VirtioFS is purpose-built for host-guest filesystem sharing — 75-95% of native I/O performance.
+- Mounts start as read-write (rw). File deletion requires a separate explicit permission grant (rwd mode), triggered by a user-facing prompt.
+- Path validation blocks traversal outside the session directory and rejects binary extensions (.exe, .app, .dmg, .jar, etc.).
+- The VM resets between sessions. Anything not saved to the mounted folder disappears.
+
+**One VM, many sessions:** A single VM instance serves all active Cowork conversations. Each conversation gets its own isolated session with a dedicated Linux user and permission-restricted directories. Sessions can't see each other's files.
+
+**MCP connector routing:** Connector calls go Claude inside VM → vsock (virtual socket) to host desktop app → MCP server → external API. Connector traffic never runs inside the VM and never touches the user's local network.
+
 **Cowork vs. OpenClaw — architecturally different risk profiles:**
 
 | | Cowork | OpenClaw |
 |---|---|---|
-| **File system access** | Sandboxed VM. User designates specific working folders. No access to rest of file system unless explicitly granted. | Full system access — file system, terminal, browser, everything on the machine. |
-| **Connected services** | Per-connector permissions. Each connector shows read/write capabilities in a clear UI. User controls what requires approval vs. what Claude can do autonomously. | Accesses whatever the user's machine can access — browser sessions, local apps, etc. |
-| **Write actions** | Configurable per connector — can require explicit approval for sends, edits, deletions. | Can execute any command the user could execute. |
+| **Isolation** | Hardware-virtualized VM with 4 security layers (VM, bubblewrap, seccomp, network allowlist) | Runs directly on the host OS with full system privileges |
+| **File system access** | VirtioFS mount of explicitly granted folders only. Path traversal blocked. Binary extensions blocked. Deletes require separate permission. | Full system access — file system, terminal, browser, everything on that machine. |
+| **Network** | Strict domain allowlist. No LAN access. No arbitrary web requests. | Full network access — whatever the machine can reach. |
+| **Connected services** | Per-connector Allow/Ask/Block at the individual tool level. MCP traffic routes through the desktop app, not the VM. | Accesses whatever the user's machine can access — browser sessions, local apps, etc. |
 | **Appropriate for** | Executive users, people who want productivity gains with a defined scope. | Power users, developers, people who understand the risk and want maximum capability on an isolated machine. |
 
-**Bottom line for coaching clients:** Cowork's permission model is genuinely tighter than OpenClaw. The designated folder + per-connector approval model gives executives meaningful control. This is a strength of the platform and a selling point in sessions.
+**Bottom line for coaching clients:** Cowork's isolation model is genuinely robust — four layers of defense between Claude and the user's system, plus granular per-tool permissions on every connector. The designated folder + per-connector approval model gives executives meaningful control. This is a strength of the platform and a selling point in sessions.
 
-**What to validate:**
-- [ ] Confirm: can Cowork access anything outside the designated working folder(s)? (Belief: no, but verify)
-- [ ] Document the exact permission UI for each connector — what are the read vs. write vs. "ask me first" options?
+**Validated (March 2026):**
+- [x] Cowork cannot access anything outside the designated working folder(s) — confirmed via VM architecture. VirtioFS mount is the only filesystem bridge, and path validation enforces session boundaries.
+- [ ] Document the exact permission UI for each connector — what are the read vs. write vs. "ask me first" options? **Partial:** per-tool Allow/Ask/Block confirmed in Customize > Connectors > Tool permissions. Full mapping per connector still needed.
 - [ ] Test: if you revoke a connector's permissions mid-session, does it take effect immediately?
 
 ### Category 3: Prompt Injection & Adversarial Content (Can Someone Attack Me Through My Connectors?)
@@ -292,4 +321,4 @@ Andrew connected work Gmail to Cowork MCP without org authorization. Andy admini
 
 ---
 
-*Last updated: March 8, 2026*
+*Last updated: March 9, 2026 — VM architecture section updated with confirmed implementation details from reverse engineering sources. Granola section updated with API tier findings. Ring-fencing section strengthened with four-layer isolation model.*
