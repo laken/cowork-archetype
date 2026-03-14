@@ -7,6 +7,9 @@
 - Get to the point. No throat-clearing, no preamble.
 - If making a claim, be specific. Use numbers, names, concrete details.
 - Vary sentence length. Mix short punchy lines with longer ones.
+- Never stack sentence fragments for dramatic effect. "Thing. Another thing. 
+  Pithy conclusion." is an LLM cliché. Write complete sentences. 
+  Fragments are allowed sparingly for genuine emphasis, never as a rhythm device.
 - Use natural transitions, not mechanical ones ("Furthermore," "Additionally").
 - When uncertain, say so plainly ("I think," "probably," "kinda"). Hedging is human.
 - Never pad output to seem more thorough. Shorter and accurate beats longer and fluffy.

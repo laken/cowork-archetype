@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hyla / Amphibian Morning Briefing — March 10, 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1f2e 0%, #162032 100%);
+      border-bottom: 1px solid #2d3748;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f7fafc;
+      letter-spacing: -0.3px;
+    }
+    .header-left .subtitle {
+      font-size: 12px;
+      color: #718096;
+      margin-top: 3px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-choppy {
+      background: #2d3748;
+      color: #f6ad55;
+      border: 1px solid #744210;
+    }
+    .badge-risk-on {
+      background: #1a3a2a;
+      color: #68d391;
+      border: 1px solid #276749;
+    }
+    .badge-risk-off {
+      background: #3a1a1a;
+      color: #fc8181;
+      border: 1px solid #742a2a;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 32px;
+    }
+    .section {
+      margin-bottom: 28px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4a90d9;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1e2a3a;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 11px;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    /* Regime signal */
+    .regime-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .regime-label {
+      font-size: 12px;
+      color: #718096;
+    }
+    .regime-rationale {
+      font-size: 13px;
+      color: #a0aec0;
+    }
+    /* Price table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #4a5568;
+      text-align: right;
+      padding: 6px 10px;
+      border-bottom: 1px solid #2d3748;
+    }
+    th:first-child { text-align: left; }
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #1a202c;
+      text-align: right;
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+    td:first-child { text-align: left; font-weight: 600; color: #f7fafc; }
+    tr:last-child td { border-bottom: none; }
+    .up { color: #68d391; }
+    .down { color: #fc8181; }
+    .neutral { color: #718096; }
+    /* Basis table */
+    .basis-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a202c;
+    }
+    .basis-row:last-child { border-bottom: none; }
+    .basis-label { font-size: 13px; font-weight: 600; color: #f7fafc; }
+    .basis-val { font-size: 13px; }
+    .basis-pct { font-size: 11px; color: #718096; margin-left: 6px; }
+    /* Technical levels */
+    .levels-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .level-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid #1a202c;
+      font-size: 13px;
+    }
+    .level-row:last-child { border-bottom: none; }
+    .level-key { color: #718096; }
+    .level-val { color: #e2e8f0; font-weight: 500; }
+    /* Progress bar */
+    .range-bar-container {
+      margin: 10px 0;
+    }
+    .range-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #4a5568;
+      margin-bottom: 4px;
+    }
+    .range-bar {
+      background: #2d3748;
+      border-radius: 4px;
+      height: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .range-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2b6cb0, #4a90d9);
+      border-radius: 4px;
+    }
+    .range-bar-marker {
+      position: absolute;
+      top: -2px;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      border: 2px solid #4a90d9;
+      transform: translateX(-50%);
+    }
+    /* Bandwidth label */
+    .current-pct {
+      font-size: 12px;
+      color: #a0aec0;
+      margin-top: 4px;
+    }
+    /* Relevance text */
+    .relevance-box {
+      background: #162032;
+      border-left: 3px solid #4a90d9;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+      color: #a0aec0;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    /* Asana tasks */
+    .task-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid #1a202c;
+      font-size: 13px;
+    }
+    .task-row:last-child { border-bottom: none; }
+    .task-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .dot-open { background: #f6ad55; }
+    .dot-overdue { background: #fc8181; }
+    .dot-completed { background: #68d391; }
+    .task-name { color: #e2e8f0; flex: 1; }
+    .task-meta { font-size: 11px; color: #4a5568; margin-top: 2px; }
+    /* Email items */
+    .email-item {
+      padding: 11px 0;
+      border-bottom: 1px solid #1a202c;
+    }
+    .email-item:last-child { border-bottom: none; }
+    .email-from { font-size: 12px; color: #4a90d9; font-weight: 600; margin-bottom: 2px; }
+    .email-subject { font-size: 13px; color: #e2e8f0; margin-bottom: 3px; }
+    .email-snippet { font-size: 12px; color: #718096; }
+    .email-flag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-top: 5px;
+    }
+    .flag-action { background: #742a2a; color: #fc8181; }
+    .flag-monitor { background: #2a3d18; color: #9ae6b4; }
+    .flag-info { background: #1a2d3a; color: #63b3ed; }
+    /* Slack items */
+    .slack-item {
+      padding: 9px 0;
+      border-bottom: 1px solid #1a202c;
+    }
+    .slack-item:last-child { border-bottom: none; }
+    .slack-channel { font-size: 11px; color: #4a5568; margin-bottom: 2px; }
+    .slack-text { font-size: 13px; color: #e2e8f0; }
+    .slack-time { font-size: 11px; color: #4a5568; }
+    /* Vision section */
+    .vision-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a202c;
+      font-size: 13px;
+    }
+    .vision-item:last-child { border-bottom: none; }
+    .vision-icon { font-size: 16px; flex-shrink: 0; }
+    .vision-content {}
+    .vision-title { color: #f7fafc; font-weight: 600; margin-bottom: 2px; }
+    .vision-desc { color: #718096; }
+    /* No events */
+    .empty-state {
+      font-size: 13px;
+      color: #4a5568;
+      font-style: italic;
+      padding: 8px 0;
+    }
+    /* OB imbalance */
+    .ob-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #1a202c;
+    }
+    .ob-stat:last-child { border-bottom: none; }
+    .ob-key { font-size: 13px; color: #718096; }
+    .ob-val { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+    @media (max-width: 700px) {
+      .grid-2, .grid-3, .levels-grid { grid-template-columns: 1fr; }
+      .container { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Hyla / Amphibian Morning Briefing</h1>
+    <div class="subtitle">Tuesday, March 10, 2026 · 9:40 AM ET · Demo session with Ty Shinn</div>
+  </div>
+  <span class="badge badge-choppy">⚡ Transition / Choppy</span>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: MARKET REGIME -->
+  <div class="section">
+    <div class="section-title">§1 — Market Regime Signal</div>
+
+    <div class="regime-row">
+      <span class="badge badge-choppy">Transition / Choppy</span>
+      <div>
+        <div class="regime-rationale">BTC 7-day +2.2% (barely positive), perp basis negative across BTC &amp; ETH, bid-heavy order book, mixed alt performance — signals pulling in opposite directions.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Asset</th>
+            <th>Price (USDT)</th>
+            <th>24h Change</th>
+            <th>Signal vs BTC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BTC</td>
+            <td>$69,819.76</td>
+            <td class="up">+1.50%</td>
+            <td class="neutral">—</td>
+          </tr>
+          <tr>
+            <td>ETH</td>
+            <td>$2,027.36</td>
+            <td class="up">+0.85%</td>
+            <td class="down">Underperforming</td>
+          </tr>
+          <tr>
+            <td>SOL</td>
+            <td>$85.84</td>
+            <td class="up">+1.23%</td>
+            <td class="neutral">In-line</td>
+          </tr>
+          <tr>
+            <td>AVAX</td>
+            <td>$9.35</td>
+            <td class="up">+1.53%</td>
+            <td class="up">Outperforming</td>
+          </tr>
+          <tr>
+            <td>LINK</td>
+            <td>$8.95</td>
+            <td class="up">+0.75%</td>
+            <td class="down">Underperforming</td>
+          </tr>
+          <tr>
+            <td>DOGE</td>
+            <td>$0.09470</td>
+            <td class="up">+3.48%</td>
+            <td class="up">Strongly outperforming</td>
+          </tr>
+          <tr>
+            <td>CRO</td>
+            <td>$0.07596</td>
+            <td class="up">+0.78%</td>
+            <td class="down">Underperforming</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="card">
+        <div class="card-title">Perpetual Futures Basis (Perp − Spot)</div>
+        <div class="basis-row">
+          <span class="basis-label">BTC-PERP</span>
+          <span>
+            <span class="basis-val down">−$51.86</span>
+            <span class="basis-pct">(−0.07% discount)</span>
+          </span>
+        </div>
+        <div class="basis-row">
+          <span class="basis-label">ETH-PERP</span>
+          <span>
+            <span class="basis-val down">−$0.44</span>
+            <span class="basis-pct">(−0.02% discount — near flat)</span>
+          </span>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:#718096;">
+          Negative basis across both majors indicates futures traders are not paying a premium for leveraged long exposure — a neutral-to-cautious positioning signal, contrary to pure risk-on conditions.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: KEY LEVELS -->
+  <div class="section">
+    <div class="section-title">§2 — Key Levels &amp; Technical Context</div>
+
+    <div class="levels-grid">
+      <div class="card">
+        <div class="card-title">Bitcoin (BTC) — 7-Day Range</div>
+        <div class="level-row"><span class="level-key">7-day High</span><span class="level-val">$74,075 (Mar 4)</span></div>
+        <div class="level-row"><span class="level-key">7-day Low</span><span class="level-val">$65,601 (Mar 8)</span></div>
+        <div class="level-row"><span class="level-key">Range Width</span><span class="level-val">$8,474</span></div>
+        <div class="level-row"><span class="level-key">Current</span><span class="level-val">$69,820</span></div>
+        <div class="range-bar-container" style="margin-top:12px;">
+          <div class="range-bar-label">
+            <span>$65,601</span>
+            <span style="color:#a0aec0; font-size:11px;">50th pctile</span>
+            <span>$74,075</span>
+          </div>
+          <div class="range-bar">
+            <div class="range-bar-fill" style="width:49.8%;"></div>
+          </div>
+        </div>
+        <div class="current-pct">Position: 49.8th percentile of 7-day range</div>
+        <div style="margin-top:12px; font-size:12px; color:#718096;">
+          <strong style="color:#fc8181;">Support:</strong> $65,600–65,800 (Mar 8–9 cluster lows)<br/>
+          <strong style="color:#68d391;">Resistance:</strong> $71,300–73,600 (Mar 5–6 highs), $74,075 (week high)
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Ethereum (ETH) — 7-Day Range</div>
+        <div class="level-row"><span class="level-key">7-day High</span><span class="level-val">$2,200 (Mar 4)</span></div>
+        <div class="level-row"><span class="level-key">7-day Low</span><span class="level-val">$1,911 (Mar 8)</span></div>
+        <div class="level-row"><span class="level-key">Range Width</span><span class="level-val">$289</span></div>
+        <div class="level-row"><span class="level-key">Current</span><span class="level-val">$2,027</span></div>
+        <div class="range-bar-container" style="margin-top:12px;">
+          <div class="range-bar-label">
+            <span>$1,911</span>
+            <span style="color:#a0aec0; font-size:11px;">40th pctile</span>
+            <span>$2,200</span>
+          </div>
+          <div class="range-bar">
+            <div class="range-bar-fill" style="width:40.1%;"></div>
+          </div>
+        </div>
+        <div class="current-pct">Position: 40.1th percentile of 7-day range — lower half</div>
+        <div style="margin-top:12px; font-size:12px; color:#718096;">
+          <strong style="color:#fc8181;">Support:</strong> $1,910–1,930 (Mar 8–9 lows)<br/>
+          <strong style="color:#68d391;">Resistance:</strong> $2,074 (today's high), $2,163 (Mar 5), $2,200 (week high)
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="card">
+        <div class="card-title">Order Book Snapshot — BTC/USDT (Depth 20)</div>
+        <div class="ob-stat">
+          <span class="ob-key">Total Bid Volume (top 20 levels)</span>
+          <span class="ob-val up">1.367 BTC</span>
+        </div>
+        <div class="ob-stat">
+          <span class="ob-key">Total Ask Volume (top 20 levels)</span>
+          <span class="ob-val down">1.101 BTC</span>
+        </div>
+        <div class="ob-stat">
+          <span class="ob-key">Bid/Ask Ratio</span>
+          <span class="ob-val up">1.24× — Bid Heavy</span>
+        </div>
+        <div style="margin-top:8px; font-size:12px; color:#718096;">
+          Near-term buyers are absorbing more depth than sellers at current levels, providing mild price support — though this can shift quickly in a choppy regime.
+        </div>
+      </div>
+    </div>
+
+    <div class="relevance-box">
+      <strong style="color:#63b3ed;">Portfolio Relevance — Amphibian Alpha Vehicles</strong><br/><br/>
+      <strong>BTC Alpha:</strong> BTC is mid-range at the 50th percentile of the 7-day band, with negative perp basis suggesting the market isn't committed to upside. A consolidation above $68K support is constructive but not yet breakout territory.<br/><br/>
+      <strong>ETH Alpha:</strong> ETH is underperforming BTC (only +0.85% vs +1.50% today) and sits at the 40th percentile — lower in its range. The $1,910–1,930 support band is the key level to hold; a break there would increase downside pressure relative to BTC exposure.<br/><br/>
+      <strong>USD Alpha:</strong> The choppy regime with negative perp basis provides a favorable environment for market-neutral and yield-generating strategies — the market is not trending strongly enough to require directional conviction.
+    </div>
+  </div>
+
+  <!-- SECTION 3: ASANA -->
+  <div class="section">
+    <div class="section-title">§3 — Asana — Project &amp; Task Signal</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Active / Open Items — Portfolio Operations</div>
+
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Collecting Liquid Venture Data for Q4 — Dashboards</div>
+            <div class="task-meta">Weekly Sprint · Last modified Feb 2024 · Still open</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Book DD calls with underlying managers — Hyla LV</div>
+            <div class="task-meta">Weekly Sprint · Last modified Mar 2024 · Still open</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Form D submission</div>
+            <div class="task-meta">Weekly Sprint · Last modified Mar 2024 · Still open</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Fund outreach — NFA exemption</div>
+            <div class="task-meta">Weekly Sprint · Last modified Nov 2025 · Still open</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Liquid Fund Due Diligence — ChainLink calls</div>
+            <div class="task-meta">Weekly Sprint · Not recently modified · Still open</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name">Co-marketing Luna with Amphibian team</div>
+            <div class="task-meta">Amphibian Capital Tasks · Last modified Jan 2023</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Active Projects in Workspace (57 total)</div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name"><a href="https://app.asana.com/1/1202702716471402/project/1203708848702959" style="color:#63b3ed; text-decoration:none;">Weekly Sprint</a></div>
+            <div class="task-meta">Multiple open tasks, most modified 2024</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name"><a href="https://app.asana.com/1/1202702716471402/project/1209079698486774" style="color:#63b3ed; text-decoration:none;">Hyla Cyclical Program Management</a></div>
+            <div class="task-meta">Active</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name"><a href="https://app.asana.com/1/1202702716471402/project/1210268440530890" style="color:#63b3ed; text-decoration:none;">Attio Implementation</a></div>
+            <div class="task-meta">CRM/IR platform build-out</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name"><a href="https://app.asana.com/1/1202702716471402/project/1209563260965267" style="color:#63b3ed; text-decoration:none;">Anti-phishing mitigations</a></div>
+            <div class="task-meta">Security</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <span class="task-dot dot-open"></span>
+          <div>
+            <div class="task-name"><a href="https://app.asana.com/1/1202702716471402/project/1208471201941864" style="color:#63b3ed; text-decoration:none;">Liquid Venture Q1 Statements &amp; Reconciliation</a></div>
+            <div class="task-meta">Active — Q1 reporting</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:12px; color:#4a5568; font-style:italic;">
+          ℹ️ No allocation engine, HRP, mean-variance, or Black-Litterman tasks found in current visible projects. This section would be richer with Ty's own Asana workspace connected.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: CALENDAR -->
+  <div class="section">
+    <div class="section-title">§4 — Calendar &amp; Schedule — March 10, 2026</div>
+    <div class="card">
+      <div class="card-title">Today's Events (Andy's calendar as proxy)</div>
+      <div class="task-row">
+        <span class="task-dot" style="background:#4a90d9;"></span>
+        <div>
+          <div class="task-name">Working Location: Home</div>
+          <div class="task-meta">All day · laken@hylafunds.com</div>
+        </div>
+      </div>
+      <div style="margin-top:12px; padding: 10px 14px; background:#162032; border-radius:6px; font-size:12px; color:#718096;">
+        <strong style="color:#a0aec0;">📅 Ty Shinn Session — Today (March 10)</strong><br/>
+        Per CLAUDE.md, Ty's first guinea pig AI enablement session is scheduled for today. A Zoom notification from yesterday (Mar 9, 7pm ET) shows Ty already joined the Hyla Fund Management meeting — this may reflect a prep call or early connection test. No calendar event visible in the connected account for the formal session time today.
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:#4a5568; font-style:italic;">
+        With Ty's own calendar connected, this section would surface his actual IC meetings, manager calls, LP interactions, and subscription/redemption deadlines.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: COMMUNICATIONS -->
+  <div class="section">
+    <div class="section-title">§5 — Communications Requiring Action</div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Gmail — Action Items (Last 24 hrs)</div>
+
+        <div class="email-item">
+          <div class="email-from">Andrew Hoppin → Sonia Taylor</div>
+          <div class="email-subject">Fwd: Ama Fund Side Pocket</div>
+          <div class="email-snippet">Andrew following up: "Were you able to take care of this?" — Re: 17M/Will requesting confirmation of transfer + share certificates + fund admin updates to side pocket. Active thread awaiting Sonia's response.</div>
+          <span class="email-flag flag-action">Needs Response</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">Office 17M (Will) → Andrew Hoppin</div>
+          <div class="email-subject">Re: Ama Fund Side Pocket</div>
+          <div class="email-snippet">"Can I confirm this transfer executed? Are there accompanying share certificates and fund admin updates to the sidepocket?" — Waiting on confirmation from Hyla ops.</div>
+          <span class="email-flag flag-action">Pending Confirmation</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">NAV Fund Services (Yatin Arora) → Thao</div>
+          <div class="email-subject">RE: Outstanding Invoice for Amphibian International SPC Ltd Feb 2026</div>
+          <div class="email-snippet">In-kind charges recon through Feb 26 attached. 2-month overdue invoice reminder active. Multiple back-and-forth today on reconciliation items.</div>
+          <span class="email-flag flag-action">Overdue Invoice</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">NAV Consulting (transfer.agency)</div>
+          <div class="email-subject">Amphibian BTC Accumulator — Tranquility Base KYC</div>
+          <div class="email-snippet">Entity Self-Certification Form required for investor "Tranquility Base Management LLC." Outstanding compliance item — cc Todd.</div>
+          <span class="email-flag flag-action">KYC Outstanding</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">Brian Robertson (Evolutionary Holdings)</div>
+          <div class="email-subject">Re: Amphibian USD Alpha Fund — November 2025 Statement</div>
+          <div class="email-snippet">"It's been a long time since I exited this fund, yet I'm still getting statements showing a balance — is that still from some illiquid position?" — LP inquiry requiring response.</div>
+          <span class="email-flag flag-action">LP Inquiry</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">NAV Fund Services → mark@chainlinkfund.com</div>
+          <div class="email-subject">Monthly Reports | November 2025 | Amphibian BTC Accumulator INTL</div>
+          <div class="email-snippet">NAV calculation complete. Package of monthly reports updated on NAV Portal.</div>
+          <span class="email-flag flag-monitor">Reports Ready</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">Office 17M (Savinien Caracostea)</div>
+          <div class="email-subject">Re: Kemunto Distribution and Organizational Update</div>
+          <div class="email-snippet">Banking wire details provided for distribution. Sonia/Mark to process.</div>
+          <span class="email-flag flag-monitor">Wire Details Received</span>
+        </div>
+
+        <div class="email-item">
+          <div class="email-from">Edge Capital (Boback)</div>
+          <div class="email-subject">EDGE CAPITAL: Feb +0.5% USD &amp; +0.6% BTC</div>
+          <div class="email-snippet">February performance estimate: +0.5% USD / +0.6% BTC net. Market neutral — "capturing yield in a compressed market."</div>
+          <span class="email-flag flag-info">Manager Report</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Slack — #cyclical-alerts — Hyla Bandit Model</div>
+
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 10 1:01 AM PDT</div>
+          <div class="slack-text up"><strong>▲ BUY 1.833 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Today — most recent signal</div>
+        </div>
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 9 1:01 AM PDT</div>
+          <div class="slack-text down"><strong>▼ SELL 0.024 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Yesterday — tiny trim</div>
+        </div>
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 8 12:01 AM PST</div>
+          <div class="slack-text down"><strong>▼ SELL 1.919 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Larger reduce at $66-67K levels</div>
+        </div>
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 4 1:01 AM PST</div>
+          <div class="slack-text up"><strong>▲ BUY 0.029 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Small add near $72-73K</div>
+        </div>
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 3 1:01 AM PST</div>
+          <div class="slack-text up"><strong>▲ BUY 3.808 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Significant add at $68-69K</div>
+        </div>
+        <div class="slack-item">
+          <div class="slack-channel">#cyclical-alerts · Mar 2 1:01 AM PST</div>
+          <div class="slack-text down"><strong>▼ SELL 3.884 BTC</strong> — [hyla-bandit-model]</div>
+          <div class="slack-time">Large reduce at ~$68-70K</div>
+        </div>
+        <div style="margin-top:12px; padding:10px; background:#162032; border-radius:6px; font-size:12px; color:#718096;">
+          <strong style="color:#a0aec0;">Bandit Model Pattern:</strong> Sold ~5.8 BTC during the Mar 2-8 pullback from $73K to $65.6K. Bought back ~5.7 BTC on the recovery. Today's BUY signal (1.833 BTC) at current ~$70K represents re-accumulation during the current choppy consolidation.
+        </div>
+        <div style="margin-top:12px;">
+          <div class="slack-channel">#general · Mar 4 9:25 AM PST</div>
+          <div class="slack-text" style="color:#a0aec0;">Andrew Hoppin: <em>"A few Wednesday thoughts on market positioning for Hyla and Amphibian (also sharing w/ James/Todd/David)..."</em></div>
+          <div class="slack-time">From 6 days ago — may contain active positioning views</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: VISION -->
+  <div class="section">
+    <div class="section-title">§6 — What This Briefing Would Be With Your Data Connected</div>
+    <div class="card">
+      <p style="font-size:13px; color:#718096; margin-bottom:16px;">
+        This briefing was built using Andy's connected accounts as proxy. With Ty's own data sources integrated, every section transforms from market context into portfolio decision support:
+      </p>
+
+      <div class="vision-item">
+        <span class="vision-icon">📊</span>
+        <div class="vision-content">
+          <div class="vision-title">Portfolio Drift Flags from the HLV Portfolio Management Spreadsheet</div>
+          <div class="vision-desc">Live target-weight vs. actual-weight comparison for BTC Alpha, ETH Alpha, and USD Alpha vehicles — flagging when positions have drifted beyond rebalancing thresholds and what specific trades would bring them back.</div>
+        </div>
+      </div>
+
+      <div class="vision-item">
+        <span class="vision-icon">⚠️</span>
+        <div class="vision-content">
+          <div class="vision-title">Risk Limit Utilization Across Amphibian Vehicles</div>
+          <div class="vision-desc">Drawdown vs. mandate limits, position concentration flags, and VaR utilization — surfaced automatically from your risk framework rather than requiring a manual pull each morning.</div>
+        </div>
+      </div>
+
+      <div class="vision-item">
+        <span class="vision-icon">📈</span>
+        <div class="vision-content">
+          <div class="vision-title">Manager Performance vs. Benchmarks with Review Triggers</div>
+          <div class="vision-desc">Rolling performance for Amphibian's underlying fund managers (e.g., Edge Capital, Accumulator, Sygnum) vs. their respective benchmarks — with auto-triggered review flags when underperformance exceeds thresholds.</div>
+        </div>
+      </div>
+
+      <div class="vision-item">
+        <span class="vision-icon">📋</span>
+        <div class="vision-content">
+          <div class="vision-title">Pre-populated IC Analytics Pack Inputs</div>
+          <div class="vision-desc">Your IC Analytics Pack automatically pre-filled from current position data + market context from this briefing — eliminating the manual data-gathering step before each investment committee review.</div>
+        </div>
+      </div>
+
+      <div class="vision-item">
+        <span class="vision-icon">🔔</span>
+        <div class="vision-content">
+          <div class="vision-title">Decision / Exception Log Prompts at Market Move Thresholds</div>
+          <div class="vision-desc">When BTC moves ±5% intraday or crosses a key level like $65,600 support, the briefing surfaces a structured decision prompt — "BTC has broken 7-day support. Current USD Alpha allocation implies X% drawdown exposure. Do you want to reduce, hold, or hedge?"</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; padding:12px 16px; background:#1a2d1a; border-left:3px solid #68d391; border-radius:0 6px 6px 0; font-size:13px; color:#9ae6b4;">
+        <strong>The core gap this fills:</strong> The difference between "what happened in markets" and "what it means for your specific portfolio decisions today." Market data is freely available. The intelligence layer — mapping market moves to your specific mandates, limits, and targets — is what this system provides.
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding:20px 0; font-size:11px; color:#2d3748;">
+    Generated by Claude (Archetype Consulting AI) · Demo session data · March 10, 2026
+  </div>
+
+</div>
+</body>
+</html>

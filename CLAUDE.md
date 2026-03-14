@@ -28,11 +28,14 @@
 
 **He is an expert at productivity and project management tools.** Scrum Master certified, extensive experience with Kanban, Jira, Notion, and similar systems. Do not explain basic concepts or hand-hold on tooling. Treat him as a peer.
 
+**Extended thinking:** Toggle on for strategic/analytical depth tasks; leave off for routine Cowork tasks. All surfaces (claude.ai, Claude Code, Cowork) draw from the same usage pool — don't leave it always-on.
+
 ---
 
 ## How to Write With Andy (Lessons Learned)
 
 **Before writing any article, get three things:**
+
 1. The argument in one paragraph, in Andy's words — what he wants the reader to believe by the end that they didn't believe at the beginning, and the one fact or moment that changed it.
 2. A benchmark piece — one article he'd point to and say "that's the register." Even a few paragraphs. This gives a positive model, not just prohibitions to avoid.
 3. Confirmation of the specific audience and context (e.g., Andrew Hoppin's warm outreach to peer fund managers vs. cold LinkedIn).
@@ -44,6 +47,8 @@
 **Editing LLM text produces more LLM text.** When a draft isn't working, discard it and write from the source material. Don't patch.
 
 **The prohibitions in context.md are necessary but not sufficient.** They describe what wrong looks like. A benchmark example describes what right looks like. Both are needed.
+
+**Before producing any text output, read `voice-dna.md`.** It lives at `/sessions/magical-exciting-knuth/mnt/Archetype/voice-dna.md`. Apply it to everything – articles, slides, one-pagers, emails, interface copy. The banned phrases list includes a FATAL category (the "This isn't X, this is Y" negation pattern) that causes output to fail even when everything else is correct.
 
 ---
 
@@ -70,6 +75,7 @@ Andy caught a significant failure mode in security vendor research: treating mar
 When evaluating a claim about what a vendor *cannot* do (especially privacy or access-limitation claims), ask: does the documentation explicitly state this limitation, or does it merely describe what the vendor typically does? These are different. Absence of a capability from marketing copy is not evidence the capability doesn't exist.
 
 Claims about vendor access constraints are only defensible when:
+
 1. The vendor's technical documentation explicitly states the limitation, not just describes common use cases.
 2. A contractual commitment exists, or
 3. A credible independent technical audit confirms the architecture.
@@ -78,7 +84,28 @@ Claims about vendor access constraints are only defensible when:
 
 ---
 
-*Last updated: March 8, 2026, after Ty session prep and guinea pig pipeline planning.*
+*Last updated: March 13, 2026, after Ty session debrief and Cowork coaching offering development.*
+
+---
+
+## Cowork Expertise — 2-Week Learning Path
+
+**Week 1:**
+- Days 1–2: Dissect [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) — read raw file structure, not just install
+- Days 3–4: Build first custom skill via skill-creator plugin; run eval cycle
+- Days 5–7: Sub-agent orchestration + scheduled tasks; token economics of MCP-to-Skills compilation
+
+**Week 2:**
+- Days 8–9: Build a founder-useful plugin from scratch (investor update, security posture audit, OKR breakdown)
+- Days 10–11: Enterprise admin layer — per-user provisioning, private marketplace flows, Customize menu
+- Days 12–13: Prompt craft framework for agentic delegation vs. chat; CLAUDE.md as highest-ROI setup lever
+- Day 14: Document own Cowork stack as a worked example and coaching artifact
+
+**Reading to evaluate before subscribing paid:**
+- Karo Zieminski — [@karozieminski on Substack](https://karozieminski.substack.com) — practitioner-level Cowork content, 11K subscribers, 50+ tip power user guide is the benchmark. Read 5–6 back posts first.
+- Sid Saladi — [sidsaladi.substack.com](https://sidsaladi.substack.com) — PM background, advanced Cowork guide published March 11. Same evaluation standard.
+
+**Key resources:** [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) · [anthropics/skills](https://github.com/anthropics/skills) · [claude.com/plugins](https://claude.com/plugins) · [platform docs — agent skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) · [Claude Code plugin docs](https://code.claude.com/docs/en/plugins)
 
 ---
 
@@ -100,9 +127,10 @@ Claims about vendor access constraints are only defensible when:
 
 ## AI Enablement Advisory — Current State (March 8, 2026)
 
-**First guinea pig session:** Ty Shinn (GP, Hyla Funds), booked for Tuesday March 10. Session prep and cheat sheet in `clients/hyla-amphibian/`.
+**First guinea pig session:** Ty Shinn (GP, Hyla Funds) — completed March 10. Debrief + follow-up: `clients/hyla-amphibian/ai-enablement/ty/ty-session-followup.md`. Key learnings: (1) security/architecture framing landed well — keep it first; (2) demo-heavy approach got "this could be more technical" feedback — session 2 must be hands-on with Ty driving; (3) CLAUDE.md/context file setup is the highest-leverage first step and wasn't completed — session 2 priority; (4) morning briefing demo registered as "more noise" not a win — trust must be earned before delegation; (5) multi-agent debate architecture (James's 7 agents, Andrew's 8 debating agents, Goldman diverse-team analogy) was the most energizing part of the session — research this seriously; (6) "drudge work vs. judgment work" is the right framing for scoping what to automate.
 
 **Key files for this offering:**
+
 - `offerings/ai-enablement/ai-executive-coaching-wip.md` — Master offering doc (canonical, 5-tier architecture)
 - `offerings/ai-enablement/ai-connectivity-governance-framework.md` — Standalone governance framework IP (6 decision categories, decision matrix, engagement structure)
 - `offerings/ai-enablement/cowork-platform-reference.md` — Cowork trajectory, backup strategies, mobile gap, Vercept/Vy intel, diagram tools, podcasts
@@ -114,6 +142,17 @@ Claims about vendor access constraints are only defensible when:
 
 **Next guinea pig targets:** Hoppin (offering sharpening call), Michael Kraus, Beth Linker. Mark Wagner after Ty's session confirms the structure works.
 
+**Platform note (March 9, 2026):** Microsoft Copilot Cowork launched on M365 — same Claude engine, cloud architecture. When Anthropic launches cloud Cowork (near-certain), governance questions get more complex. Good for this business.
+
+**Offering files:**
+
+- `offerings/ai-enablement/ai-executive-coaching-wip.md` — Master offering doc (canonical, 5-tier session architecture)
+- `offerings/ai-enablement/cowork-coaching-offering.md` — Offering ladder, pricing, financial model, competitive differentiator, learning path *(new March 2026)*
+- `offerings/ai-enablement/ai-connectivity-governance-framework.md` — Standalone governance framework IP (6 decision categories, decision matrix)
+- `offerings/ai-enablement/cowork-platform-reference.md` — Cowork trajectory, backup strategies, mobile gap, Vercept/Vy intel
+- `offerings/ai-enablement/cowork-security-privacy-research.md` — Security/privacy research tracker
+- `clients/hyla-amphibian/ai-enablement/ty/` — All Ty session materials (prep, cheatsheet, workplan, follow-up)
+
 ---
 
 ## Acquia Alumni Outreach — Sales Navigator List
@@ -121,9 +160,11 @@ Claims about vendor access constraints are only defensible when:
 Saved search in Sales Navigator: "Acquia Alumni — March 2026" (81 results, past colleague + 1st degree + 1–200 headcount filters). Six priority contacts added to Notion as Outreach tasks. Resume scrolling after John Kennedy to complete the list triage.
 
 Priority order as of session close:
+
 1. Michael Kraus — former VP, direct report 2.5 yrs (High)
 2. Beth Linker — CPO Finite State, security peer (High)
 3. John Kennedy — CEO Actual AI, Acquia Slack + Amin connection (High)
 4. Chris Brookins — VP Eng Appcues, remembers Andy (Medium)
 5. Bryan House — CEO Elastic Path, VC-connected (Medium)
 6. Jeffrey McGuire — open invitation to reconnect, European (Medium)
+

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Enablement Coaching – Archetype Consulting</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0d0d;
+    --off-white: #f5f4f0;
+    --warm-gray: #e8e6e0;
+    --mid-gray: #9b9890;
+    --accent: #c8501a;
+    --accent-light: #f0e0d8;
+    --green: #2d6a4f;
+    --green-light: #d8ede4;
+    --font: 'Georgia', serif;
+    --mono: 'Menlo', 'Courier New', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--off-white);
+    color: var(--black);
+    line-height: 1.6;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 48px 80px;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 56px;
+  }
+  .wordmark {
+    font-family: var(--font);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+  .wordmark span { color: var(--accent); }
+  .header-contact {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mid-gray);
+    text-align: right;
+    line-height: 1.8;
+  }
+  .header-contact a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 56px;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .hero-sub {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #444;
+    max-width: 620px;
+  }
+
+  /* DIVIDER */
+  hr {
+    border: none;
+    border-top: 1px solid var(--warm-gray);
+    margin: 48px 0;
+  }
+
+  /* SECTION LABELS */
+  .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  /* THE PROBLEM */
+  .problem {
+    background: var(--black);
+    color: var(--off-white);
+    padding: 40px 44px;
+    margin-bottom: 56px;
+    border-radius: 2px;
+  }
+  .problem .label { color: #666; }
+  .problem blockquote {
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--accent);
+    padding-left: 24px;
+  }
+  .problem .note {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #888;
+    padding-left: 27px;
+  }
+
+  /* WHAT A SESSION IS */
+  .session-block {
+    margin-bottom: 56px;
+  }
+  .session-block h2 {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .session-intro {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    max-width: 680px;
+    margin-bottom: 32px;
+  }
+  .session-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .session-card {
+    background: white;
+    border: 1px solid var(--warm-gray);
+    padding: 24px 26px;
+    border-radius: 2px;
+  }
+  .session-card h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .session-card p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #333;
+  }
+
+  /* WHAT YOU WALK AWAY WITH */
+  .deliverables {
+    margin-bottom: 56px;
+  }
+  .deliverables h2 {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .deliverables-intro {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    max-width: 640px;
+    margin-bottom: 28px;
+  }
+  .deliverable-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .deliverable-list li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #333;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--warm-gray);
+  }
+  .deliverable-list li:last-child { border-bottom: none; }
+  .deliverable-list li .arrow {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding-top: 2px;
+  }
+
+  /* PRICING LADDER */
+  .pricing {
+    margin-bottom: 56px;
+  }
+  .pricing h2 {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .pricing-intro {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    max-width: 640px;
+    margin-bottom: 28px;
+  }
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .tier {
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tier-1 { background: #1a2a3a; color: var(--off-white); }
+  .tier-2 { background: #2a3a2a; color: var(--off-white); }
+  .tier-3 { background: var(--black); color: var(--off-white); }
+  .tier-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+  .tier-name {
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 1.25;
+  }
+  .tier-price {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .tier-price sub {
+    font-size: 12px;
+    opacity: 0.6;
+    vertical-align: baseline;
+    letter-spacing: 0;
+  }
+  .tier-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.75;
+    margin-top: 4px;
+  }
+
+  /* WHO THIS IS FOR */
+  .for-who {
+    background: var(--accent-light);
+    padding: 36px 44px;
+    margin-bottom: 56px;
+    border-radius: 2px;
+  }
+  .for-who h2 {
+    font-size: 22px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .for-who p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    max-width: 640px;
+  }
+  .fit-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .fit-list li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    padding-left: 20px;
+    position: relative;
+  }
+  .fit-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  /* WHY ANDY */
+  .why-andy {
+    margin-bottom: 56px;
+  }
+  .why-andy h2 {
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .why-andy p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #333;
+    max-width: 680px;
+    margin-bottom: 14px;
+  }
+  .why-andy p:last-child { margin-bottom: 0; }
+
+  /* CTA */
+  .cta {
+    background: var(--black);
+    color: var(--off-white);
+    padding: 48px 44px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .cta-left h2 {
+    font-size: 26px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .cta-left p {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.6;
+  }
+  .cta-right {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 2;
+    color: #aaa;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .cta-right a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 40px 24px 60px; }
+    header { flex-direction: column; gap: 16px; }
+    .header-contact { text-align: left; }
+    .session-grid { grid-template-columns: 1fr; }
+    .tiers { grid-template-columns: 1fr; }
+    .cta { flex-direction: column; }
+    .cta-right { text-align: left; white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Archetype<span>.</span></div>
+  <div class="header-contact">
+    Andy Laken<br>
+    <a href="mailto:andy@laken.com">andy@laken.com</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">AI Enablement Coaching</div>
+  <h1>Get the edge.<br><em>Without</em> the exposure.</h1>
+  <p class="hero-sub">A working session to figure out exactly which parts of your job AI can handle – and to start doing it, with your actual work, in the session itself.</p>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="problem">
+  <span class="label">The situation most executives are in</span>
+  <blockquote>"You know AI tools are getting genuinely powerful. You've probably poked at a few. But your actual workflow hasn't changed, and you're not sure where to start – or what's safe to hand over."</blockquote>
+  <p class="note">It's a translation problem.</p>
+</div>
+
+<!-- WHAT A SESSION IS -->
+<div class="session-block">
+  <span class="label">What we do together</span>
+  <h2>90 minutes building with your actual workflow.</h2>
+  <p class="session-intro">We start from what you actually do every week – the tasks that eat time, the recurring decisions, the things you do well but wish took less effort. Then we figure out what to automate, what to delegate to an agent, and what to keep doing yourself.</p>
+  <div class="session-grid">
+    <div class="session-card">
+      <h3>Before the session</h3>
+      <p>You fill out a short intake survey. What tools you use, how your mornings run, what you'd blink and have done if you could. It lets us skip the orientation and get straight to work.</p>
+    </div>
+    <div class="session-card">
+      <h3>In the session</h3>
+      <p>We map your workflow, pick 1–2 high-leverage tasks, and build something. You drive. By the end you have a working setup.</p>
+    </div>
+    <div class="session-card">
+      <h3>The governance piece</h3>
+      <p>Before you connect AI agents to your real data – email, Drive, CRM – you should know what's in scope. We cover that clearly, without the enterprise overhead.</p>
+    </div>
+    <div class="session-card">
+      <h3>Follow-on (optional)</h3>
+      <p>Some people want one session. Others want help building out a full personal AI workflow over a few weeks, or want to think through team deployment. Either path is available.</p>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- WHAT YOU WALK AWAY WITH -->
+<div class="deliverables">
+  <span class="label">What you leave with</span>
+  <h2>Concrete output.</h2>
+  <p class="deliverables-intro">The session produces real artifacts you can use the same day.</p>
+  <ul class="deliverable-list">
+    <li>
+      <span class="arrow">→</span>
+      <span>A working AI setup configured for your specific workflow – context files, connectors, and the habits that make them useful</span>
+    </li>
+    <li>
+      <span class="arrow">→</span>
+      <span>A clear map of what your AI tools can see and touch – so you can connect them to real data without guessing at the exposure</span>
+    </li>
+    <li>
+      <span class="arrow">→</span>
+      <span>At least one recurring task running on automation or agent delegation by the end of the session</span>
+    </li>
+    <li>
+      <span class="arrow">→</span>
+      <span>A prioritized list of what to automate next, ordered by time savings and complexity</span>
+    </li>
+  </ul>
+</div>
+
+<hr>
+
+<!-- WHO THIS IS FOR -->
+<div class="for-who">
+  <span class="label">Best fit</span>
+  <h2>Who gets the most from this</h2>
+  <p>This works best for founders and executives who are already curious about AI tools but haven't made them part of how they actually work. You don't need a technical background.</p>
+  <ul class="fit-list">
+    <li>You use Claude, ChatGPT, or similar tools occasionally but haven't integrated them into your daily workflow</li>
+    <li>You have recurring tasks that feel like they should be automatable but you haven't had time to figure it out</li>
+    <li>You're about to start deploying AI tools across your team and want to understand the data handling before you do</li>
+    <li>You're a non-technical founder building with AI and hitting the walls that come with that – no specs, accumulating debt, unclear what's safe to ship</li>
+  </ul>
+</div>
+
+<!-- PRICING -->
+<div class="pricing">
+  <span class="label">Engagement options</span>
+  <h2>Start with one session.</h2>
+  <p class="pricing-intro">The initial session is self-contained. Where it goes from there depends on what comes up.</p>
+  <div class="tiers">
+    <div class="tier tier-1">
+      <div class="tier-num">Session</div>
+      <div class="tier-name">Initial Assessment</div>
+      <div class="tier-price">$750<sub> / 90 min</sub></div>
+      <div class="tier-desc">Your workflow mapped, your setup built, your data exposure understood. Hands-on with your actual tools.</div>
+    </div>
+    <div class="tier tier-2">
+      <div class="tier-num">Follow-On</div>
+      <div class="tier-name">Personal Workflow Build-Out</div>
+      <div class="tier-price">Scoped</div>
+      <div class="tier-desc">A series of sessions to build out your full personal AI workflow – skills, automation, context architecture.</div>
+    </div>
+    <div class="tier tier-3">
+      <div class="tier-num">Team</div>
+      <div class="tier-name">Organizational AI Readiness</div>
+      <div class="tier-price">$30–45K</div>
+      <div class="tier-desc">Data governance architecture, MCP connector policy, shared workflow infrastructure, and compliance mapping for your whole team.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY ANDY -->
+<div class="why-andy">
+  <span class="label">Why this, why Andy</span>
+  <h2>One person who holds the whole picture.</h2>
+  <p>Most people offering AI consulting are either engineers who can explain the architecture or productivity coaches who know the tools. The combination is rarer: someone who can read a codebase, map a data flow, understand a regulatory constraint, and also help a non-technical founder think through the organizational decisions that come with deploying agents at team scale.</p>
+  <p>Founders making agentic AI deployment decisions are making organizational leadership decisions, and both lenses need to be in the room.</p>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-left">
+    <h2>Book a session or ask a question.</h2>
+    <p>The intake survey takes about 10 minutes. We go from there.</p>
+  </div>
+  <div class="cta-right">
+    <a href="mailto:andy@laken.com">andy@laken.com</a>
+    Archetype Consulting<br>
+    archetypeconsulting.io
+  </div>
+</div>
+
+</body>
+</html>

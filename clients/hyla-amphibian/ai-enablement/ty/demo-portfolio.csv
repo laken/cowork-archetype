@@ -1,0 +1,29 @@
+fund_vehicle,asset,ticker,quantity,cost_basis_usd,current_value_usd,target_weight_pct,max_weight_pct,risk_limit_notes
+BTC Alpha,Bitcoin,BTC_USD,12.5,825000,,60.0,70.0,Core position - max 70% concentration
+BTC Alpha,Ethereum,ETH_USD,150,307500,,20.0,30.0,Secondary position
+BTC Alpha,Solana,SOL_USD,1200,103200,,10.0,15.0,Alt-L1 exposure
+BTC Alpha,Avalanche,AVAX_USD,3000,27900,,5.0,10.0,Alt-L1 diversifier
+BTC Alpha,Chainlink,LINK_USD,2500,22250,,5.0,10.0,Infrastructure/oracle exposure
+ETH Alpha,Ethereum,ETH_USD,500,1025000,,70.0,80.0,Core position - max 80% concentration
+ETH Alpha,Solana,SOL_USD,2000,172000,,15.0,25.0,Alt-L1 cross-exposure
+ETH Alpha,Chainlink,LINK_USD,4000,35600,,10.0,15.0,DeFi infrastructure
+ETH Alpha,Avalanche,AVAX_USD,2000,18600,,5.0,10.0,Ecosystem diversifier
+USD Alpha,Bitcoin,BTC_USD,2.0,132000,,40.0,50.0,Reduced BTC exposure - capital preservation mandate
+USD Alpha,Ethereum,ETH_USD,100,205000,,30.0,40.0,Reduced ETH exposure
+USD Alpha,Solana,SOL_USD,500,43000,,15.0,20.0,Alt exposure capped
+USD Alpha,Chainlink,LINK_USD,1000,8900,,10.0,15.0,Infrastructure
+USD Alpha,Dogecoin,DOGE_USD,50000,4575,,5.0,10.0,Meme/sentiment indicator position
+Hyla Liquid Venture,Pythagoras - Absolute Return Class B,MANAGER,0,500000,585000,12.0,15.0,Quant/market-neutral - top performer
+Hyla Liquid Venture,CMCC Global - Liquid Fund 4,MANAGER,0,400000,432000,10.0,15.0,Asia-focused liquid
+Hyla Liquid Venture,IDTheory - Liquid,MANAGER,0,350000,371000,8.0,12.0,Liquid trading
+Hyla Liquid Venture,Contango - Blockchain X AI Fund,MANAGER,0,300000,345000,7.0,12.0,Thematic - blockchain/AI convergence
+Hyla Liquid Venture,CoinFund - Seed Fund II VC,MANAGER,0,400000,520000,10.0,15.0,Early-stage venture
+Hyla Liquid Venture,Autonomous VC,MANAGER,0,350000,385000,8.0,12.0,Venture allocation
+Hyla Liquid Venture,Asymmetric - Bitcoin DeFi Venture Fund I VC,MANAGER,0,300000,270000,7.0,12.0,BTC DeFi venture - underwater
+Hyla Liquid Venture,Scalar VC,MANAGER,0,250000,290000,6.0,10.0,Venture diversifier
+Hyla Liquid Venture,Skycatcher - Onchain Fund,MANAGER,0,200000,238000,5.0,10.0,Onchain strategies
+Hyla Liquid Venture,VanEck - Ventures Fund I VC,MANAGER,0,350000,380000,8.0,12.0,Institutional venture
+Hyla Liquid Venture,ZeroKnowledge - ZKV Liquid Fund,MANAGER,0,200000,218000,5.0,10.0,ZK-focused liquid
+Hyla Liquid Venture,Arete Capital - Fund I VC,MANAGER,0,250000,230000,6.0,10.0,Venture - slight drawdown
+Hyla Liquid Venture,DACM - Digital Asset Fund,MANAGER,0,150000,172000,4.0,8.0,Digital asset diversifier
+Hyla Liquid Venture,Psalion - Fund II VC,MANAGER,0,125000,140000,4.0,8.0,Late-stage venture

@@ -42,11 +42,11 @@ The core problem I solve: nobody owns the whole picture. Developers handle featu
 
 **Title:** Founder, CEO, GP/Partner, COO, or Chief of Staff (as de facto "figure out the AI thing" owner)
 **Company stage:** Series A–C, or $2M–$30M revenue – but note that some of the best-fit clients (e.g., a 5-person crypto fund managing $115M+) don't map onto standard SaaS stage definitions. "Growth-stage" works as shorthand on LinkedIn but isn't precise for all ICPs.
-**Profile:** Non-technical founders or ops-heavy leaders who know they need senior technical help but aren't ready to hire a full-time CTO. Also: technical cofounders so focused on product they can't handle operational security, AI workflows, or SaaS integration. For the AI enablement offering specifically: already using LLMs casually (ChatGPT, Gemini), haven't made the leap to agentic workflows, handling sensitive data (financial, client, deal flow), on macOS (Windows support now live but macOS remains primary), values time over money.
+**Profile:** Non-technical founders or ops-heavy leaders who know they need senior technical help but aren't ready to hire a full-time CTO. Also: technical cofounders so focused on product they can't handle operational security, AI workflows, or SaaS integration. For the AI enablement offering specifically: already using LLMs casually (ChatGPT, Gemini), haven't made the leap to agentic workflows, handling sensitive data (financial, client, deal flow), on macOS or Windows (full feature parity as of February 2026), values time over money.
 **Sweet spot industries:** Digital assets/crypto, fintech, healthtech, SEC-regulated firms, any company with real customer data moving significant capital
 **Situation:** Infrastructure assembled for speed over 1–5 years, team 5–50 people (industry-dependent – some crypto firms with high AUM may only have 4–5 people and seriously deficient security and systems), no IT department, facing security anxiety, compliance deadlines, and/or investor AI pressure
 **Weak fit:** VPs/Directors (purchasing friction, need org-wide approval), anyone already deep in Claude (they don't need the AI enablement offering), Windows-only shops (diminishing concern as platform expands)
-**Expansion path:** Individual AI enablement session → "do this for my team" → firm-level engagement ($10–30K)
+**Expansion path:** Individual AI enablement session → "do this for my team" → team-level engagement ($30,000–$45,000)
 
 ---
 
@@ -174,11 +174,23 @@ All month-to-month after 3-month initial commitment.
 
 ---
 
+**AI Enablement Coaching — Pricing Ladder** *(separate service line from Fractional CTO pricing above)*
+
+**Tier 1 — Initial Session (front door):** $750, 90 minutes, 1:1. Deliverable: clear mental model of client's current data exposure, prioritized list of what needs to happen before team-scale agent deployment, possible artifact — data topology map showing local/Anthropic/MCP/VM layers. Role: loss leader; pipeline generator for Tiers 2–3. *Revenue math: 3 sessions/week × 48 weeks = ~$108K annual gross floor.* Price path: move to $1,000–$1,500 once the deliverable is crisp and tested.
+
+**Tier 2 — Individual Workflow Development:** Scoped sessions or small project engagements. Building skills, plugins, CLAUDE.md context files; governed personal Cowork setup; workflow design and implementation. Where productivity gains happen; demonstrates hands-on competence.
+
+**Tier 3 — Team Enablement:** $30,000–$45,000 per engagement (target: 2–3 per year). Covers: data classification and topology, MCP governance architecture, organizational knowledge layer, shared workflow infrastructure (n8n or similar deterministic scaffolding), compliance mapping against applicable regime (SEC, SOC 2, HIPAA, FINRA), agent access policy. This is organizational AI readiness — the data infrastructure layer that makes agentic systems safe at team scale. Not AI training or change management.
+
+**Financial targets:** ~$200K annual gross (Tier 1 floor + 2–3 team engagements). Steady-state: 20 hours/week; 50/50 split with coaching practice. First 3–6 months: 25–30 hrs/week during build phase. 6-month on-track milestone: $100–120K run rate. **Action: start selling the initial session within 30 days.** Don't wait for the full ladder to be designed.
+
+---
+
 ## Tech Stack
 
 **Website:** archetypeconsulting.io — React 19, Vite 7, Tailwind CSS 4, hosted on Vercel. Pre-rendering via Puppeteer + @sparticuz/chromium (serverless-compatible) to ensure SEO crawlability. Currently delivers 31KB of actual content. Analytics: Umami Cloud.
 
-**Development tools:** Claude Code, Cursor, BBEdit, Acorn, Canva, Marked, Bear notes
+**Development tools:** Claude Code, Cursor, BBEdit, Acorn, Canva, Marked, Bear notes, n8n (deterministic workflow scaffolding with LLM node insertion at judgment points; used in team engagements for auditable, governed AI workflow architecture)
 
 **Business ops:**
 - Attio — CRM and person-based outreach tracking
@@ -239,7 +251,12 @@ The voice reference is the site copy at archetypeconsulting.io. Key qualities dr
 - AI pressure comes from investors, not just FOMO. Framing: "your investors are asking about your AI strategy."
 - Enterprise security questionnaires are a **revenue blocker** — companies that can't answer them lose deals.
 - For fractional CTO positioning: one accountable person beats three specialists because nobody gets lost between the cracks.
+- **Core differentiator for Cowork coaching:** Can map the full data topology of a Cowork deployment (what stays on-device, what flows through Anthropic's servers, what the VM boundary is, what each MCP connector exposes) and map that architecture to specific compliance regimes. Nobody in the coaching/content space does this. Enterprise governance tools (Runlayer, MintMCP) exist but require engineering teams — no one is translating this to the founder level in plain language.
+- **Positioning line:** "Get the edge without the exposure."
+- **Durable frame:** "I help you build a governed AI workflow layer for your organization." Cowork is the current best entry point; the governance judgment transfers when platforms shift. Don't pin the offering identity to Cowork specifically.
+- **The pitch that works:** "You just connected your CRM, your Google Drive, and your Gmail to an AI agent. Do you know exactly what's in scope when that agent runs? Do you know where it logs? Do you know what your Series A term sheet says about data handling?"
+- **Coaching background is a differentiator, not a split.** Founders making agentic AI deployment decisions are making organizational and leadership decisions. One person who holds both the technical architecture lens and the coaching lens is rare.
 
 ---
 
-*Last updated: February 28, 2026. Update after: new client conversations, completed outreach, pricing decisions, content published, or any change in priorities.*
+*Last updated: March 13, 2026. Update after: new client conversations, completed outreach, pricing decisions, content published, or any change in priorities.*

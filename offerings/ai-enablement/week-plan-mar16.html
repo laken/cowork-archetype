@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week Plan – March 16–18, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0d0d0d;
+    --off-white: #f5f4f0;
+    --warm-gray: #e8e6e0;
+    --mid-gray: #9b9890;
+    --accent: #c8501a;
+    --accent-light: #f0e0d8;
+    --green: #2d6a4f;
+    --green-light: #d8ede4;
+    --blue: #1a3a5c;
+    --blue-light: #dce8f4;
+    --purple: #4a2a6a;
+    --purple-light: #ede4f4;
+    --yellow: #8a6a20;
+    --yellow-light: #f5ecd0;
+    --font: 'Georgia', serif;
+    --mono: 'Menlo', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--off-white);
+    color: var(--black);
+    line-height: 1.5;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--black);
+    color: var(--off-white);
+    padding: 48px 56px 44px;
+  }
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: var(--font);
+    font-size: 42px;
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .header h1 em { color: var(--accent); font-style: normal; }
+  .header-sub {
+    font-size: 15px;
+    color: #888;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  .header-meta {
+    margin-top: 24px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #666;
+    letter-spacing: 0.04em;
+  }
+  .meta-item span { color: var(--accent); }
+
+  /* CONTEXT BAR */
+  .context-bar {
+    background: var(--accent-light);
+    border-bottom: 1px solid #d4b8a8;
+    padding: 24px 56px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .context-block {
+    flex: 1;
+    min-width: 200px;
+  }
+  .context-block h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: normal;
+  }
+  .context-block p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.55;
+  }
+
+  /* TRACKS LEGEND */
+  .tracks {
+    padding: 32px 56px;
+    border-bottom: 1px solid var(--warm-gray);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .track-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .track-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .dot-session { background: var(--accent); }
+  .dot-learn { background: var(--blue); }
+  .dot-outreach { background: var(--green); }
+  .dot-deliverable { background: var(--purple); }
+  .dot-personal { background: var(--mid-gray); }
+
+  /* DAY COLUMNS */
+  .days {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    min-height: 70vh;
+  }
+  .day {
+    border-right: 1px solid var(--warm-gray);
+    padding: 0;
+  }
+  .day:last-child { border-right: none; }
+
+  .day-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--warm-gray);
+    position: sticky;
+    top: 0;
+    background: var(--off-white);
+    z-index: 10;
+  }
+  .day-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 4px;
+  }
+  .day-date {
+    font-family: var(--font);
+    font-size: 24px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+  }
+  .day-theme {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  .day-body {
+    padding: 16px 20px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* BLOCK CARDS */
+  .block {
+    padding: 16px 18px;
+    border-radius: 3px;
+    border-left: 4px solid transparent;
+  }
+  .block-session { background: var(--accent-light); border-color: var(--accent); }
+  .block-learn { background: var(--blue-light); border-color: var(--blue); }
+  .block-outreach { background: var(--green-light); border-color: var(--green); }
+  .block-deliverable { background: var(--purple-light); border-color: var(--purple); }
+  .block-personal { background: #eee; border-color: var(--mid-gray); }
+  .block-anchor { background: var(--black); border-color: var(--accent); color: var(--off-white); }
+
+  .block-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 6px;
+  }
+  .block-anchor .block-time { color: #888; }
+  .block-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .block-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    opacity: 0.8;
+  }
+  .block-anchor .block-desc { color: #bbb; }
+  .block-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    margin-top: 8px;
+    opacity: 0.5;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+
+  /* TIME SEPARATOR */
+  .time-sep {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+  }
+  .time-sep-line {
+    flex: 1;
+    height: 1px;
+    background: var(--warm-gray);
+  }
+  .time-sep-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    white-space: nowrap;
+  }
+
+  /* MARK PREP SECTION */
+  .mark-section {
+    padding: 40px 56px;
+    border-top: 2px solid var(--black);
+    background: white;
+  }
+  .mark-section h2 {
+    font-family: var(--font);
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .mark-sub {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 28px;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+
+  .mark-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 900px;
+    margin-bottom: 32px;
+  }
+  .mark-card {
+    padding: 20px 22px;
+    border: 1px solid var(--warm-gray);
+    border-radius: 3px;
+  }
+  .mark-card h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .mark-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #333;
+  }
+  .mark-card.highlight {
+    background: var(--accent-light);
+    border-color: #d4b8a8;
+  }
+  .mark-card.highlight h3 { color: var(--accent); }
+
+  /* SESSION LOOP */
+  .loop-section {
+    padding: 40px 56px;
+    border-top: 1px solid var(--warm-gray);
+    background: var(--off-white);
+  }
+  .loop-section h2 {
+    font-family: var(--font);
+    font-size: 24px;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+  .loop-flow {
+    display: flex;
+    gap: 0;
+    max-width: 900px;
+    align-items: stretch;
+  }
+  .loop-step {
+    flex: 1;
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--warm-gray);
+    border-right: none;
+    position: relative;
+  }
+  .loop-step:last-child { border-right: 1px solid var(--warm-gray); }
+  .loop-step.active { background: var(--accent-light); border-color: #d4b8a8; }
+  .loop-step h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 6px;
+    font-weight: normal;
+  }
+  .loop-step.active h3 { color: var(--accent); }
+  .loop-step p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #555;
+  }
+  .loop-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: var(--warm-gray);
+    margin: 0 -1px;
+    z-index: 1;
+  }
+
+  /* LEARNING TRACK */
+  .learn-section {
+    padding: 40px 56px;
+    border-top: 1px solid var(--warm-gray);
+  }
+  .learn-section h2 {
+    font-family: var(--font);
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+  .learn-sub {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  .learn-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 700px;
+  }
+  .learn-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0;
+    padding: 14px 16px;
+    background: var(--blue-light);
+    border-left: 3px solid var(--blue);
+    border-radius: 2px;
+  }
+  .learn-item .li-day {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+    padding-top: 2px;
+  }
+  .learn-item .li-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #333;
+  }
+  .learn-item .li-body strong { font-weight: 600; }
+
+  /* PIPELINE NOTE */
+  .pipeline-note {
+    padding: 32px 56px;
+    border-top: 1px solid var(--warm-gray);
+    background: var(--yellow-light);
+  }
+  .pipeline-note h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .pipeline-note p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+    max-width: 700px;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 32px 56px;
+    background: var(--black);
+    color: #555;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 900px) {
+    .days { grid-template-columns: 1fr; }
+    .day { border-right: none; border-bottom: 1px solid var(--warm-gray); }
+    .mark-grid { grid-template-columns: 1fr; }
+    .loop-flow { flex-direction: column; }
+    .loop-step { border-right: 1px solid var(--warm-gray); border-bottom: none; }
+    .loop-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; }
+    .header, .context-bar, .mark-section, .loop-section, .learn-section, .pipeline-note { padding-left: 28px; padding-right: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">Archetype Consulting – Weekly Focus</div>
+  <h1>Three days.<br>One session to deliver.<br><em>Everything sharpens.</em></h1>
+  <p class="header-sub">Short week before a week away. Monday through Wednesday only. Mark Wagner session on Tuesday is the anchor. The rest is learning, pipeline seeding, and building the first deliverable for the library.</p>
+  <div class="header-meta">
+    <div class="meta-item"><span>Session:</span> Mark Wagner, Tue 3 PM</div>
+    <div class="meta-item"><span>Out:</span> Thu 3/19 for 1 week</div>
+    <div class="meta-item"><span>Pipeline:</span> Stale – regeneration starts Monday</div>
+  </div>
+</div>
+
+<!-- CONTEXT BAR -->
+<div class="context-bar">
+  <div class="context-block">
+    <h3>Week's anchor</h3>
+    <p>Mark Wagner session – guinea pig #2. CFO at Hyla, already uses Claude + Cowork daily, wants demos. Different energy from Ty. Flex the session model to match.</p>
+  </div>
+  <div class="context-block">
+    <h3>Ty status</h3>
+    <p>Follow-up email shipped Friday. Session 2 TBD, waiting on his about-me.md. That loop is paused and healthy. Focus is on Mark this week.</p>
+  </div>
+  <div class="context-block">
+    <h3>Learning ladder</h3>
+    <p>You already built the Zoom Archive skill – that covers skill building and scheduled tasks from the original ladder. This week focuses on the pieces you haven't done: platform architecture deep read, MCP governance depth, and competitive calibration.</p>
+  </div>
+</div>
+
+<!-- TRACK LEGEND -->
+<div class="tracks">
+  <div class="track-badge"><span class="track-dot dot-session"></span> Session prep / delivery</div>
+  <div class="track-badge"><span class="track-dot dot-learn"></span> Learning track</div>
+  <div class="track-badge"><span class="track-dot dot-outreach"></span> Outreach / pipeline</div>
+  <div class="track-badge"><span class="track-dot dot-deliverable"></span> Deliverables library</div>
+  <div class="track-badge"><span class="track-dot dot-personal"></span> Personal / other</div>
+</div>
+
+<!-- 3-DAY CALENDAR -->
+<div class="days">
+
+  <!-- MONDAY -->
+  <div class="day">
+    <div class="day-header">
+      <div class="day-label">Monday</div>
+      <div class="day-date">March 16</div>
+      <div class="day-theme">Prep + Learn + Pipeline</div>
+    </div>
+    <div class="day-body">
+
+      <div class="time-sep">
+        <span class="time-sep-label">Morning</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-session">
+        <div class="block-time">8:30 – 9:30 AM</div>
+        <div class="block-title">Mark Wagner session prep</div>
+        <div class="block-desc">Open Cowork, share Mark's survey. I build the prep doc (profile, demo sequence, watch-for notes). You review and adjust. Include 1–2 customized demos around his blink task: an Excel model audit using the financial analysis plugin, and an email triage workflow pattern.</div>
+        <div class="block-note">60 min total. You've done this once before. The intake survey carries most of the load.</div>
+      </div>
+
+      <div class="block block-learn">
+        <div class="block-time">9:30 – 12:00 PM</div>
+        <div class="block-title">Cowork architecture deep read</div>
+        <div class="block-desc">Clone <code>anthropics/knowledge-work-plugins</code> and read the raw file structure. How skills are organized, how SKILL.md files wire to the platform, how the eval cycle works. You've already built a skill (Zoom Archive) – now read how the official ones are put together and find the patterns you missed. Take notes on what's reusable for client setups.</div>
+        <div class="block-note">Also read: anthropics/skills repo, platform docs on agent skills, Claude Code plugin docs. URLs in CLAUDE.md.</div>
+      </div>
+
+      <div class="time-sep">
+        <span class="time-sep-label">Afternoon</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-learn">
+        <div class="block-time">1:00 – 2:30 PM</div>
+        <div class="block-title">MCP connector governance audit</div>
+        <div class="block-desc">Map the actual permission surface for Gmail, Google Drive, and Slack connectors. What can each one read, write, delete? Where are the auth gaps, the audit trail gaps, the tool poisoning vectors? Document it. This feeds directly into both your session expertise and the data topology deliverable.</div>
+        <div class="block-note">This is the moat work. The specific knowledge that separates you from the YouTube/Substack crowd.</div>
+      </div>
+
+      <div class="block block-anchor">
+        <div class="block-time">3:00 PM</div>
+        <div class="block-title">Andy ↔ Jonah</div>
+        <div class="block-desc">Exploratory call. If relevant to AI enablement pipeline, capture notes.</div>
+      </div>
+
+      <div class="block block-outreach">
+        <div class="block-time">After Jonah</div>
+        <div class="block-title">Pipeline regeneration: first pass</div>
+        <div class="block-desc">The old Acquia list was built for security pitching. Start fresh: who are the next 3–5 pro bono guinea pigs for AI enablement? Different profile – founders and execs already using AI tools, hitting walls. Think through your network. Capture names and the warm path to each one. Ty → Mark is already one referral chain – where are the others?</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TUESDAY -->
+  <div class="day">
+    <div class="day-header">
+      <div class="day-label">Tuesday</div>
+      <div class="day-date">March 17</div>
+      <div class="day-theme">Learn + Deliver</div>
+    </div>
+    <div class="day-body">
+
+      <div class="time-sep">
+        <span class="time-sep-label">Morning</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-learn">
+        <div class="block-time">8:30 – 9:45 AM</div>
+        <div class="block-title">Multi-agent debate architecture research</div>
+        <div class="block-desc">You promised Ty you'd research this before session 2. James's 7-agent model, Andrew's 8-agent debate model, Goldman diverse-team analogy. What's actually been built? What's feasible with Claude's current agent architecture? What's the right framing for an executive audience? Write up a 1-page summary you can share with Ty and reference in sessions.</div>
+        <div class="block-note">This was the most energizing part of the Ty session. Worth knowing cold.</div>
+      </div>
+
+      <div class="block block-personal">
+        <div class="block-time">10:00 AM</div>
+        <div class="block-title">Dentist</div>
+        <div class="block-desc"></div>
+      </div>
+
+      <div class="block block-learn">
+        <div class="block-time">11:30 – 1:00 PM</div>
+        <div class="block-title">Karo Zieminski + Sid Saladi back-catalog</div>
+        <div class="block-desc">Read 5–6 back posts from each. What are they covering? Where are the gaps in their content that your governance angle fills? What are they doing well that you should learn from? Calibrate positioning. Decide on subscriptions after, not before.</div>
+      </div>
+
+      <div class="time-sep">
+        <span class="time-sep-label">Pre-session</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-session">
+        <div class="block-time">2:30 – 2:55 PM</div>
+        <div class="block-title">Pre-session review</div>
+        <div class="block-desc">Scan the prep doc. Set up your screen. Think through the first 5 minutes: security walkthrough opens, then straight into his world. Mark wants demos – give him demos, then bridge to building something with his actual data.</div>
+        <div class="block-note">25 min. You prepped yesterday. This is just getting your head in the game.</div>
+      </div>
+
+      <div class="block block-anchor">
+        <div class="block-time">3:00 – 4:30 PM</div>
+        <div class="block-title">AI Enablement Session – Mark Wagner, CFO, Hyla Funds</div>
+        <div class="block-desc">Guinea pig #2. Pro plan, already runs Claude and Cowork daily. Further along the adoption curve than Ty – his questions will be about expanding what he already does. Match that energy. Show breadth, then let him pick what's most useful and build it live. Listen more than you talk.</div>
+        <div class="block-note">Record or take detailed notes. The debrief tomorrow is the compound interest step.</div>
+      </div>
+
+      <div class="block block-session">
+        <div class="block-time">After session</div>
+        <div class="block-title">Capture hot notes</div>
+        <div class="block-desc">10 min, raw. What landed, what fell flat, what surprised you, what Mark said that you didn't expect. Don't polish.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div class="day">
+    <div class="day-header">
+      <div class="day-label">Wednesday</div>
+      <div class="day-date">March 18</div>
+      <div class="day-theme">Debrief + Build + Capture</div>
+    </div>
+    <div class="day-body">
+
+      <div class="time-sep">
+        <span class="time-sep-label">Morning</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-session">
+        <div class="block-time">8:30 – 9:30 AM</div>
+        <div class="block-title">Mark session debrief</div>
+        <div class="block-desc">Share the transcript or raw notes. I run the evaluation: what worked, consultative presence critique, comparison to Ty, updates to offering docs and session model. Every finding feeds back into the prep template for guinea pig #3.</div>
+      </div>
+
+      <div class="block block-session">
+        <div class="block-time">9:30 – 10:00 AM</div>
+        <div class="block-title">Write Mark's follow-up email</div>
+        <div class="block-desc">Short. What you covered, 3–4 action items, link to book session 2. One screen on a phone. Ship it before you leave so it's working while you're away.</div>
+        <div class="block-note">The Ty follow-up was too long. Mark's should take 30 min to write.</div>
+      </div>
+
+      <div class="block block-deliverable">
+        <div class="block-time">10:00 – 12:00 PM</div>
+        <div class="block-title">Deliverables library: data topology map (first draft)</div>
+        <div class="block-desc">Build the founder-level data topology map. On-device vs. VM vs. Anthropic servers vs. MCP connectors, written for a non-engineering audience. Uses the MCP audit work from Monday. This becomes both a session handout and a publishable thought leadership artifact. No competitor has produced it.</div>
+      </div>
+
+      <div class="block block-anchor">
+        <div class="block-time">12:30 PM</div>
+        <div class="block-title">Tom – PIT database</div>
+        <div class="block-desc"></div>
+      </div>
+
+      <div class="time-sep">
+        <span class="time-sep-label">Afternoon</span>
+        <div class="time-sep-line"></div>
+      </div>
+
+      <div class="block block-outreach">
+        <div class="block-time">2:30 – 3:30 PM</div>
+        <div class="block-title">Pipeline regeneration: refine + first outreach</div>
+        <div class="block-desc">Revisit Monday's guinea pig list. Pick the 1–2 strongest names and draft the outreach messages. Warm, short, specific. Goal: have at least one conversation scheduled for the week you're back.</div>
+      </div>
+
+      <div class="block block-learn">
+        <div class="block-time">3:30 – 5:00 PM</div>
+        <div class="block-title">Pre-trip learning capture + ladder update</div>
+        <div class="block-desc">Document everything you learned this week: platform architecture insights, MCP governance findings, Mark session learnings, competitive positioning notes from Karo/Sid evaluation, multi-agent research. Write it all into context files. Update the 2-week learning ladder in CLAUDE.md to reflect what's done and what's next when you're back.</div>
+        <div class="block-note">This is how you don't lose a week of momentum to a week off.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MARK WAGNER PREP -->
+<div class="mark-section">
+  <h2>Mark Wagner – session intel.</h2>
+  <p class="mark-sub">CFO, Hyla Funds. Guinea pig #2. Already uses Claude, Cowork, and ChatGPT daily. Further along the adoption curve than Ty, more operational, very concrete about what he wants.</p>
+  <div class="mark-grid">
+    <div class="mark-card highlight">
+      <h3>His blink task</h3>
+      <p>"Email management and Excel model updating." That's the demo anchor. The financial analysis plugin is already installed. Build a customized demo: audit one of his NAV/Formidium Excel exports, then show an email triage workflow on his Superhuman/Gmail flow. Concrete, useful, mapped to his actual tools.</p>
+    </div>
+    <div class="mark-card highlight">
+      <h3>Session mode: demos first</h3>
+      <p>He checked "Show me what's possible." He wants the tour before committing. Give him demos. Show the ceiling. Then bridge to building something with his actual data. The intake survey told you exactly what he needs – flex the session to match.</p>
+    </div>
+    <div class="mark-card">
+      <h3>His tool stack</h3>
+      <p>Slack, Gmail, ChatGPT, Claude, Cowork, Google Sheets/Docs, Superhuman, Adobe, DocuSign, Dropbox, Google Drive, Gusto, Yahoo Finance, Formidium, NAV Dashboards, CCI 30, CryptoWorth, Crypto Tax Calculator. Heavy user. The session should expand his usage and show him what he's missing.</p>
+    </div>
+    <div class="mark-card">
+      <h3>His concerns</h3>
+      <p>File corruption (he already mitigates this: downloads GSheets to Excel before AI touches them). Financial data exposure. AI getting hacked. Lead with the VM architecture walkthrough – same frame that worked with Ty – then address each concern against his specific setup.</p>
+    </div>
+    <div class="mark-card">
+      <h3>What success looks like</h3>
+      <p>"Expand my list of things it can help with." Think breadth. Show range. Then let him pick what's most useful and build that one thing live.</p>
+    </div>
+    <div class="mark-card">
+      <h3>Consultative presence notes</h3>
+      <p>Listen more, talk less. Follow where he wants to go. The Ty debrief flagged this: you were too eager to show the next thing when he was still processing the current one. Let Mark's reactions steer the session. When something lands, go deeper there.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION LOOP SYSTEM -->
+<div class="loop-section">
+  <h2>The session improvement loop.</h2>
+  <div class="loop-flow">
+    <div class="loop-step">
+      <h3>1. Survey</h3>
+      <p>Intake form captures tools, concerns, blink task, and session preference. Already built, already working.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step active">
+      <h3>2. Prep</h3>
+      <p>I build the prep doc from the survey. You review. Includes profile, customized demo sequence, and watch-for notes. ~60 min total.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step">
+      <h3>3. Session</h3>
+      <p>You deliver. Record or take detailed notes. Capture hot notes immediately after.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step">
+      <h3>4. Debrief</h3>
+      <p>Share transcript. I evaluate: what worked, consultative presence, comparison to prior sessions, offering updates.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step">
+      <h3>5. Follow-up</h3>
+      <p>Short email. What you covered, action items, link to book session 2. One phone screen. 30 min to write.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step">
+      <h3>6. Feed back</h3>
+      <p>Every finding updates the prep template, session model, and offering docs. Guinea pig #3 gets a better session than #2.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LEARNING TRACK -->
+<div class="learn-section">
+  <h2>Learning ladder – full view.</h2>
+  <p class="learn-sub">The original 2-week ladder updated for what's already done and what matters most this week. Zoom Archive skill build already covered custom skill creation and scheduled tasks (Days 3–4 and parts of 5–7).</p>
+  <div class="learn-items">
+    <div class="learn-item" style="opacity: 0.5;">
+      <span class="li-day">Done</span>
+      <div class="li-body"><strong>Build a custom skill + run eval cycle.</strong> Zoom Archive Organizer. Covered skill file structure, SKILL.md authoring, Groq API integration, scheduled task wiring, plugin bundling. ✓</div>
+    </div>
+    <div class="learn-item">
+      <span class="li-day">Mon</span>
+      <div class="li-body"><strong>knowledge-work-plugins architecture deep read.</strong> Clone <a href="https://github.com/anthropics/knowledge-work-plugins" style="color:var(--blue)">the repo</a>. Read the raw file structure: how official skills are organized, how SKILL.md files wire to the platform, how the eval cycle works at scale. Also read: <a href="https://github.com/anthropics/skills" style="color:var(--blue)">anthropics/skills</a>, <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" style="color:var(--blue)">platform docs on agent skills</a>, <a href="https://code.claude.com/docs/en/plugins" style="color:var(--blue)">Claude Code plugin docs</a>. Compare to what you built – find the patterns you missed.</div>
+    </div>
+    <div class="learn-item">
+      <span class="li-day">Mon</span>
+      <div class="li-body"><strong>MCP connector governance audit.</strong> Map the permission surface for Gmail, Google Drive, and Slack connectors. Auth gaps, audit trail gaps, tool poisoning vectors. Document it. This is moat work – the specific expertise that separates you from every content creator covering Cowork.</div>
+    </div>
+    <div class="learn-item">
+      <span class="li-day">Tue</span>
+      <div class="li-body"><strong>Multi-agent debate architecture.</strong> Research what's actually been built: James's 7-agent model, Andrew's 8-agent debate model, Goldman diverse-team analogy. You promised Ty you'd come back with an honest assessment. Write a 1-page summary: what's feasible, what's aspirational, what's the right exec-level framing.</div>
+    </div>
+    <div class="learn-item">
+      <span class="li-day">Tue</span>
+      <div class="li-body"><strong>Competitive calibration.</strong> Read 5–6 back posts from <a href="https://karozieminski.substack.com" style="color:var(--blue)">Karo Zieminski</a> (11K subs, 50+ tip guide) and <a href="https://sidsaladi.substack.com" style="color:var(--blue)">Sid Saladi</a> (PM background, advanced guide Mar 11). Where are their gaps? What do they do well? Subscribe only if the value is clear after reading.</div>
+    </div>
+    <div class="learn-item">
+      <span class="li-day">Wed</span>
+      <div class="li-body"><strong>Pre-trip capture.</strong> Document everything: architecture insights, MCP findings, Mark session learnings, Karo/Sid notes, multi-agent research. Write into context files. Update the learning ladder in CLAUDE.md so you (and I) pick up exactly where you left off.</div>
+    </div>
+    <div class="learn-item" style="border-color: var(--mid-gray); background: #eee;">
+      <span class="li-day" style="color: var(--mid-gray);">Post-trip</span>
+      <div class="li-body"><strong>Week 2 of the ladder.</strong> Sub-agent orchestration patterns + token economics. Build a founder-useful plugin from scratch (investor update, security posture audit, or OKR breakdown). Enterprise admin layer – per-user provisioning, private marketplace flows. Prompt craft framework for agentic delegation vs. chat. Day 14: document your own Cowork stack as a worked example and coaching artifact.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PIPELINE NOTE -->
+<div class="pipeline-note">
+  <h3>Pipeline – regeneration starts Monday, continues after the trip</h3>
+  <p>Monday after-Jonah block: first pass at identifying 3–5 pro bono guinea pigs for AI enablement (different profile from the security list). Wednesday afternoon: refine the list and draft the first 1–2 outreach messages. Goal: at least one conversation scheduled for the week you're back. The paid pipeline strategy is a separate conversation for after the trip – you need more data from guinea pig sessions before you can scope that.</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Internal planning document – Archetype Consulting – March 2026
+</div>
+
+</body>
+</html>

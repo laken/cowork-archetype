@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Enablement Coaching – Internal North Star</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0d0d;
+    --off-white: #f5f4f0;
+    --warm-gray: #e8e6e0;
+    --mid-gray: #9b9890;
+    --accent: #c8501a;
+    --accent-light: #f0e0d8;
+    --green: #2d6a4f;
+    --green-light: #d8ede4;
+    --blue-dark: #1a2a3a;
+    --yellow: #f5e6c0;
+    --yellow-dark: #8a6a20;
+    --font: 'Georgia', serif;
+    --mono: 'Menlo', 'Courier New', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--off-white);
+    color: var(--black);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--black);
+    padding: 0 40px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+  }
+  .nav-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666;
+  }
+  .nav-title span { color: var(--accent); }
+  nav ul {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  nav ul a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #555;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--off-white); }
+
+  /* SLIDES */
+  .slide {
+    min-height: 100vh;
+    padding: 100px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid var(--warm-gray);
+    position: relative;
+  }
+  .slide-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--mid-gray);
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  /* INTERNAL BADGE */
+  .internal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--yellow);
+    color: var(--yellow-dark);
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* SLIDE 1 – COVER */
+  .slide-cover {
+    background: var(--black);
+    color: var(--off-white);
+  }
+  .cover-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 24px;
+  }
+  .slide-cover h1 {
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    max-width: 800px;
+    margin-bottom: 32px;
+  }
+  .slide-cover h1 em { color: var(--accent); font-style: normal; }
+  .cover-sub {
+    font-size: 16px;
+    color: #666;
+    max-width: 560px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .cover-meta {
+    position: absolute;
+    bottom: 60px;
+    right: 80px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #444;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* SECTION LABELS */
+  .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 16px;
+    display: block;
+  }
+  h2 {
+    font-size: clamp(26px, 3.5vw, 46px);
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 40px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+  .lead {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #444;
+    max-width: 700px;
+    margin-bottom: 40px;
+  }
+
+  /* POSITIONING BLOCK */
+  .position-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 960px;
+  }
+  .pos-card {
+    padding: 28px;
+    border: 1px solid var(--warm-gray);
+    background: white;
+  }
+  .pos-card .pos-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .pos-card .pos-text {
+    font-size: 17px;
+    line-height: 1.45;
+    font-style: italic;
+  }
+  .pos-card.hero-card {
+    background: var(--black);
+    color: var(--off-white);
+    border-color: var(--black);
+    grid-column: 1 / -1;
+  }
+  .pos-card.hero-card .pos-label { color: var(--accent); }
+  .pos-card.hero-card .pos-text { font-size: 26px; }
+  .pos-note {
+    margin-top: 32px;
+    padding: 20px 24px;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    max-width: 700px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #444;
+  }
+
+  /* DIFFERENTIATOR */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    max-width: 1060px;
+  }
+  .diff-card {
+    background: white;
+    border: 1px solid var(--warm-gray);
+    padding: 24px;
+  }
+  .diff-card .icon { font-size: 20px; margin-bottom: 10px; }
+  .diff-card h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: normal;
+    color: var(--black);
+  }
+  .diff-card p { font-size: 13px; line-height: 1.6; color: #555; }
+
+  /* TIER CARDS */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 1060px;
+  }
+  .tier {
+    padding: 36px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .t1 { background: var(--blue-dark); color: var(--off-white); }
+  .t2 { background: #2a3a2a; color: var(--off-white); }
+  .t3 { background: var(--black); color: var(--off-white); }
+  .tier-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+  .tier-name { font-size: 18px; font-weight: normal; line-height: 1.2; }
+  .tier-price { font-size: 28px; font-weight: normal; letter-spacing: -0.02em; }
+  .tier-price sub { font-size: 11px; opacity: 0.55; vertical-align: baseline; letter-spacing: 0; }
+  .tier-role {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+    line-height: 1.5;
+  }
+  .tier-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 6px;
+  }
+  .tier-bullets li {
+    font-size: 13px;
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+    opacity: 0.8;
+  }
+  .tier-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    opacity: 0.45;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .tier-strategy {
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: 12px;
+    font-style: italic;
+    opacity: 0.5;
+    line-height: 1.5;
+  }
+
+  /* SESSION STRUCTURE */
+  .session-flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    align-items: start;
+  }
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--warm-gray);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    padding-top: 2px;
+  }
+  .step-body h3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .step-body p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+  }
+  .lessons-box {
+    background: var(--yellow);
+    padding: 28px;
+    border-radius: 2px;
+  }
+  .lessons-box h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--yellow-dark);
+    margin-bottom: 16px;
+    font-weight: normal;
+  }
+  .lessons-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lessons-list li {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #555;
+    padding-left: 16px;
+    position: relative;
+  }
+  .lessons-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 11px;
+  }
+  .lessons-list li.warn::before {
+    content: '✗';
+    color: var(--accent);
+  }
+
+  /* FINANCIAL MODEL */
+  .fin-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1000px;
+    align-items: start;
+  }
+  .fin-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .fin-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--warm-gray);
+  }
+  .fin-table td {
+    padding: 14px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--warm-gray);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .fin-table td:last-child {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    text-align: right;
+  }
+  .fin-table tr.total td {
+    font-size: 18px;
+    padding-top: 20px;
+    border-bottom: none;
+  }
+  .fin-table tr.total td:last-child {
+    color: var(--green);
+    font-size: 22px;
+  }
+  .fin-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .stat {
+    border-left: 3px solid var(--warm-gray);
+    padding-left: 18px;
+  }
+  .stat.green { border-color: var(--green); }
+  .stat.accent { border-color: var(--accent); }
+  .stat.yellow { border-color: var(--yellow-dark); }
+  .stat-val {
+    font-size: 34px;
+    font-weight: normal;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-val.green { color: var(--green); }
+  .stat-val.accent { color: var(--accent); }
+  .stat-lbl {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+  }
+  .stat-note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* COMPETITIVE */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    align-items: start;
+  }
+  .comp-rows { display: flex; flex-direction: column; gap: 0; }
+  .comp-row {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--warm-gray);
+  }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .comp-gap { font-size: 13px; color: #666; line-height: 1.5; }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .badge-open { background: var(--green-light); color: var(--green); }
+  .badge-partial { background: var(--yellow); color: var(--yellow-dark); }
+  .window-box {
+    background: var(--black);
+    color: var(--off-white);
+    padding: 28px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  .window-box p { font-size: 15px; line-height: 1.6; font-style: italic; }
+  .window-box p strong { color: var(--accent); font-style: normal; }
+  .tailwind-box {
+    padding: 20px 24px;
+    border: 1px solid var(--warm-gray);
+    background: white;
+  }
+  .tailwind-box p { font-size: 13px; line-height: 1.65; color: #555; }
+
+  /* OPEN QUESTIONS */
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 760px;
+  }
+  .q-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--warm-gray);
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0;
+  }
+  .q-item:last-child { border-bottom: none; }
+  .q-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+  .q-body h3 { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+  .q-body p { font-size: 13px; line-height: 1.6; color: #555; }
+
+  /* PIPELINE / NEXT TARGETS */
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1000px;
+  }
+  .pipe-card {
+    background: white;
+    border: 1px solid var(--warm-gray);
+    padding: 22px;
+  }
+  .pipe-card h3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .pipe-card .pipe-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .pipe-card p { font-size: 12px; line-height: 1.55; color: #555; }
+  .priority-high { border-top: 3px solid var(--accent); }
+  .priority-med { border-top: 3px solid var(--yellow-dark); }
+
+  @media (max-width: 768px) {
+    .slide { padding: 80px 28px 60px; }
+    .position-grid, .session-flow, .fin-layout, .comp-grid { grid-template-columns: 1fr; }
+    .pos-card.hero-card { grid-column: auto; }
+    .tier-grid { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-title">Archetype — <span>Internal North Star</span></div>
+  <ul>
+    <li><a href="#positioning">Positioning</a></li>
+    <li><a href="#differentiator">Moat</a></li>
+    <li><a href="#tiers">Tiers</a></li>
+    <li><a href="#session">Session</a></li>
+    <li><a href="#model">Model</a></li>
+    <li><a href="#competitive">Market</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#questions">Questions</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<section class="slide slide-cover" id="top">
+  <div class="cover-eyebrow">Internal North Star — AI Enablement Coaching</div>
+  <h1>The business,<br>the offering,<br>the <em>model</em>.</h1>
+  <p class="cover-sub">Working reference for running this service line – strategy, financial model, session structure, and open questions. Internal only.</p>
+  <div class="cover-meta">
+    Last updated: March 2026<br>
+    Andy Laken · Archetype Consulting<br>
+    <span style="color:#555">Internal only – do not share</span>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section class="slide" id="positioning">
+  <div class="slide-num">01 — Positioning</div>
+  <span class="label">Language to lock in</span>
+  <h2>What this is, in words<br>that survive a pitch.</h2>
+  <div class="position-grid">
+    <div class="pos-card hero-card">
+      <span class="pos-label">Primary tagline</span>
+      <div class="pos-text">"Get the edge without the exposure."</div>
+    </div>
+    <div class="pos-card">
+      <span class="pos-label">Positioning sentence</span>
+      <div class="pos-text">"I help you build a governed AI workflow layer for your organization."</div>
+    </div>
+    <div class="pos-card">
+      <span class="pos-label">The pitch (30 seconds)</span>
+      <div class="pos-text">"You need to adopt this now to get ahead – while keeping your data and governance intact. I help you do both."</div>
+    </div>
+    <div class="pos-card">
+      <span class="pos-label">Archetype core line</span>
+      <div class="pos-text">"One accountable person who owns the whole picture."</div>
+    </div>
+    <div class="pos-card">
+      <span class="pos-label">Durable frame (platform-agnostic)</span>
+      <div class="pos-text">"Governed AI workflow layer" – the frame that survives a platform shift. This is the offering identity if Claude or Cowork pivots.</div>
+    </div>
+    <div class="pos-card">
+      <span class="pos-label">Tier 1 reframe</span>
+      <div class="pos-text">The session is individual AI productivity consulting first. Governance and data topology are the value-add and the bridge to Tier 3 – not the lead.</div>
+    </div>
+  </div>
+  <div class="pos-note">
+    <strong>Important:</strong> The initial session is personal AI productivity consulting – figuring out which parts of <em>this person's</em> actual workflow AI can handle, then doing it in the session. Governance comes up naturally as part of that, and it's the bridge toward team-scale work.
+  </div>
+</section>
+
+<!-- DIFFERENTIATOR / MOAT -->
+<section class="slide" id="differentiator">
+  <div class="slide-num">02 — Moat</div>
+  <span class="label">Why this holds</span>
+  <h2>What makes this defensible.</h2>
+  <p class="lead">The combination is what's rare. Each piece exists elsewhere; the stack doesn't.</p>
+  <div class="diff-grid">
+    <div class="diff-card">
+      <div class="icon">🗺️</div>
+      <h3>Data Topology Mapping</h3>
+      <p>Architecture map of a Cowork deployment: on-device vs. VM vs. Anthropic servers vs. each MCP connector. Translated for a non-engineering audience. No competitor has published this at founder level.</p>
+    </div>
+    <div class="diff-card">
+      <div class="icon">🔒</div>
+      <h3>Compliance Mapping</h3>
+      <p>Architecture documented against the client's specific regime – SEC, SOC 2, HIPAA, FINRA – mapped to their actual constraints and setup.</p>
+    </div>
+    <div class="diff-card">
+      <div class="icon">⚙️</div>
+      <h3>MCP Governance Gaps</h3>
+      <p>No built-in auth, no audit trails, tool poisoning vectors. Almost no one's running this evaluation before they deploy. This is the expertise most consultants don't have yet.</p>
+    </div>
+    <div class="diff-card">
+      <div class="icon">🏗️</div>
+      <h3>Hybrid Architecture (n8n)</h3>
+      <p>n8n + Cowork + LLM patterns. Deterministic logic handles routing; agents handle judgment. Produces auditable workflows, not black boxes hoping to work.</p>
+    </div>
+    <div class="diff-card">
+      <div class="icon">🧠</div>
+      <h3>Organizational Lens</h3>
+      <p>Agentic deployment decisions are organizational leadership decisions. The developmental coaching background is what lets one person hold both the architecture and the org design conversation.</p>
+    </div>
+    <div class="diff-card">
+      <div class="icon">📍</div>
+      <h3>Founder-Level Translation</h3>
+      <p>Enterprise governance tooling (Runlayer, MintMCP) requires engineering teams and procurement cycles. The founder-level translation hasn't been built. This is it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="slide" id="tiers">
+  <div class="slide-num">03 — Offering Tiers</div>
+  <span class="label">The ladder</span>
+  <h2>Three tiers, one pipeline.</h2>
+  <p class="lead">Tier 1 is the entry point and the relationship builder. Tier 3 is the business. Tier 2 is the bridge.</p>
+  <div class="tier-grid">
+    <div class="tier t1">
+      <div class="tier-num">Tier 1 — Entry</div>
+      <div class="tier-name">Initial Assessment Session</div>
+      <div class="tier-price">$750<sub> / 90 min</sub></div>
+      <div class="tier-role">Pipeline generator. Path to $1,000–1,500 once delivery is crisp. 3 sessions/week = $108K floor.</div>
+      <ul class="tier-bullets">
+        <li>Individual AI productivity consulting – their actual workflow</li>
+        <li>1–2 tasks automated or delegated in the session itself</li>
+        <li>Data exposure map for their specific setup</li>
+        <li>Prioritized "what to automate next" list</li>
+      </ul>
+      <div class="tier-strategy">Strategy: get to a working deliverable in the session. Hands-on with their real tools. Session 2 with Ty is the model: have them drive.</div>
+    </div>
+    <div class="tier t2">
+      <div class="tier-num">Tier 2 — Follow-On</div>
+      <div class="tier-name">Personal Workflow Build-Out</div>
+      <div class="tier-price">Scoped</div>
+      <div class="tier-role">Where productivity gains accumulate. Demonstrates hands-on depth. Natural bridge to team engagement.</div>
+      <ul class="tier-bullets">
+        <li>CLAUDE.md and context file architecture</li>
+        <li>Governed personal Cowork setup</li>
+        <li>Custom skills and plugin configuration</li>
+        <li>Recurring workflow automation</li>
+      </ul>
+      <div class="tier-strategy">Strategy: let scope emerge from what came up in Tier 1. Price by project once you know the shape.</div>
+    </div>
+    <div class="tier t3">
+      <div class="tier-num">Tier 3 — Team Scale</div>
+      <div class="tier-name">Organizational AI Readiness</div>
+      <div class="tier-price">$30–45K<sub> / engagement</sub></div>
+      <div class="tier-role">The real business. Target: 2–3 per year. This is the fractional/embedded engagement.</div>
+      <ul class="tier-bullets">
+        <li>Data classification across the org</li>
+        <li>MCP governance architecture + audit trail design</li>
+        <li>Shared workflow infrastructure (n8n scaffolding)</li>
+        <li>Compliance mapping against regulatory regime</li>
+        <li>AI policy: what agents can and cannot touch</li>
+      </ul>
+      <div class="tier-strategy">Strategy: sell this from the "Show Me the Carfax" angle for regulated clients – security as a due diligence deliverable for investor presentations.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SESSION STRUCTURE -->
+<section class="slide" id="session">
+  <div class="slide-num">04 — Session Structure</div>
+  <span class="label">How a Tier 1 session runs</span>
+  <h2>The session model.</h2>
+  <div class="session-flow">
+    <div class="flow-steps">
+      <div class="flow-step">
+        <span class="step-num">Pre</span>
+        <div class="step-body">
+          <h3>Intake survey</h3>
+          <p>Current tools, first 30 mins of workday, what they'd blink and have done. The survey does the intake work so the session starts at workflow, not orientation.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <h3>Security/architecture walkthrough</h3>
+          <p>10–15 min. Leads the session. What the VM does, what Anthropic sees, what each connector exposes. This is the frame that earns trust and sets up the governance conversation.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <h3>Workflow mapping</h3>
+          <p>Pick the 1–2 tasks worth automating from the intake. Drudge work vs. judgment work distinction. "What would you blink and have done?" is the right question.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <h3>Hands-on build – they drive</h3>
+          <p>Client drives. Co-build at least one working thing in the session. This is the critical fix from Ty's feedback.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">04</span>
+        <div class="step-body">
+          <h3>CLAUDE.md setup</h3>
+          <p>If time allows, start the context file. This is the highest-leverage first step and it wasn't completed in Ty session 1 – session 2 priority.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-num">Close</span>
+        <div class="step-body">
+          <h3>Prioritized next steps</h3>
+          <p>What to automate next, in order. Natural setup for Tier 2 if interest is there.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lessons-box">
+        <h3>Lessons from Ty Session 1 (March 10)</h3>
+        <ul class="lessons-list">
+          <li>Security/architecture framing landed well – keep it first</li>
+          <li>Multi-agent debate architecture was the most energizing part – research this seriously (James's 7 agents, Andrew's 8 debating agents)</li>
+          <li>"Drudge work vs. judgment work" framing resonated</li>
+          <li class="warn">Demo-heavy approach got "this could be more technical" – session 2 must be hands-on with Ty driving</li>
+          <li class="warn">Morning briefing demo registered as "more noise" – trust must be earned before delegation</li>
+          <li class="warn">CLAUDE.md not built in session 1 – fix this in session 2</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCIAL MODEL -->
+<section class="slide" id="model">
+  <div class="slide-num">05 — Financial Model</div>
+  <span class="label">Revenue architecture</span>
+  <h2>$100–200K annual gross.</h2>
+  <div class="fin-layout">
+    <table class="fin-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th style="text-align:right">Annual Gross</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Floor</strong><br>
+            <span style="font-size:12px;color:#888">3 sessions/week × 48 wks @ $750<br>No team engagements</span>
+          </td>
+          <td>~$108K</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Floor + 1 team engagement</strong><br>
+            <span style="font-size:12px;color:#888">3 sessions/week + 1 × $30K</span>
+          </td>
+          <td>~$138K</td>
+        </tr>
+        <tr class="total">
+          <td>
+            <strong>Target</strong><br>
+            <span style="font-size:12px;color:#888">3 sessions/week + 2–3 team engagements @ $30–45K</span>
+          </td>
+          <td>~$200K</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="fin-stats">
+      <div class="stat accent">
+        <div class="stat-val accent">20 hrs</div>
+        <div class="stat-lbl">Weekly target at steady state</div>
+        <div class="stat-note">50/50 split: AI coaching / developmental coaching practice</div>
+      </div>
+      <div class="stat green">
+        <div class="stat-val green">$100–120K</div>
+        <div class="stat-lbl">6-month on-track run rate</div>
+        <div class="stat-note">This is the 6-month milestone to know it's working. Start selling within 30 days.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">$750→$1,500</div>
+        <div class="stat-lbl">Tier 1 price path</div>
+        <div class="stat-note">$750 is the launch price. Move to $1,000–1,500 once the deliverable is consistently crisp and repeatable. Don't wait too long.</div>
+      </div>
+      <div class="stat yellow">
+        <div class="stat-val">3–6 mo</div>
+        <div class="stat-lbl">Build phase</div>
+        <div class="stat-note">25–30 hrs/week. Let the offering shape sharpen through the first 10 conversations. Don't over-specify the Tier 3 scope before you've run a few.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIVE -->
+<section class="slide" id="competitive">
+  <div class="slide-num">06 — Market Position</div>
+  <span class="label">Adjacent players</span>
+  <h2>The window is open, for now.</h2>
+  <div class="comp-grid">
+    <div>
+      <div class="comp-rows">
+        <div class="comp-row">
+          <div class="comp-name">Generic AI consultants <span class="badge badge-open">No overlap</span></div>
+          <div class="comp-gap">Broad "AI strategy" workshops. No hands-on Cowork depth. No compliance layer. No governance evaluation.</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">YouTube / Substack creators <span class="badge badge-open">No overlap</span></div>
+          <div class="comp-gap">Free, generic, not personalized. Zero governance. Productivity and content creation lens only. Karo Zieminski and Sid Saladi are the benchmarks to watch here.</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Runlayer, MintMCP <span class="badge badge-partial">Different market</span></div>
+          <div class="comp-gap">Enterprise governance tooling that needs engineering teams and procurement cycles. Not translating to the founder level.</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Anthropic onboarding <span class="badge badge-open">Out of scope</span></div>
+          <div class="comp-gap">Generic and slow. Governance evaluation and compliance mapping are out of scope for a product team.</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Other Cowork coaches</div>
+          <div class="comp-gap">Essentially nonexistent at security/compliance depth as of March 2026. Will exist. Speed matters more than perfection.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="window-box">
+        <p>Personalized Cowork setup with a <strong>security and compliance angle</strong>: essentially nonexistent as of March 2026. It'll get crowded. The question is how long the window stays open before it does.</p>
+      </div>
+      <div class="tailwind-box">
+        <span class="label" style="margin-bottom:8px">Platform tailwinds</span>
+        <p>Microsoft Copilot Cowork launched March 9 on M365 – same Claude engine, cloud architecture. When Anthropic launches cloud Cowork (near-certain), governance questions multiply. More complexity = more demand for this advisory. Good for the business.</p>
+        <br>
+        <p style="margin-top:8px">"Show Me the Carfax" framing: security as a due diligence deliverable for investor presentations. Worth developing as the primary Tier 3 sales angle for regulated clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="slide" id="pipeline">
+  <div class="slide-num">07 — Pipeline</div>
+  <span class="label">Next guinea pigs / prospects</span>
+  <h2>Who to call this week.</h2>
+  <div class="pipeline-grid">
+    <div class="pipe-card priority-high">
+      <h3>Ty Shinn</h3>
+      <span class="pipe-role">GP, Hyla Funds — Session 1 done</span>
+      <p>Session 2 scheduled. Priority: have him drive, build something real, complete CLAUDE.md setup. Research multi-agent debate architecture before the call.</p>
+    </div>
+    <div class="pipe-card priority-high">
+      <h3>Andrew Hoppin</h3>
+      <span class="pipe-role">Peer fund manager — offering sharpening call</span>
+      <p>Warm intro. Use as an offering sharpening call. His feedback sharpens the pitch for the next wave.</p>
+    </div>
+    <div class="pipe-card priority-high">
+      <h3>Michael Kraus</h3>
+      <span class="pipe-role">Former VP, direct report 2.5 yrs — Acquia</span>
+      <p>High-trust relationship. Ideal for Tier 1 session. Reach out directly, skip the formal pitch.</p>
+    </div>
+    <div class="pipe-card priority-high">
+      <h3>Beth Linker</h3>
+      <span class="pipe-role">CPO, Finite State — security peer</span>
+      <p>Security background means governance angle lands naturally. Could be Tier 1 or a referral source for security-conscious founders.</p>
+    </div>
+    <div class="pipe-card priority-high">
+      <h3>Elijah Parker</h3>
+      <span class="pipe-role">Vibe coder — multi-tenant financial platform</span>
+      <p>Building a bitcoin miner financial platform with Claude, no formal specs, about to show anchor advisors. Classic vibe coding wall. Near-term: code audit + architecture review + spec-driven dev transition.</p>
+    </div>
+    <div class="pipe-card priority-med">
+      <h3>John Kennedy</h3>
+      <span class="pipe-role">CEO, Actual AI — Acquia Slack + Amin connection</span>
+      <p>AI-native company. Strong signal fit. Amin connection is the warm path in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN QUESTIONS -->
+<section class="slide" id="questions">
+  <div class="slide-num">08 — Open Questions</div>
+  <span class="label">Things to resolve</span>
+  <h2>What's still unsettled.</h2>
+  <div class="q-list">
+    <div class="q-item">
+      <span class="q-num">01</span>
+      <div class="q-body">
+        <h3>Multi-agent debate architecture</h3>
+        <p>James's 7-agent model, Andrew's 8-agent debate model, Goldman diverse-team analogy. This was the most energizing part of the Ty session. Research it seriously before session 2. What's actually been built? What's the right framing for an executive audience?</p>
+      </div>
+    </div>
+    <div class="q-item">
+      <span class="q-num">02</span>
+      <div class="q-body">
+        <h3>Vibe coder stabilization – can it be productized?</h3>
+        <p>The Elijah Parker engagement type: code audit + architecture review + spec-driven dev transition. Can this be scoped as cleanly as the FSP? What are the deliverables, timeline, and price? This needs to be scoped before it becomes a second offering.</p>
+      </div>
+    </div>
+    <div class="q-item">
+      <span class="q-num">03</span>
+      <div class="q-body">
+        <h3>Data topology map as published artifact</h3>
+        <p>Publish this map and it's immediate thought leadership – no competitor has produced it at founder level. What's the right format and venue? LinkedIn article? Substack? archetypeconsulting.io?</p>
+      </div>
+    </div>
+    <div class="q-item">
+      <span class="q-num">04</span>
+      <div class="q-body">
+        <h3>n8n depth – how much to develop?</h3>
+        <p>n8n is in the stack but how deep does this go in practice? Is it always part of Tier 3, or situational? What's the client profile where n8n hybrid architecture is the right call vs. pure Cowork?</p>
+      </div>
+    </div>
+    <div class="q-item">
+      <span class="q-num">05</span>
+      <div class="q-body">
+        <h3>Karo Zieminski / Sid Saladi – read before spending</h3>
+        <p>Both produce practitioner-level Cowork content. Evaluate 5–6 back posts before subscribing. Karo: 11K subscribers, 50+ tip power user guide. Sid: PM background, advanced Cowork guide published March 11.</p>
+      </div>
+    </div>
+    <div class="q-item">
+      <span class="q-num">06</span>
+      <div class="q-body">
+        <h3>Price path to $1,000–1,500</h3>
+        <p>$750 is a launch price. What's the trigger to move it? Probably: when the session reliably produces a working deliverable (not just a roadmap) and when 3–4 clients have gone through it with good outcomes. Don't wait for external validation – watch the internal signal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

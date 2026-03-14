@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyla / Amphibian Morning Briefing — March 11, 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    line-height: 1.6;
+    padding: 32px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header {
+    border-bottom: 1px solid #2d3748;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f7fafc;
+    letter-spacing: -0.3px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: #718096;
+    margin-top: 4px;
+  }
+  .timestamp {
+    font-size: 12px;
+    color: #4a5568;
+    text-align: right;
+  }
+
+  .regime-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #1a2035;
+    border: 1px solid #2d3748;
+    border-left: 4px solid #f6c90e;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+  }
+  .regime-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #718096;
+    min-width: 80px;
+  }
+  .regime-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f6c90e;
+  }
+  .regime-rationale {
+    font-size: 13px;
+    color: #a0aec0;
+    border-left: 1px solid #2d3748;
+    padding-left: 16px;
+    margin-left: 8px;
+  }
+
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    background: #2d3748;
+    color: #90cdf4;
+    font-size: 11px;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #90cdf4;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #4a5568;
+    padding: 6px 10px;
+    border-bottom: 1px solid #2d3748;
+  }
+  th.right { text-align: right; }
+  td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #1a202c;
+    color: #cbd5e0;
+    vertical-align: top;
+  }
+  td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  td.mono { font-family: 'Menlo', 'Monaco', monospace; font-size: 12px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #171e2e; }
+
+  .up { color: #48bb78; }
+  .down { color: #fc8181; }
+  .neutral { color: #a0aec0; }
+  .warn { color: #f6c90e; }
+
+  .card {
+    background: #1a2035;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #718096;
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 13px;
+    color: #cbd5e0;
+  }
+
+  .kv-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .kv-label {
+    color: #4a5568;
+    min-width: 130px;
+    font-size: 12px;
+  }
+  .kv-value { color: #e2e8f0; }
+
+  .basis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .basis-card {
+    background: #141b2d;
+    border: 1px solid #2d3748;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .basis-card .coin { font-size: 12px; font-weight: 700; color: #90cdf4; margin-bottom: 6px; }
+  .basis-card .val { font-size: 13px; color: #e2e8f0; }
+  .basis-card .sub { font-size: 11px; color: #4a5568; margin-top: 2px; }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .level-bar {
+    background: #141b2d;
+    border-radius: 4px;
+    height: 8px;
+    margin: 6px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .level-bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, #2d3748, #90cdf4);
+    border-radius: 4px;
+  }
+  .level-tick {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #f6c90e;
+    border-radius: 1px;
+  }
+
+  .task-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a202c;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .tag-overdue { background: #742a2a; color: #fc8181; }
+  .tag-open { background: #1a365d; color: #90cdf4; }
+  .tag-done { background: #1c4532; color: #68d391; }
+  .tag-platform { background: #44337a; color: #d6bcfa; }
+
+  .email-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #1a202c;
+    font-size: 13px;
+  }
+  .email-item:last-child { border-bottom: none; }
+  .email-from { font-weight: 600; color: #e2e8f0; }
+  .email-subject { color: #a0aec0; margin: 2px 0; }
+  .email-snippet { color: #4a5568; font-size: 12px; font-style: italic; }
+  .email-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
+  .tag-action { background: #742a2a; color: #fc8181; }
+  .tag-info { background: #1a365d; color: #90cdf4; }
+  .tag-ops { background: #2d3748; color: #a0aec0; }
+
+  .meeting-card {
+    background: #1a2035;
+    border: 1px solid #2d3748;
+    border-left: 3px solid #667eea;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .meeting-time { color: #90cdf4; font-weight: 700; margin-bottom: 4px; }
+  .meeting-name { color: #e2e8f0; font-weight: 600; margin-bottom: 4px; }
+  .meeting-detail { color: #718096; font-size: 12px; }
+
+  .vision-list {
+    list-style: none;
+    padding: 0;
+  }
+  .vision-list li {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a202c;
+    font-size: 13px;
+    color: #cbd5e0;
+  }
+  .vision-list li:last-child { border-bottom: none; }
+  .vision-icon { color: #667eea; font-size: 14px; min-width: 20px; }
+
+  .footer {
+    border-top: 1px solid #2d3748;
+    margin-top: 36px;
+    padding-top: 16px;
+    font-size: 11px;
+    color: #2d3748;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #1a202c;
+    margin: 16px 0;
+  }
+
+  .ob-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .ob-stat { text-align: center; }
+  .ob-stat .val { font-size: 15px; font-weight: 700; }
+  .ob-stat .lbl { font-size: 11px; color: #4a5568; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Hyla / Amphibian Morning Briefing</h1>
+      <div class="subtitle">Wednesday, March 11, 2026 &nbsp;·&nbsp; Demo session with Ty Shinn, GP</div>
+    </div>
+    <div class="timestamp">
+      Generated 9:39 AM PT<br>
+      <span style="color:#2d3748">Data via Crypto.com Exchange MCP</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- REGIME BANNER -->
+<div class="regime-banner">
+  <div>
+    <div class="regime-label">Market Regime</div>
+    <div class="regime-value">⚡ Transition / Choppy</div>
+  </div>
+  <div class="regime-rationale">
+    BTC is down 2.3% over 7 days (marginally Risk-Off) but showing intraday recovery — bid-heavy order book, slight positive perp basis, and AVAX/ETH/LINK outperforming. Mixed signals prevent a clean directional read.
+  </div>
+</div>
+
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">Market Regime Signal</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Asset</th>
+        <th class="right">Price (USDT)</th>
+        <th class="right">24h Change</th>
+        <th class="right">24h High</th>
+        <th class="right">24h Low</th>
+        <th>vs BTC (24h)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>BTC</strong></td>
+        <td class="right mono">$70,976</td>
+        <td class="right up">+1.62%</td>
+        <td class="right mono">$71,784</td>
+        <td class="right mono">$68,976</td>
+        <td class="neutral">—</td>
+      </tr>
+      <tr>
+        <td><strong>ETH</strong></td>
+        <td class="right mono">$2,079</td>
+        <td class="right up">+2.60%</td>
+        <td class="right mono">$2,089</td>
+        <td class="right mono">$2,007</td>
+        <td class="up">▲ Outperforming</td>
+      </tr>
+      <tr>
+        <td><strong>SOL</strong></td>
+        <td class="right mono">$87.24</td>
+        <td class="right up">+1.52%</td>
+        <td class="right mono">$88.82</td>
+        <td class="right mono">$84.37</td>
+        <td class="neutral">≈ In-line</td>
+      </tr>
+      <tr>
+        <td><strong>AVAX</strong></td>
+        <td class="right mono">$9.84</td>
+        <td class="right up">+5.30%</td>
+        <td class="right mono">$9.95</td>
+        <td class="right mono">$9.31</td>
+        <td class="up">▲▲ Strong outperform</td>
+      </tr>
+      <tr>
+        <td><strong>LINK</strong></td>
+        <td class="right mono">$9.16</td>
+        <td class="right up">+2.23%</td>
+        <td class="right mono">$9.18</td>
+        <td class="right mono">$8.87</td>
+        <td class="up">▲ Outperforming</td>
+      </tr>
+      <tr>
+        <td><strong>DOGE</strong></td>
+        <td class="right mono">$0.0947</td>
+        <td class="right down">−0.03%</td>
+        <td class="right mono">$0.1004</td>
+        <td class="right mono">$0.0914</td>
+        <td class="down">▼ Underperforming</td>
+      </tr>
+      <tr>
+        <td><strong>CRO</strong></td>
+        <td class="right mono">$0.0762</td>
+        <td class="right up">+0.18%</td>
+        <td class="right mono">$0.0771</td>
+        <td class="right mono">$0.0750</td>
+        <td class="down">▼ Underperforming</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="basis-grid">
+    <div class="basis-card">
+      <div class="coin">BTC Perp Basis (BTCUSD-PERP)</div>
+      <div class="val up">+$33 &nbsp;/&nbsp; +0.046%</div>
+      <div class="sub">Spot: $70,976 &nbsp;·&nbsp; Perp: $71,009 &nbsp;·&nbsp; Slight positive (contango)</div>
+    </div>
+    <div class="basis-card">
+      <div class="coin">ETH Perp Basis (ETHUSD-PERP)</div>
+      <div class="val up">+$3 &nbsp;/&nbsp; +0.14%</div>
+      <div class="sub">Spot: $2,079 &nbsp;·&nbsp; Perp: $2,082 &nbsp;·&nbsp; Slight positive (contango)</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">Key Levels &amp; Technical Context</div>
+  </div>
+
+  <div class="levels-grid">
+    <div class="card">
+      <div class="card-title">Bitcoin — 7-Day Range</div>
+      <div class="kv-row"><span class="kv-label">7-Day High</span><span class="kv-value mono">$73,578 <span style="color:#4a5568;font-size:11px">(Mar 5)</span></span></div>
+      <div class="kv-row"><span class="kv-label">7-Day Low</span><span class="kv-value mono">$65,819 <span style="color:#4a5568;font-size:11px">(Mar 9)</span></span></div>
+      <div class="kv-row"><span class="kv-label">Current</span><span class="kv-value mono up">$70,976</span></div>
+      <div class="kv-row"><span class="kv-label">Range Position</span><span class="kv-value warn">~66th percentile</span></div>
+      <div class="level-bar">
+        <div class="level-bar-fill" style="width:66%"></div>
+        <div class="level-tick" style="left:66%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#4a5568;margin-top:2px"><span>$65,819</span><span>$73,578</span></div>
+      <hr class="divider">
+      <div class="kv-row"><span class="kv-label">Key Support</span><span class="kv-value mono">$68,400 <span style="color:#4a5568;font-size:11px">(Mar 8–9 double bottom)</span></span></div>
+      <div class="kv-row"><span class="kv-label">Key Resistance</span><span class="kv-value mono">$72,000–$73,600 <span style="color:#4a5568;font-size:11px">(Mar 5 high zone)</span></span></div>
+      <div class="kv-row"><span class="kv-label">7-Day Return</span><span class="kv-value down">−2.33% <span style="color:#4a5568;font-size:11px">(from Mar 4 close $72,669)</span></span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ethereum — 7-Day Range</div>
+      <div class="kv-row"><span class="kv-label">7-Day High</span><span class="kv-value mono">$2,164 <span style="color:#4a5568;font-size:11px">(Mar 5)</span></span></div>
+      <div class="kv-row"><span class="kv-label">7-Day Low</span><span class="kv-value mono">$1,929 <span style="color:#4a5568;font-size:11px">(Mar 9)</span></span></div>
+      <div class="kv-row"><span class="kv-label">Current</span><span class="kv-value mono up">$2,079</span></div>
+      <div class="kv-row"><span class="kv-label">Range Position</span><span class="kv-value warn">~64th percentile</span></div>
+      <div class="level-bar">
+        <div class="level-bar-fill" style="width:64%"></div>
+        <div class="level-tick" style="left:64%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#4a5568;margin-top:2px"><span>$1,929</span><span>$2,164</span></div>
+      <hr class="divider">
+      <div class="kv-row"><span class="kv-label">Key Support</span><span class="kv-value mono">$1,993–$2,007 <span style="color:#4a5568;font-size:11px">(Mar 9–10 lows)</span></span></div>
+      <div class="kv-row"><span class="kv-label">Key Resistance</span><span class="kv-value mono">$2,089–$2,094 <span style="color:#4a5568;font-size:11px">(Mar 6 high zone)</span></span></div>
+      <div class="kv-row"><span class="kv-label">7-Day Return</span><span class="kv-value down">−2.32% <span style="color:#4a5568;font-size:11px">(from Mar 4 close $2,127)</span></span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">BTC Order Book Snapshot — Depth 20</div>
+    <div class="ob-grid">
+      <div class="ob-stat">
+        <div class="val up">2.47 BTC</div>
+        <div class="lbl">Total Bid Volume (top 20)</div>
+      </div>
+      <div class="ob-stat">
+        <div class="val down">1.72 BTC</div>
+        <div class="lbl">Total Ask Volume (top 20)</div>
+      </div>
+      <div class="ob-stat">
+        <div class="val up">1.44×</div>
+        <div class="lbl">Bid/Ask Ratio → Bid-Heavy</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div style="font-size:13px;color:#a0aec0">Short-term buyers are absorbing more than sellers are offering at current levels. Combined with positive perp basis, this suggests near-term support — though 7-day momentum remains negative.</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">Portfolio Relevance — Amphibian Alpha Vehicles</div>
+    <div style="font-size:13px;color:#cbd5e0;line-height:1.7">
+      <strong style="color:#90cdf4">BTC Alpha:</strong> The 7-day downtrend (−2.3%) is testing the allocation engine's regime detection. With BTC in the upper third of its weekly range and bid support building at $68,400, the vehicle is at a potential inflection — the direction over the next 48 hours matters for cycle positioning.<br><br>
+      <strong style="color:#90cdf4">ETH Alpha:</strong> ETH is outperforming BTC on a 24h basis (+2.6% vs +1.6%) with slightly higher positive perp basis. This continues to make ETH Alpha the stronger near-term momentum vehicle within the suite. Watch $2,089 resistance as the key breakout level.<br><br>
+      <strong style="color:#90cdf4">USD Alpha:</strong> The Transition/Choppy regime with mixed altcoin signals favors USD Alpha's stable yield position. If BTC fails to reclaim $72K in the next session, the defensive case for USD Alpha strengthens.
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">Asana — Project &amp; Task Signal</div>
+  </div>
+
+  <!-- Cyclical Program Management -->
+  <div class="card">
+    <div class="card-title" style="color:#d6bcfa">🔬 Hyla Cyclical Program Management <span style="color:#4a5568;font-weight:400;text-transform:none;font-size:11px">— Primary platform development project</span></div>
+
+    <div class="task-row">
+      <span class="task-tag tag-overdue">OVERDUE</span>
+      <div>
+        <div><strong>v1 Automated Trading Program (Coinbase)</strong></div>
+        <div style="color:#718096;font-size:12px">Due: Feb 28, 2025 · No assignee · The core automated execution engine — still open over a year past due date</div>
+      </div>
+    </div>
+    <div class="task-row">
+      <span class="task-tag tag-platform">PLATFORM</span>
+      <div>
+        <div><strong>Alpha Generation — Research Mean Reversion (BTC vs ETH/SOL)</strong></div>
+        <div style="color:#718096;font-size:12px">Open · Assigned · Cross-asset relative value strategy research</div>
+      </div>
+    </div>
+    <div class="task-row">
+      <span class="task-tag tag-platform">PLATFORM</span>
+      <div>
+        <div><strong>Signal Group: CRYPTO MARKET DATA</strong></div>
+        <div style="color:#718096;font-size:12px">Open · Covers futures basis, funding rates, open interest, L/S ratios, put/call ratios, BVIV implied vol</div>
+      </div>
+    </div>
+    <div class="task-row">
+      <span class="task-tag tag-platform">PLATFORM</span>
+      <div>
+        <div><strong>Signal Groups: ON CHAIN / TECHNICAL ANALYSIS / MACRO</strong></div>
+        <div style="color:#718096;font-size:12px">Open · Cycle indicator research across four signal domains. Compilation task assigned.</div>
+      </div>
+    </div>
+    <div class="task-row">
+      <span class="task-tag tag-open">OPEN</span>
+      <div>
+        <div><strong>v2 Dashboard</strong></div>
+        <div style="color:#718096;font-size:12px">No due date · Improve visualizations, add trading program data. v1 marked complete.</div>
+      </div>
+    </div>
+    <div class="task-row">
+      <span class="task-tag tag-open">OPEN</span>
+      <div>
+        <div><strong>Define Cost Basis Input / Counterparties Section Redesign</strong></div>
+        <div style="color:#718096;font-size:12px">Open design/spec tasks — no due dates, recently modified Feb 2025</div>
+      </div>
+    </div>
+    <div class="task-row" style="border-bottom:none">
+      <span class="task-tag tag-done">DONE</span>
+      <div>
+        <div><strong>v1 Dashboard · Analyze Allocation Data from Singular Labs</strong></div>
+        <div style="color:#718096;font-size:12px">Completed. Foundation for v2 work.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hyla Funds Tasks -->
+  <div class="card" style="margin-top:12px">
+    <div class="card-title" style="color:#90cdf4">📋 Hyla Funds Tasks <span style="color:#4a5568;font-weight:400;text-transform:none;font-size:11px">— Investor operations</span></div>
+    <div class="task-row">
+      <span class="task-tag tag-overdue">STALE</span>
+      <div>
+        <div><strong>Urgent request from Formidium — Peter Hames account</strong></div>
+        <div style="color:#718096;font-size:12px">Due Jul 22, 2024 — Overdue by 8 months, still open. Formidium fund admin coordination item.</div>
+      </div>
+    </div>
+    <div class="task-row" style="border-bottom:none">
+      <span class="task-tag tag-open">OPEN</span>
+      <div>
+        <div><strong>Several older investor relations items</strong> (bank info, subscription follow-ups, LP requests)</div>
+        <div style="color:#718096;font-size:12px">Multiple stale open tasks from 2023. Likely need triage to determine if still active.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;color:#4a5568;margin-top:8px;font-style:italic">
+    Note: This uses Andy's Asana as proxy. With Ty's own Asana connected, this section would surface his live allocation engine tasks, risk framework milestones, HRP/mean-variance research status, and any Black-Litterman model work in progress.
+  </div>
+</div>
+
+
+<!-- SECTION 4 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">Calendar — Today's Schedule</div>
+  </div>
+
+  <div style="font-size:12px;color:#4a5568;margin-bottom:12px;font-style:italic">
+    Showing Andy's calendar (laken@hylafunds.com) as proxy. With Ty's calendar connected, this would show his IC meetings, manager calls, and LP interactions.
+  </div>
+
+  <div class="meeting-card" style="border-left-color:#68d391">
+    <div class="meeting-time">All Day — Working from Home</div>
+    <div class="meeting-name">Work Location: Home</div>
+    <div class="meeting-detail">No location override needed for today's sessions.</div>
+  </div>
+
+  <div class="meeting-card" style="border-left-color:#667eea">
+    <div class="meeting-time">1:00 PM – 2:00 PM PT &nbsp;/&nbsp; 4:00 PM – 5:00 PM ET</div>
+    <div class="meeting-name">⭐ Hyla Funds Weekly Team Call</div>
+    <div class="meeting-detail">
+      Recurring Zoom &nbsp;·&nbsp; Organizer: Krisbell Robles &nbsp;·&nbsp; Response: <span class="warn">Tentative — confirm attendance</span><br>
+      Attendees: Ty ✓ · Andrew ✓ · Mark ✓ · Daren ✓ · Thao ✓ · Matt ✓ · Sonia ✓ · Krisbell ✓ · Paola ✓ · Sahir ✓ · Elijah ✓<br>
+      <br>
+      <strong>Prep note:</strong> The Side Pocket LP access issue (Joanne Eyerly thread, see Section 5) is ongoing this morning — likely to surface on this call if not resolved before 1pm PT.
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 5 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">Communications Requiring Action</div>
+  </div>
+
+  <div style="font-size:12px;color:#4a5568;margin-bottom:12px;font-style:italic">
+    Showing Andy's Gmail (laken@hylafunds.com) and Hyla Slack as proxy. With Ty's own accounts connected, this would surface his unanswered LP threads, team requests, and time-sensitive decisions.
+  </div>
+
+  <!-- Priority -->
+  <div class="card">
+    <div class="card-title" style="color:#fc8181">🔴 Needs Attention — Active Thread</div>
+    <div class="email-item">
+      <span class="email-tag tag-action">ACTION · 5 messages today</span>
+      <div class="email-from">Joanne Eyerly ↔ Krisbell Robles, Paola Origel — IR@hylafunds.com</div>
+      <div class="email-subject">Re: A personal note from me about fund Side Pocket</div>
+      <div class="email-snippet">"I cannot open the link. It keeps asking me to put in my email address over and over again…" — LP investor cannot access Liquid Venture Fund side pocket document. Krisbell and Paola actively responding but issue unresolved as of 9:37 AM. Document access permissions may need to be reset. Heads-up for the 1pm team call.</div>
+    </div>
+  </div>
+
+  <!-- FYI items -->
+  <div class="card" style="margin-top:12px">
+    <div class="card-title" style="color:#90cdf4">🔵 FYI — Fund Operations</div>
+    <div class="email-item">
+      <span class="email-tag tag-info">REVISED REPORT</span>
+      <div class="email-from">NAV Consulting (transfer.agency@navconsulting.net)</div>
+      <div class="email-subject">REVISED Investor Activity | Amphibian BTC Accumulator INTL Ltd. | Feb 28 – Mar 1, 2026</div>
+      <div class="email-snippet">Revised investor activity report sent to amphibianops, mark@chainlinkfund, thao@chainlinkfund, todd@amphibiancapital. Routine fund admin — worth confirming receipt with ops team.</div>
+    </div>
+    <div class="email-item">
+      <span class="email-tag tag-ops">OPS</span>
+      <div class="email-from">Chris K. Jones → Mark Wagner</div>
+      <div class="email-subject">Re: CCI Distribution and Organizational Update</div>
+      <div class="email-snippet">"I sent the wire instructions to Paola… I have not heard back from Andrew." Wire instructions sent; Andrew Hoppin follow-up pending on distribution matter.</div>
+    </div>
+    <div class="email-item" style="border-bottom:none">
+      <span class="email-tag tag-ops">TAX / ADMIN</span>
+      <div class="email-from">NAV Fund Services → Sahir (hylafunds)</div>
+      <div class="email-subject">Re: Tax allocation data for 2025 | Hyla Fund III, LLC</div>
+      <div class="email-snippet">2025 tax allocation Excel file sent to Sahir. Note on operating expenses: temporary book-to-tax difference recorded. Informational.</div>
+    </div>
+  </div>
+
+  <!-- Slack -->
+  <div class="card" style="margin-top:12px">
+    <div class="card-title" style="color:#68d391">💬 Slack Signal</div>
+    <div class="email-item">
+      <span class="email-tag tag-info">FYI · March 4</span>
+      <div class="email-from">Andrew Hoppin — #general</div>
+      <div class="email-subject">Wednesday thoughts on market positioning for Hyla and Amphibian</div>
+      <div class="email-snippet">Shared analysis on market positioning (also distributed to James/Todd/David). Most recent substantive team discussion captured in Slack. Worth reviewing ahead of today's weekly call.</div>
+    </div>
+    <div class="email-item" style="border-bottom:none">
+      <span class="email-tag tag-ops">BOT · DAILY</span>
+      <div class="email-from">Cyclical Bandit Updates — #cyclical-alerts</div>
+      <div class="email-subject">Daily automated alerts (Mar 8–11)</div>
+      <div class="email-snippet">Daily bot updates posting each morning at 1 AM PT in #cyclical-alerts. Content details require direct Slack access to view — this section would show the actual signal content with Ty's account connected.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 6 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div class="section-title">What This Briefing Would Be With Connected Data</div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:13px;color:#a0aec0;margin-bottom:12px">
+      Today's briefing shows what's possible using Andy's connected accounts as a proxy. With Ty's own portfolio data, risk limits, and target allocations wired in, the gap between <em style="color:#e2e8f0">"what happened in markets"</em> and <em style="color:#e2e8f0">"what it means for your specific decisions today"</em> closes entirely.
+    </div>
+    <ul class="vision-list">
+      <li>
+        <span class="vision-icon">📊</span>
+        <div><strong style="color:#e2e8f0">Portfolio drift flags</strong> from the HLV Portfolio Management spreadsheet — real-time comparison of current allocations vs. target weights for BTC Alpha, ETH Alpha, and USD Alpha, with rebalance triggers when drift exceeds defined thresholds.</div>
+      </li>
+      <li>
+        <span class="vision-icon">🛡️</span>
+        <div><strong style="color:#e2e8f0">Risk limit utilization</strong> across Amphibian vehicles — today's regime signal (Transition/Choppy, BTC −2.3% / 7d) would automatically surface as a caution flag if it crosses a defined drawdown threshold for BTC Alpha positioning.</div>
+      </li>
+      <li>
+        <span class="vision-icon">📈</span>
+        <div><strong style="color:#e2e8f0">Manager performance vs. benchmarks</strong> with review triggers — each Amphibian vehicle's MTD and YTD return shown alongside its benchmark, with automatic escalation to the IC briefing queue when underperformance exceeds a tolerance band.</div>
+      </li>
+      <li>
+        <span class="vision-icon">📋</span>
+        <div><strong style="color:#e2e8f0">Pre-populated IC Analytics Pack inputs</strong> — today's BTC/ETH prices, basis, order book depth, and alt performance would feed directly into the IC template, eliminating the manual market data pull before each investment committee meeting.</div>
+      </li>
+      <li>
+        <span class="vision-icon">⚡</span>
+        <div><strong style="color:#e2e8f0">Decision/exception log prompts</strong> — when today's BTC crosses below $68,400 support (or above $72,000 resistance), the briefing would surface a timestamped prompt: "BTC has crossed a key level. Does this trigger a portfolio action or exception in the allocation engine?" — creating an auditable decision trail.</div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="footer">
+  <div>Hyla / Amphibian Morning Briefing · Generated by Claude + Cowork · March 11, 2026</div>
+  <div>Data: Crypto.com Exchange MCP · Asana MCP · Google Calendar MCP · Gmail MCP · Slack MCP</div>
+</div>
+
+</body>
+</html>
